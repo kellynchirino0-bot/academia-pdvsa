@@ -24,12 +24,12 @@ const SimuladorVideoAudio = () => {
   ];
 
   const promptsEjemplo = [
-    'Generar alerta de mantenimiento para bomba sumergible B-123',
-    'Crear video de entrenamiento sobre protocolo de seguridad',
-    'Sintetizar voz de asistente virtual para centro de atención',
-    'Producir video de inspección de tanque de almacenamiento',
-    'Generar narración para presentación ejecutiva de PDVSA',
-    'Crear audio de notificaciones para sistema SCADA'
+    'Generar narración para presentación ejecutiva de resultados trimestrales',
+    'Crear video de orientación para nuevos empleados de PDVSA',
+    'Sintetizar voz para asistente virtual de atención al participante',
+    'Producir video de capacitación sobre protocolo de seguridad industrial',
+    'Generar audio de notificaciones para sistema de monitoreo operativo',
+    'Crear resumen ejecutivo en audio para gerencia de operaciones'
   ];
 
   const handleSubmit = async (e) => {

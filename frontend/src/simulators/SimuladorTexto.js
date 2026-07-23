@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Copy, Download, RotateCcw, Sparkles, FileText, TrendingUp, Shield, BarChart3, BookOpen, CheckCircle } from 'lucide-react';
+import { Send, Copy, Download, RotateCcw, Sparkles, FileText, TrendingUp, Shield, BarChart3, BookOpen, CheckCircle, DollarSign, Users, Megaphone, Calculator, Brain } from 'lucide-react';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
@@ -11,6 +11,15 @@ const SimuladorTexto = () => {
   const [respuesta, setRespuesta] = useState(null);
   const [loading, setLoading] = useState(false);
   const [historial, setHistorial] = useState([]);
+  const [areaFuncional, setAreaFuncional] = useState('todas');
+
+  const areasFuncionales = [
+    { value: 'todas', label: 'Todas las Áreas', icon: <Brain size={16} />, color: '#003366' },
+    { value: 'finanzas', label: 'Finanzas', icon: <DollarSign size={16} />, color: '#10b981' },
+    { value: 'contabilidad', label: 'Contabilidad', icon: <Calculator size={16} />, color: '#3b82f6' },
+    { value: 'rrhh', label: 'Talento Humano', icon: <Users size={16} />, color: '#f59e0b' },
+    { value: 'marketing', label: 'Marketing', icon: <Megaphone size={16} />, color: '#8b5cf6' }
+  ];
 
   const tiposDocumento = [
     { value: 'memorandum', label: 'Memorandum Ejecutivo', icon: <FileText size={16} /> },
@@ -19,16 +28,138 @@ const SimuladorTexto = () => {
     { value: 'informe_gerencial', label: 'Informe Gerencial', icon: <TrendingUp size={16} /> }
   ];
 
-  const promptsEjemplo = [
-    'Actúa como Gerente de Operaciones de PDVSA. Analiza una baja de eficiencia del 12% en el Área X e identifica las 3 causas principales y propone 2 acciones correctivas inmediatas.',
-    'Redacta un memorándum ejecutivo dirigido a Dirección solicitando la reasignación presupuestaria para mantenimiento preventivo justificando el ROI operativo.',
-    'Simula 3 escenarios (Conservador, Moderado, Agresivo) ante una parada técnica no programada y proyecta su impacto financiero y en la continuidad operativa.',
-    'Genera un resumen ejecutivo del avance trimestral de optimización de costos en las áreas de Explotación y Producción con indicadores clave.',
-    'Elabora una evaluación comparativa de 3 proveedores de servicios de mantenimiento industrial considerando costo, tiempo de respuesta y garantía.',
-    'Diseña un plan de contingencia para garantizar la continuidad operativa ante una emergencia climática que afecte las instalaciones principales.'
-  ];
+  const plantillasPorArea = {
+    finanzas: [
+      {
+        id: 'fin1',
+        titulo: 'Análisis de Desviación Presupuestaria',
+        icon: <DollarSign size={16} />,
+        color: '#10b981',
+        area: 'Finanzas',
+        plantilla: `[ROL]: Actúa como Director Financiero de PDVSA.
+[CONTEXTO]: Se ha detectado una desviación del [X]% en el presupuesto del área de [Nombre Área] durante el período [Trimestre/Año].
+[TAREA]: Evalúa el siguiente plan de gastos [Pegar Datos] y genera:
+1. Matriz de costo-beneficio por categoría de gasto.
+2. Identificación de las 3 partidas con mayor desviación.
+3. Proyección de flujo de caja para los próximos 3 meses.
+4. Recomendaciones de reasignación presupuestaria.
+FORMATO: Tabla ejecutiva con indicadores financieros clave.`
+      },
+      {
+        id: 'fin2',
+        titulo: 'Evaluación de ROI en Proyectos Petroleros',
+        icon: <TrendingUp size={16} />,
+        color: '#059669',
+        area: 'Finanzas',
+        plantilla: `[ROL]: Actúa como Analista de Inversiones Senior.
+[CONTEXTO]: Se presenta el siguiente proyecto de inversión: [Descripción del Proyecto].
+[TAREA]: Calcula y presenta:
+1. ROI proyectado a 1, 3 y 5 años.
+2. Tasa de retorno interno (TIR) estimada.
+3. Período de recuperación de la inversión.
+4. Análisis de sensibilidad con 3 escenarios.
+FORMATO: Ficha de inversión ejecutiva con gráficos de tendencia.`
+      }
+    ],
+    contabilidad: [
+      {
+        id: 'cont1',
+        titulo: 'Auditoría de Inconsistencias Contables',
+        icon: <Calculator size={16} />,
+        color: '#3b82f6',
+        area: 'Contabilidad',
+        plantilla: `[ROL]: Actúa como Auditor Senior certificado con 15 años de experiencia.
+[CONTEXTO]: Se requiere revisar el siguiente listado de asientos contables del período [Período].
+[TAREA]: Identifica:
+1. Inconsistencias y partidas sospechosas.
+2. Riesgos de incumplimiento normativo (NIIF/CPC).
+3. Oportunidades de optimización fiscal.
+4. Recomendaciones de ajuste contable.
+FORMATO: Informe de auditoría con clasificación de riesgos (Alto/Medio/Bajo).`
+      },
+      {
+        id: 'cont2',
+        titulo: 'Cumplimiento Normativo y Facturación',
+        icon: <Shield size={16} />,
+        color: '#2563eb',
+        area: 'Contabilidad',
+        plantilla: `[ROL]: Actúa como Especialista en Cumplimiento Tributario.
+[CONTEXTO]: Revisar la facturación del período [Fecha] para el área de [Nombre].
+[TAREA]: Evalúa:
+1. Cumplimiento de obligaciones fiscales.
+2. Conciliación de facturas con pagos registrados.
+3. Detección de anomalías en la facturación.
+4. Acciones correctivas inmediatas.
+FORMATO: Dashboard de cumplimiento con semáforo de riesgo.`
+      }
+    ],
+    rrhh: [
+      {
+        id: 'rrhh1',
+        titulo: 'Evaluación de Desempeño y Planificación',
+        icon: <Users size={16} />,
+        color: '#f59e0b',
+        area: 'Talento Humano',
+        plantilla: `[ROL]: Actúa como Gerente de Recursos Humanos de PDVSA.
+[CONTEXTO]: Se presenta la siguiente situación de personal: [Descripción].
+[TAREA]: Desarrolla:
+1. Evaluación de desempeño del personal involucrado.
+2. Plan de contingencia para redistribuir cargas de trabajo.
+3. Identificación de necesidades de capacitación urgente.
+4. Propuesta de incentivos para retención de talento.
+FORMATO: Plan de acción ejecutivo con cronograma de 30/60/90 días.`
+      },
+      {
+        id: 'rrhh2',
+        titulo: 'Análisis de Clima Organizacional',
+        icon: <Megaphone size={16} />,
+        color: '#d97706',
+        area: 'Talento Humano',
+        plantilla: `[ROL]: Actúa como Especialista en Organización y Métodos.
+[CONTEXTO]: Se realizó una encuesta de clima organizacional con [N] respuestas del área de [Nombre].
+[TAREA]: Analiza los resultados y presenta:
+1. Top 3 fortalezas organizacionales.
+2. Top 3 áreas de mejora con plan de acción.
+3. Índice de satisfacción general y comparativa histórico.
+4. Recomendaciones para mejorar el clima laboral.
+FORMATO: Reporte ejecutivo con gráficos de tendencia y acción inmediata.`
+      }
+    ],
+    marketing: [
+      {
+        id: 'mkt1',
+        titulo: 'Posicionamiento Institucional y Comunicación',
+        icon: <Megaphone size={16} />,
+        color: '#8b5cf6',
+        area: 'Marketing',
+        plantilla: `[ROL]: Actúa como Gerente de Relaciones Institucionales.
+[CONTEXTO]: Se requiere mejorar la imagen institucional de PDVSA ante [Audiencia Objetivo].
+[TAREA]: Diseña:
+1. Estrategia de posicionamiento en 3 canales clave.
+2. Mensajes principales para comunicación de crisis.
+3. Calendario de comunicados para los próximos 3 meses.
+4. KPIs de medición de impacto reputacional.
+FORMATO: Plan de comunicación ejecutivo con matriz de mensajes.`
+      },
+      {
+        id: 'mkt2',
+        titulo: 'Análisis de Competidores del Mercado Energético',
+        icon: <BarChart3 size={16} />,
+        color: '#7c3aed',
+        area: 'Marketing',
+        plantilla: `[ROL]: Actúa como Analista de Mercado Senior.
+[CONTEXTO]: Evaluar la posición competitiva de PDVSA frente a [Competidores/Países].
+[TAREA]: Realiza:
+1. Análisis FODA comparativo con 5 competidores.
+2. Benchmarking de precios y servicios.
+3. Identificación de ventajas competitivas diferenciadoras.
+4. Estrategias de diferenciación para el mercado internacional.
+FORMATO: Matriz competitiva ejecutiva con recomendaciones estratégicas.`
+      }
+    ]
+  };
 
-  const plantillasGerenciales = [
+  const plantillasGenerales = [
     {
       id: 1,
       titulo: 'Análisis de Oportunidades y Reducción de Costos',
@@ -80,18 +211,9 @@ const SimuladorTexto = () => {
     }
   ];
 
-  const [plantillaActiva, setPlantillaActiva] = useState(null);
-  const [copiado, setCopiado] = useState(false);
-
-  const cargarPlantilla = (plantilla) => {
-    setPrompt(plantilla.plantilla);
-    setPlantillaActiva(plantilla.id);
-  };
-
-  const copiarPlantilla = (texto) => {
-    navigator.clipboard.writeText(texto);
-    setCopiado(true);
-    setTimeout(() => setCopiado(false), 2000);
+  const getPlantillasFiltradas = () => {
+    if (areaFuncional === 'todas') return plantillasGenerales;
+    return plantillasPorArea[areaFuncional] || [];
   };
 
   const handleSubmit = async (e) => {
@@ -299,13 +421,44 @@ ${'═'.repeat(56)}`;
             <div style={{ marginTop: '24px', padding: '16px', background: 'linear-gradient(135deg, rgba(0,51,102,0.03), rgba(212,168,67,0.05))', borderRadius: 'var(--radius-md)', border: '1px solid rgba(0,51,102,0.1)' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                 <BookOpen size={18} color="#003366" />
-                <h4 style={{ fontSize: '0.9rem', color: '#003366', margin: 0 }}>Guía de Plantillas Gerenciales PDVSA/IUTPAL</h4>
+                <h4 style={{ fontSize: '0.9rem', color: '#003366', margin: 0 }}>Guía de Plantillas por Área Funcional</h4>
               </div>
+              
+              {/* Selector de Área Funcional */}
+              <div style={{ display: 'flex', gap: '6px', marginBottom: '12px', flexWrap: 'wrap' }}>
+                {areasFuncionales.map((area) => (
+                  <button
+                    key={area.value}
+                    onClick={() => setAreaFuncional(area.value)}
+                    style={{
+                      padding: '6px 10px',
+                      background: areaFuncional === area.value ? area.color : 'var(--bg-secondary)',
+                      color: areaFuncional === area.value ? '#fff' : 'var(--text-secondary)',
+                      border: `1px solid ${areaFuncional === area.value ? area.color : 'var(--border-color)'}`,
+                      borderRadius: '16px',
+                      cursor: 'pointer',
+                      fontSize: '0.7rem',
+                      fontWeight: '500',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      transition: 'all 0.2s'
+                    }}
+                  >
+                    {area.icon}
+                    {area.label}
+                  </button>
+                ))}
+              </div>
+
               <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '12px', lineHeight: '1.5' }}>
-                Plantillas oficiales del Módulo 2. Selecciona una para cargarla en el editor o cópiala para uso personal.
+                {areaFuncional === 'todas' 
+                  ? 'Plantillas generales gerenciales. Selecciona un área específica para ver plantillas especializadas.'
+                  : `Plantillas especializadas para ${areasFuncionales.find(a => a.value === areaFuncional)?.label}.`}
               </p>
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {plantillasGerenciales.map((plantilla) => (
+                {getPlantillasFiltradas().map((plantilla) => (
                   <div key={plantilla.id} style={{
                     padding: '10px 12px',
                     background: plantillaActiva === plantilla.id ? `${plantilla.color}10` : '#fff',
@@ -317,6 +470,11 @@ ${'═'.repeat(56)}`;
                       <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <span style={{ color: plantilla.color }}>{plantilla.icon}</span>
                         <span style={{ fontSize: '0.8rem', fontWeight: '600', color: '#003366' }}>{plantilla.titulo}</span>
+                        {plantilla.area && (
+                          <span style={{ fontSize: '0.6rem', padding: '2px 6px', background: `${plantilla.color}20`, color: plantilla.color, borderRadius: '8px' }}>
+                            {plantilla.area}
+                          </span>
+                        )}
                       </div>
                       <div style={{ display: 'flex', gap: '4px' }}>
                         <button

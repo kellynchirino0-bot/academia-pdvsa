@@ -17,9 +17,9 @@ const SimuladorImagenes = () => {
   const [loading, setLoading] = useState(false);
 
   const tiposAnalisis = [
-    { value: 'inspeccion_ductos', label: 'Inspección de Ductos', icon: <Camera size={16} />, description: 'Detección de defectos y corrosión en ductos' },
-    { value: 'mapa_calor_corrosion', label: 'Mapa de Calor Corrosión', icon: <Thermometer size={16} />, description: 'Análisis térmico de patrones de corrosión' },
-    { value: 'render_activos', label: 'Render de Activos', icon: <Layers size={16} />, description: 'Visualización 3D de activos industriales' }
+    { value: 'inspeccion_ductos', label: 'Inspección de Diagramas Ejecutivos', icon: <Camera size={16} />, description: 'Análisis visual de diagramas de procesos y flujos operativos' },
+    { value: 'mapa_calor_corrosion', label: 'Mapa de Calor de Riesgos', icon: <Thermometer size={16} />, description: 'Visualización de áreas de riesgo y criticidad operativa' },
+    { value: 'render_activos', label: 'Visualización de Infraestructura', icon: <Layers size={16} />, description: 'Render 3D de instalaciones y activos industriales' }
   ];
 
   const modelos = [
@@ -30,12 +30,12 @@ const SimuladorImagenes = () => {
   ];
 
   const promptsEjemplo = [
-    'Analizar estado de corrosión en ducto de 24 pulgadas',
-    'Generar mapa de calor de integridad estructural',
-    'Visualizar nivel de obstrucción en línea de flujo',
-    'Detectar fugas en sistema de tuberías',
-    'Renderizar modelo 3D de tanque de almacenamiento',
-    'Identificar puntos críticos en estructura metálica'
+    'Analizar diagrama de flujo de proceso de refinería para identificar cuellos de botella',
+    'Generar mapa de calor de riesgos operativos por área de la planta',
+    'Visualizar distribución de personal y recursos en planta de extracción',
+    'Identificar puntos críticos en diagrama de distribución deactivos',
+    'Renderizar modelo 3D de terminal de carga para presentación ejecutiva',
+    'Detectar anomalías en patrones de distribución de inventario'
   ];
 
   const handleSubmit = async (e) => {
