@@ -46,16 +46,16 @@ const academicModules = [
   },
   {
     id: 4, numero_modulo: 4,
-    titulo: 'Simulación de Crisis, Gestión de Riesgos y Liderazgo Aumentado',
-    descripcion: 'Evaluación de decisiones bajo presión (paradas de planta, contingencias), validación de cumplimiento normativo y presentación de proyectos respaldados por IA.',
+    titulo: 'Investigación de Operaciones (I.O.) y Toma de Decisiones Asistida por IA',
+    descripcion: 'Métodos cuantitativos de Investigación de Operaciones aplicados al sector energético: Programación Lineal (Simplex), Ruta Crítica (CPM/PERT), Modelos de Inventario (EOQ) e Inteligencia Artificial para la optimización de decisiones gerenciales en PDVSA.',
     icono: '⚡', duracion_horas: 8,
     objetivos: [
-      'Simular escenarios de crisis y evaluar decisiones bajo presión operativa',
-      'Diseñar planes de contingencia respaldados por análisis de IA',
-      'Validar el cumplimiento normativo mediante herramientas de inteligencia',
-      'Presentar proyectos estratégicos con datos y proyecciones generadas por IA'
+      'Comprender los fundamentos de Investigación de Operaciones y su aplicación en el sector petrolero',
+      'Aplicar Programación Lineal y Método Simplex para optimización de mezclas y distribución de recursos',
+      'Implementar CPM/PERT en la planificación de paradas de planta y mantenimiento industrial',
+      'Utilizar modelos de inventario EOQ para la gestión eficiente de stock de repuestos críticos'
     ],
-    competencias: ['Gestión de crisis', 'Cumplimiento normativo', 'Presentación ejecutiva']
+    competencias: ['Optimización matemática', 'Gestión de proyectos', 'Control de inventarios']
   }
 ];
 
@@ -928,14 +928,14 @@ Diseñar una estrategia de implementación priorizada por impacto y viabilidad.
     duracion_minutos: 120
   },
 
-  // ============ MÓDULO 4: IA GENERATIVA ============
+  // ============ MÓDULO 4: INVESTIGACIÓN DE OPERACIONES Y OPTIMIZACIÓN ============
   {
-    modulo_id: 4, titulo: 'Fundamentos de IA Generativa — GPT y Modelos de Lenguaje',
+    modulo_id: 4, titulo: 'Fundamentos de Investigación de Operaciones y Modelado Matemático con IA',
     orden: 1,
-    contenido_markdown: `# Lección 4.1: Fundamentos de IA Generativa
+    contenido_markdown: `# Lección 4.1: Fundamentos de Investigación de Operaciones
 
 ## Descripción
-Comprender los fundamentos de modelos de lenguaje generativos y su aplicación en Oil & Gas.
+Introducción a los métodos cuantitativos de la Investigación de Operaciones (I.O.) y su aplicación en la industria petrolera.
 
 ## Duración: 2 horas
 
@@ -943,62 +943,56 @@ Comprender los fundamentos de modelos de lenguaje generativos y su aplicación e
 
 ## Contenido Teórico
 
-### ¿Qué es la IA Generativa?
-Sistemas de IA que crean contenido nuevo (texto, imágenes, código, audio) basándose en patrones aprendidos.
+### ¿Qué es la Investigación de Operaciones?
 
-| Característica | IA Tradicional | IA Generativa |
-|---------------|----------------|---------------|
-| Objetivo | Clasificar, predecir | Crear, generar |
-| Entrada | Datos estructurados | Datos + instrucciones |
-| Salida | Etiqueta, número | Texto, imagen, código |
-| Ejemplo PDVSA | "¿Esta bomba fallará?" | "Diseña un reporte de producción" |
+La Investigación de Operaciones (I.O.) es una disciplina que aplica métodos analíticos avanzados para la toma de decisiones. Combina matemáticas, estadística e ingeniería para optimizar sistemas complejos.
 
-### Modelos de Lenguaje Principales
+| Componente | Definición | Ejemplo en Oil & Gas |
+|-----------|-----------|---------------------|
+| **Modelo Matemático** | Representación abstracta del sistema real | Función de producción de un pozo |
+| **Variables de Decisión** | Elementos que el decisor puede controlar | Volumen de inyección de vapor |
+| **Restricciones** | Límites del sistema | Capacidad de la refinería |
+| **Función Objetivo** | Meta a maximizar o minimizar | Maximizar margen de refinación |
 
-| Modelo | Desarrollador | Aplicación en Oil & Gas |
-|--------|--------------|------------------------|
-| **GPT-4** | OpenAI | Análisis técnico, reportes |
-| **Claude** | Anthropic | Documentación extensa |
-| **Gemini** | Google | Análisis de imágenes técnicas |
-| **Llama** | Meta | Implementación on-premise |
+### Ramas Principales de la I.O.
 
-### Aplicaciones en PDVSA
+| Rama | Método | Aplicación Petrolera |
+|------|--------|---------------------|
+| **Programación Lineal** | Simplex, Dual Simplex | Optimización de mezclas de crudo |
+| **Teoría de Grafos** | CPM, PERT, Dijkstra | Planificación de paradas de planta |
+| **Modelos de Inventario** | EOQ, Lote Económico | Gestión de repuestos críticos |
+| **Teoría de Colas** | M/M/1, M/M/c | Gestión de tráfico portuario |
+| **Programación Entera** | Branch and Bound | Asignación de pozos a plantas |
 
-1. **Generación de Reportes Técnicos**
-2. **Análisis de Documentos Técnicos**
-3. **Asistencia en Toma de Decisiones**
-4. **Capacitación y Documentación**
+### El Proceso de Modelado I.O.
 
-### Limitaciones
-
-| Limitación | Mitigación |
-|-----------|-----------|
-| Alucinaciones | Verificar con fuentes oficiales |
-| Conocimiento obsoleto | Proporcionar datos actualizados |
-| Sesgos | Evaluar críticamente |
-| Sin datos en tiempo real | Incluir datos en el prompt |
+\`\`\`
+Problema Real → Formulación Matemática → Solución → Interpretación → Implementación
+     ↓                ↓                    ↓           ↓              ↓
+ Observación      Ecuaciones         Simplex/CPM   Resultados    Acción
+\`\`\`
 
 ---
 
-## Ejercicio: Generación de Contenido Técnico
+## Ejercicio: Identificación de Problemas I.O.
 
-**Prompt:**
+Identifique qué rama de la I.O. aplicaría para cada situación:
 
-\`\`\`
-ACTÚA como: Instructor de seguridad industrial de PDVSA.
-TAREA: Guía de capacitación sobre procedimientos de seguridad para operadores de estación de compresión de gas natural.
-INCLUYE: 5 riesgos principales, procedimientos, EPP, emergencias.
-FORMATO: 500-600 palabras, tabla de verificación pre-operacional con 8 puntos.
-\`\`\``,
+1. Optimizar el blend de crudo para maximizar ganancias → ¿?
+2. Planificar la parada de mantenimiento de una refinería → ¿?
+3. Determinar cuántos repuestos pedir al año → ¿?
+4. Reducir el tiempo de espera en una estación de carga → ¿?
+
+**Respuestas:** 1-Programación Lineal, 2-Teoría de Grafos, 3-Modelos de Inventario, 4-Teoría de Colas`,
     duracion_minutos: 120
   },
   {
-    modulo_id: 4, titulo: 'Herramientas de Generación de Imágenes',
+    modulo_id: 4, titulo: 'Optimización de Recursos con Programación Lineal y Método Simplex',
     orden: 2,
-    contenido_markdown: `# Lección 4.2: Herramientas de Generación de Imágenes
+    contenido_markdown: `# Lección 4.2: Programación Lineal y Método Simplex
 
 ## Descripción
-Utilizar herramientas de generación de imágenes para visualización de escenarios operacionales.
+Aplicación del Método Simplex para resolver problemas de optimización en la industria petrolera: mezclas de crudo, distribución de presupuesto y asignación de recursos.
 
 ## Duración: 2 horas
 
@@ -1006,64 +1000,95 @@ Utilizar herramientas de generación de imágenes para visualización de escenar
 
 ## Contenido Teórico
 
-### Herramientas Principales
+### Programación Lineal: Definición
 
-| Herramienta | Tipo | Caso de Uso en Oil & Gas |
-|------------|------|------------------------|
-| **DALL-E 3** | Propietario | Visualización de escenarios, presentaciones |
-| **Stable Diffusion** | Open Source | Modelos personalizados |
-| **Midjourney** | Propietario | Materiales de comunicación |
-
-### Estructura de Prompt de Imagen
+Un problema de Programación Lineal (PL) se define como:
 
 \`\`\`
-[SUJETO] + [ESTILO] + [CONTEXTO] + [DETALLES] + [ILUMINACIÓN] + [COMPOSICIÓN]
+Maximizar (o Minimizar): Z = c₁x₁ + c₂x₂ + ... + cₙxₙ  (Función Objetivo)
+Sujeto a:
+    a₁₁x₁ + a₁₂x₂ + ... + a₁ₙxₙ ≤ b₁  (Restricción 1)
+    a₂₁x₁ + a₂₂x₂ + ... + a₂ₙxₙ ≤ b₂  (Restricción 2)
+    x₁, x₂, ..., xₙ ≥ 0                (No negatividad)
 \`\`\`
 
-**Ejemplo:**
+### Método Simplex: Pasos
+
+| Paso | Operación | Descripción |
+|------|----------|-------------|
+| 1 | Estandarizar | Convertir desigualdades en igualdades con variables de holgura |
+| 2 | Tabla inicial | Construir tabla con variables básicas y no básicas |
+| 3 | Variable entrante | Seleccionar columna con mayor coeficiente positivo (Z) |
+| 4 | Variable saliente | Dividir columna derecha / columna entrante → menor ratio positivo |
+| 5 | Pivote | Operaciones fila para hacer pivote = 1 y resto = 0 |
+| 6 | Repetir | Hasta que todos los coeficientes de Z sean ≤ 0 |
+
+### Caso Petrolero: Optimización de Mezcla de Crudo
+
+**Problema:** Una refinería procesa dos tipos de crudo:
+- Crudo Pesado (X₁): Margen $12/barril, requiere 4 horas de procesamiento
+- Crudo Liviano (X₂): Margen $20/barril, requiere 2 horas de procesamiento
+
+**Restricciones:**
+- Capacidad: 4X₁ + 2X₂ ≤ 400 horas/día
+- Mezcla: X₁ + X₂ ≤ 120 barriles/día
+- Demanda mínima de pesado: X₁ ≥ 20 barriles/día
+
+**Formulación:**
 \`\`\`
-"Una estación de compresión de gas natural industrial, fotografía profesional, 
-campo petrolero venezolano día soleado, compresores centrífugos y tuberías 
-de acero inoxidable, luz natural, vista panorámica ángulo elevado"
+Maximizar Z = 12X₁ + 20X₂
+Sujeto a:
+4X₁ + 2X₂ ≤ 400
+X₁ + X₂ ≤ 120
+X₁ ≥ 20
+X₁, X₂ ≥ 0
 \`\`\`
 
-### Aplicaciones en Oil & Gas
+### Solución por Simplex (Resumen)
 
-| Aplicación | Herramienta Recomendada |
-|-----------|------------------------|
-| Visualización de diseños conceptuales | DALL-E 3, Midjourney |
-| Materiales de capacitación | DALL-E 3, Stable Diffusion |
-| Presentaciones ejecutivas | Midjourney, DALL-E 3 |
-| Análisis de escenarios | Stable Diffusion |
+| Iteración | X₁ | X₂ | Holgura 1 | Holgura 2 | Z |
+|-----------|----|----|-----------|-----------|-----|
+| Inicial | 0 | 0 | 400 | 120 | 0 |
+| Iteración 1 | 0 | 120 | 160 | 0 | 2400 |
+| Iteración 2 | 20 | 100 | 0 | 0 | 2240 |
 
-### Limitaciones
-- NO usar para ingeniería de diseño (son conceptuales)
-- Verificar accuracy
-- Usar herramientas con licencia comercial
-- Revisar sesgos
+**Solución óptima:** X₁ = 20, X₂ = 100, Z* = $2,240/día
 
 ---
 
-## Ejercicio: Visualización de Escenarios
+## Caso Práctico: Asignación de Presupuesto
 
-**Prompt:**
+**Prompt para el Simulador:**
 
 \`\`\`
-"Fotografía profesional de una unidad de inyección de vapor en la Faja del Orinoco. 
-Pozos con bombas de extracción al fondo, torres de inyección al medio, tuberías 
-al frente. Paisaje de sabana, día soleado, estilo documental."
+SIMULADOR: Asignación de Presupuesto de Mantenimiento
+
+DATOS:
+- Presupuesto total: $5,000,000
+- 3 áreas: Refinería (A), Planta de Gas (B), Oleoducto (C)
+- Margen por inversión: A = $1.50, B = $1.80, C = $1.20 (por dólar invertido)
+- Restricciones:
+  - Mínimo $1,000,000 por área
+  - Máximo 40% del total en una sola área
+  - Total no puede exceder presupuesto
+
+INSTRUCCIÓN: Resuelva con Simplex y presente la asignación óptima.
 \`\`\`
 
-Evalúe: ¿Es adecuada para uso corporativo? ¿Qué aspectos son realistas?`,
+**Respuesta Esperada:**
+- Refinería: $2,000,000 (40%)
+- Planta de Gas: $2,000,000 (40%)
+- Oleoducto: $1,000,000 (20%)
+- ROI total: $8,200,000`,
     duracion_minutos: 120
   },
   {
-    modulo_id: 4, titulo: 'IA Generativa para Código — Automatización de Scripts',
+    modulo_id: 4, titulo: 'Planificación Crítica de Proyectos Petroleros con CPM/PERT y Algoritmos de Red',
     orden: 3,
-    contenido_markdown: `# Lección 4.3: IA Generativa para Código
+    contenido_markdown: `# Lección 4.3: Planificación con CPM/PERT y Teoría de Grafos
 
 ## Descripción
-Utilizar herramientas de generación de código para automatizar análisis de datos y procesamiento técnico.
+Aplicación de los métodos de la Ruta Crítica (CPM) y PERT para la planificación y control de proyectos petroleros, con énfasis en paradas de planta y mantenimiento industrial.
 
 ## Duración: 2 horas
 
@@ -1071,83 +1096,87 @@ Utilizar herramientas de generación de código para automatizar análisis de da
 
 ## Contenido Teórico
 
-### Herramientas de Código
+### Método del Camino Crítico (CPM)
 
-| Herramienta | Lenguajes | Aplicación |
-|------------|----------|-----------|
-| **GitHub Copilot** | Python, SQL, JS | Asistencia en desarrollo |
-| **ChatGPT/GPT-4** | Todos | Scripts completos |
-| **Claude** | Todos | Análisis y documentación |
+**Definición:** El CPM (Critical Path Method) es una técnica de gestión de proyectos que identifica las tareas más largas (camino crítico) que determinan la duración mínima del proyecto.
 
-### Casos de Uso en Oil & Gas
+| Concepto | Definición | Fórmula |
+|----------|-----------|---------|
+| **Tiempo Temprano (TE)** | Fecha más temprana de inicio | TE = max(TE_predecesora + Duración) |
+| **Tiempo Tardío (TT)** | Fecha más tardía de inicio sin retrasar proyecto | TT = min(TT_sucesora - Duración) |
+| **Holgura Total** | Tiempo disponible de demora sin afectar proyecto | HT = TT - TE |
+| **Camino Crítico** | Secuencia de tareas con HT = 0 | Ruta más larga de la red |
 
-1. **Scripts de Análisis de Datos de Producción**
-2. **Automatización de Reportes**
-3. **Procesamiento de Datos Sísmicos**
-4. **Scripts de Control de Calidad**
+### Método PERT (Program Evaluation and Review Technique)
 
-### Estructura de Prompt para Código
+**Diferencia con CPM:** PERT usa estimaciones probabilísticas:
 
 \`\`\`
-CONTEXTO: Soy ingeniero de producción en PDVSA, trabajo con Python
+Tiempo Esperado (TE) = (O + 4M + P) / 6
+Varianza (σ²) = [(P - O) / 6]²
 
-TAREA: Genera un script en Python que [DESCRIPCIÓN]
+O = Optimista, M = Más probable, P = Pessimista
+\`\`\`
 
-ENTRADA: Archivo CSV con columnas: [NOMBRES]
+### Algoritmos de Red
 
-SALIDA: Archivo de salida [NOMBRE] en formato [CSV/Excel/Gráfico]
+| Algoritmo | Objetivo | Complejidad |
+|-----------|---------|------------|
+| **Dijkstra** | Ruta más corta entre dos nodos | O(V²) |
+| **Bellman-Ford** | Ruta más corta con pesos negativos | O(VE) |
+| **Floyd-Warshall** | Rutas más cortas entre todos los pares | O(V³) |
+| **Flujo Máximo (Ford-Fulkerson)** | Capacidad máxima de flujo en red | O(EF) |
 
-RESTRICCIONES: Usar solo pandas, matplotlib. Incluir comentarios. Manejar errores.
+### Diagrama de Red AON (Activity On Node)
+
+\`\`\`
+[Nodo Inicio] → [A: Desarmar] → [C: Inspeccionar] → [E: Rearmar] → [Fin]
+       ↓              ↓                ↓                ↓
+   [B: Drenar] → [D: Reparar]  → [F: Pruebas]  → [Fin]
 \`\`\`
 
 ---
 
-## Caso Práctico: Script de Análisis de Producción
+## Caso Práctico: Parada de Mantenimiento — Planta de Fraccionamiento
 
-**Prompt:**
+**Prompt para el Simulador:**
 
 \`\`\`
-Genera un script Python que:
-1. LEA CSV con: Fecha, ID_Pozo, Produccion_BPD, Water_Cut, Horas_Operacion
-2. PROCESO: Promedio diario, top 5 declinación, top 5 water cut, eficiencia
-3. SALIDA: Excel (3 hojas) + 2 gráficos PNG
-4. RESTRICCIONES: pandas, matplotlib, openpyxl. Comentarios. Manejo de errores.
+SIMULADOR: Parada de Mantenimiento — Planta Y
+
+TAREAS IDENTIFICADAS:
+| ID | Tarea | Duración (días) | Predecesoras |
+|----|-------|-----------------|--------------|
+| A  | Drenaje y limpieza | 3 | Ninguna |
+| B  | Aislamiento eléctrico | 2 | Ninguna |
+| C  | Desarme de equipamiento | 5 | A, B |
+| D  | Inspección visual | 2 | C |
+| E  | Reparación de corrosión | 7 | D |
+| F  | Pruebas hidrostáticas | 3 | E |
+| G  | Remontaje y alineación | 4 | F |
+| H  | Puesta en marcha | 2 | G |
+
+INSTRUCCIÓN:
+1. Construya el diagrama de red
+2. Calcule TE y TT de cada tarea
+3. Identifique el camino crítico
+4. Determine la duración total del proyecto
+5. ¿Cuánto tiempo se ahorraría si la tarea E se reduce a 5 días?
 \`\`\`
 
-**Fragmento de respuesta esperada:**
-
-\`\`\`python
-"""
-Script de Análisis de Producción — PDVSA
-"""
-import pandas as pd
-import matplotlib.pyplot as plt
-
-def cargar_datos(ruta_archivo):
-    """Carga y valida archivo CSV de producción."""
-    try:
-        df = pd.read_csv(ruta_archivo, parse_dates=['Fecha'])
-        return df
-    except FileNotFoundError:
-        print(f"Error: Archivo no encontrado: {ruta_archivo}")
-        sys.exit(1)
-
-def calcular_resumen(df):
-    """Calcula resumen general de producción."""
-    return {
-        'produccion_total': df['Produccion_BPD'].sum(),
-        'water_cut_promedio': df['Water_Cut'].mean()
-    }
-\`\`\``,
+**Respuesta Esperada:**
+- Camino crítico: A → C → D → E → F → G → H
+- Duración total: 26 días
+- Con E reducida a 5 días: 24 días (ahorro de 2 días)`,
     duracion_minutos: 120
   },
   {
-    modulo_id: 4, titulo: 'Evaluación y Estrategia de Adopción de IA Generativa',
+    modulo_id: 4, titulo: 'Modelos de Inventario Inteligente (EOQ) para la Reducción de Costos en Almacén',
     orden: 4,
-    contenido_markdown: `# Lección 4.4: Evaluación y Estrategia de Adopción
+    contenido_markdown: `# Lección 4.4: Modelos de Inventario — EOQ y Gestión de Stock
 
 ## Descripción
-Evaluar herramientas de IA generativa y desarrollar estrategia de adopción responsable.
+Aplicación del modelo de Lote Económico de Pedido (EOQ) y sus variantes para la gestión eficiente de inventarios de repuestos críticos en la industria petrolera.
 
 ## Duración: 2 horas
 
@@ -1155,57 +1184,97 @@ Evaluar herramientas de IA generativa y desarrollar estrategia de adopción resp
 
 ## Contenido Teórico
 
-### Framework de Evaluación
+### El Problema del Inventario
 
-| Criterio | Preguntas | Peso |
-|---------|----------|------|
-| Calidad del Output | ¿Qué tan precisos son los resultados? | 25% |
-| Seguridad de Datos | ¿Mis datos están protegidos? | 25% |
-| Costo Total | ¿Costo por usuario/mes? | 20% |
-| Integración | ¿Se integra con herramientas existentes? | 15% |
-| Curva de Aprendizaje | ¿Qué tan fácil es de usar? | 15% |
+En Oil & Gas, el inventario de repuestos críticos representa un equilibrio entre:
+- **Costo de pedir** (setup): Trámites, transporte, inspección
+- **Costo de mantener** (holding): Almacenamiento, obsolescencia, capital de trabajo
+- **Costo de desabastecimiento** (stockout): Parada de planta, pérdida de producción
 
-### Riesgos en Oil & Gas
+### Modelo EOQ Clásico (Wilson)
 
-| Riesgo | Probabilidad | Mitigación |
-|--------|-------------|-----------|
-| Alucinaciones técnicas | Alta | Verificación con fuentes |
-| Fugas de información | Media | Herramientas on-premise |
-| Dependencia excesiva | Media | Mantener capacidades humanas |
+\`\`\`
+                    ___________
+Q* = √( 2 × D × S / H )
 
-### Estrategia de Adopción 3 Niveles
+Q* = Cantidad óptima de pedido
+D  = Demanda anual (unidades/año)
+S  = Costo fijo por pedido (USD/pedido)
+H  = Costo de mantener unidad por año (USD/unidad/año)
+\`\`\`
 
-**Nivel 1 — Personal (Inmediato):**
-- Herramientas gratuitas/bajo costo
-- No datos confidenciales
-- Ejemplos: ChatGPT Free/Plus
+**Fórmulas complementarias:**
 
-**Nivel 2 — Departamental (3-6 meses):**
-- Licencia empresarial
-- Equipos específicos
-- Ejemplos: ChatGPT Enterprise
+| Fórmula | Descripción |
+|---------|------------|
+| N* = D/Q* | Número óptimo de pedidos por año |
+| CT = (D/Q*)S + (Q*/2)H + DC | Costo total anual |
+| ROP = d × L | Punto de reorden (demanda diaria × lead time) |
+| SS = Z × σ × √L | Stock de seguridad (Z = factor服务水平, σ = desviación) |
 
-**Nivel 3 — Institucional (6-12 meses):**
-- On-premise o nube privada
-- Toda la organización
-- Datos bajo control de PDVSA
+### Variantes del Modelo EOQ
 
-### Métricas de Adopción
+| Modelo | Condición | Aplicación |
+|--------|----------|-----------|
+| **EOQ Clásico** | Demanda constante, sin restricciones | Repuestos estándar |
+| **EOQ con Descuento** | Precio variable por volumen | Compras al por mayor |
+| **EOQ con Restricción de Espacio** | Almacenamiento limitado | Almacenes pequeños |
+| **EOQ con Desabastecimiento Permitido** | Stockout parcial controlado | Repuestos no críticos |
+| **Modelo (Q,R)** | Revisión continua | Repuestos de alto valor |
 
-| Métrica | Meta 6 meses | Meta 12 meses |
-|---------|-------------|--------------|
-| Usuarios activos | 100 | 500 |
-| Horas ahorradas/usuario/semana | 2h | 5h |
-| ROI estimado | 200% | 400% |
+### Clasificación ABC para Inventario
+
+| Clase | % Artículos | % Valor | Estrategia |
+|-------|-----------|---------|-----------|
+| **A** | 10-20% | 70-80% | Control estricto, EOQ clásico |
+| **B** | 20-30% | 15-25% | Control moderado, revisión periódica |
+| **C** | 50-70% | 5-10% | Control simple, pedido por lote |
 
 ---
 
-## Ejercicio: Estrategia de Adopción
+## Caso Práctico: Repuestos Críticos para Bombas
 
-1. Evalúe 3 herramientas usando el framework
-2. Identifique riesgos específicos para PDVSA
-3. Desarrolle estrategia de 12 meses
-4. Defina métricas de éxito`,
+**Prompt para el Simulador:**
+
+\`\`\`
+SIMULADOR: Gestión de Inventario — Repuestos Cr DATOS DEL REPUESTO:
+- Tipo: Rodamiento de bomba centrífuga (BRG-450)
+- Demanda anual: 120 unidades
+- Costo por unidad: $850 USD
+- Costo fijo por pedido: $150 USD
+- Costo de mantenimiento: 20% del valor unitario/año
+- Lead time del proveedor: 15 días
+- Demanda diaria: 0.33 unidades/día
+- Desviación estándar de demanda: 0.1 unidades
+- Nivel de servicio deseado: 95% (Z = 1.65)
+
+INSTRUCCIÓN:
+1. Calcule Q* (lote económico)
+2. Calcule N* (pedidos por año)
+3. Calcule ROP (punto de reorden)
+4. Calcule Stock de Seguridad
+5. Calcule el costo total anual
+6. Compare con el pedido actual de 50 unidades cada vez
+7. Genere gráfico de ciclo de inventario
+\`\`\`
+
+**Respuesta Esperada:**
+- Q* = √(2 × 120 × 150 / 170) = √211.76 ≈ 15 unidades
+- N* = 120/15 = 8 pedidos/año
+- ROP = 0.33 × 15 = 5 unidades
+- SS = 1.65 × 0.1 × √15 = 0.64 ≈ 1 unidad
+- Costo total: $103,200/año (vs. $105,000 con pedido actual de 50)
+- **Ahorro: $1,800/año (1.7%)**
+
+---
+
+## Ejercicio: Análisis de Sensibilidad
+
+¿Qué pasa si:
+1. La demanda sube a 150 unidades/año?
+2. El costo de pedido baja a $100 USD?
+3. El lead time aumenta a 25 días?
+4. El nivel de servicio sube a 99% (Z = 2.33)?`,
     duracion_minutos: 120
   }
 ];
@@ -1352,46 +1421,46 @@ const academicEvaluations = [
   // ============ MÓDULO 4 ============
   {
     modulo_id: 4,
-    titulo: 'Evaluación Módulo 4: IA Generativa',
-    descripcion: 'Evaluación sobre IA generativa y herramientas multimodales',
+    titulo: 'Evaluación Módulo 4: Investigación de Operaciones',
+    descripcion: 'Evaluación sobre métodos de Investigación de Operaciones aplicados a la industria petrolera',
     ponderacion: 100,
     tiempo_limite_minutos: 30,
     preguntas: [
       {
         id: 1,
-        pregunta: '¿Cuál es la principal limitación de los modelos de lenguaje (GPT, Claude) en Oil & Gas?',
+        pregunta: '¿Cuál es el objetivo principal del Método Simplex en Programación Lineal?',
         opciones: [
-          'No pueden generar texto en español',
-          'Pueden generar "alucinaciones" — información que parece real pero es falsa',
-          'Son demasiado lentos para uso industrial',
-          'No pueden procesar más de 100 palabras'
+          'Encontrar la ruta más corta en un grafo',
+          'Encontrar la solución óptima que maximiza o minimiza la función objetivo',
+          'Calcular el punto de reorden de inventario',
+          'Predecir la demanda futura de productos'
         ],
         respuesta_correcta: 1,
-        retroalimentacion: 'Las alucinaciones son la limitación más crítica. Los modelos pueden generar información técnicamente plausible pero incorrecta. Siempre verificar con fuentes oficiales.'
+        retroalimentacion: 'El Método Simplex es un algoritmo que resuelve problemas de Programación Lineal encontrando la solución óptima en los vértices del poliedro de soluciones factibles.'
       },
       {
         id: 2,
-        pregunta: '¿Para qué tarea es más apropiado usar herramientas de generación de imágenes como DALL-E?',
+        pregunta: 'En el CPM (Critical Path Method), ¿qué representa una tarea con holgura total igual a cero?',
         opciones: [
-          'Crear planos de ingeniería precisos',
-          'Visualización conceptual de escenarios y diseños preliminares',
-          'Análisis de datos de producción',
-          'Monitoreo de activos en tiempo real'
+          'Es una tarea que puede retrasarse sin afectar el proyecto',
+          'Es una tarea crítica que determina la duración del proyecto',
+          'Es una tarea que no tiene predecesoras',
+          'Es una tarea que puede ejecutarse en paralelo con cualquier otra'
         ],
         respuesta_correcta: 1,
-        retroalimentacion: 'Las herramientas de generación de imágenes son ideales para visualización conceptual — NO son herramientas de ingeniería y no deben usarse para planos técnicos.'
+        retroalimentacion: 'Las tareas con holgura total = 0 forman el camino crítico. Cualquier retraso en estas tareas retrasa todo el proyecto.'
       },
       {
         id: 3,
-        pregunta: '¿Cuál es la recomendación de seguridad MÁS importante al usar IA generativa en PDVSA?',
+        pregunta: '¿Cuál es la fórmula del modelo EOQ (Lote Económico de Pedido)?',
         opciones: [
-          'Usar siempre la herramienta más barata',
-          'Nunca ingresar datos sensibles de producción, financieros o estratégicos en herramientas externas',
-          'Compartir todas las respuestas en redes sociales',
-          'Usar IA para reemplazar completamente a los ingenieros'
+          'Q* = D × S / H',
+          'Q* = √(2DS/H)',
+          'Q* = (D + S) / 2',
+          'Q* = D / (S × H)'
         ],
         respuesta_correcta: 1,
-        retroalimentacion: 'Los datos de producción, financieros y estratégicos son información confidencial que NUNCA debe ingresarse en herramientas de IA externas. Para datos sensibles, usar herramientas on-premise.'
+        retroalimentacion: 'El EOQ se calcula como Q* = √(2DS/H), donde D = demanda anual, S = costo por pedido, H = costo de mantener unidad por año.'
       }
     ]
   }

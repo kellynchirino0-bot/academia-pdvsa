@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Copy, Download, RotateCcw, Sparkles, FileText, TrendingUp, Shield, BarChart3, BookOpen, CheckCircle, DollarSign, Users, Megaphone, Calculator, Brain } from 'lucide-react';
+import { Send, Copy, Download, RotateCcw, Sparkles, FileText, TrendingUp, Shield, BarChart3, BookOpen, CheckCircle, DollarSign, Users, Megaphone, Calculator, Brain, GitBranch, Package, Route } from 'lucide-react';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
@@ -18,7 +18,8 @@ const SimuladorTexto = () => {
     { value: 'finanzas', label: 'Finanzas', icon: <DollarSign size={16} />, color: '#10b981' },
     { value: 'contabilidad', label: 'Contabilidad', icon: <Calculator size={16} />, color: '#3b82f6' },
     { value: 'rrhh', label: 'Talento Humano', icon: <Users size={16} />, color: '#f59e0b' },
-    { value: 'marketing', label: 'Marketing', icon: <Megaphone size={16} />, color: '#8b5cf6' }
+    { value: 'marketing', label: 'Marketing', icon: <Megaphone size={16} />, color: '#8b5cf6' },
+    { value: 'io', label: 'Investigación de Operaciones', icon: <GitBranch size={16} />, color: '#0891b2' }
   ];
 
   const tiposDocumento = [
@@ -155,6 +156,64 @@ FORMATO: Plan de comunicación ejecutivo con matriz de mensajes.`
 3. Identificación de ventajas competitivas diferenciadoras.
 4. Estrategias de diferenciación para el mercado internacional.
 FORMATO: Matriz competitiva ejecutiva con recomendaciones estratégicas.`
+      }
+    ],
+    io: [
+      {
+        id: 'io1',
+        titulo: 'Optimización de Mezclas — Método Simplex',
+        icon: <TrendingUp size={16} />,
+        color: '#0891b2',
+        area: 'Investigación de Operaciones',
+        plantilla: `[ROL]: Actúa como Ingeniero de I.O. y Optimización Financiera.
+[CONTEXTO]: Se requiere determinar la proporción óptima de procesamiento entre Crudo Pesado y Crudo Liviano en la refinería de [Nombre], con una capacidad de refinación de [X] BPD (Barriles Por Día).
+[TAREA]: Utiliza el enfoque del Método Simplex para resolver el problema de programación lineal:
+1. Define las variables de decisión (X1 = crudo pesado, X2 = crudo liviano).
+2. Establece la función objetivo: Maximizar Z = C1·X1 + C2·X2 (margen operativo por barril).
+3. Restricciones:
+   - Capacidad total: X1 + X2 ≤ [X] BPD
+   - Mezcla mínima de pesado: X1 ≥ [Y]% del total
+   - Disponibilidad de crudo: X1 ≤ [A] BPD, X2 ≤ [B] BPD
+4. Presenta la tabla Simplex paso a paso con iteraciones.
+5. Indica la solución óptima y el margen máximo alcanzable.
+FORMATO: Tabla de iteraciones Simplex + resultado óptimo + gráfico de factibilidad.`
+      },
+      {
+        id: 'io2',
+        titulo: 'Parada de Planta — Ruta Crítica CPM/PERT',
+        icon: <GitBranch size={16} />,
+        color: '#0369a1',
+        area: 'Investigación de Operaciones',
+        plantilla: `[ROL]: Actúa como Gerente de Proyectos (PMP/I.O.) especializado en mantenimiento de refinerías.
+[CONTEXTO]: Se debe planificar la parada técnica de mantenimiento de la Planta de Fraccionamiento [Nombre], con [N] tareas identificadas y tiempos estimados.
+[TAREA]: Aplica el método de la Ruta Crítica (CPM/PERT) para estructurar el plan:
+1. Lista de tareas con duración, predecesoras y holguras:
+   - Tarea A: [Descripción] — [X] días — Predecesora: Ninguna
+   - Tarea B: [Descripción] — [X] días — Predecesora: A
+   - (agregar todas las tareas)
+2. Diagrama de red (AON o AOA).
+3. Cálculo de tiempos tempranos, tardíos y holguras.
+4. Identificación del camino crítico y duración total del proyecto.
+5. Análisis PERT con estimaciones (Optimista, Más probable, Pessimista) y varianza.
+6. Probabilidad de completar en [D] días o menos.
+FORMATO: Tabla de actividades + diagrama de ruta crítica + cronograma Gantt simplificado.`
+      },
+      {
+        id: 'io3',
+        titulo: 'Gestión de Inventario — Lote Económico EOQ',
+        icon: <Package size={16} />,
+        color: '#0284c7',
+        area: 'Investigación de Operaciones',
+        plantilla: `[ROL]: Actúa como Especialista en Logística e Inventarios de Repuestos Críticos.
+[CONTEXTO]: Se necesita optimizar el stock de [Nombre del Repuesto] para [N] bombas del Campo [Nombre]. Datos: demanda anual [D] unidades, costo de pedido [S] USD, costo de mantenimiento unitario [H] USD/año, costo por unidad [C] USD, tiempo de entrega [L] días.
+[TAREA]: Utiliza el modelo de Lote Económico de Pedido (EOQ) para determinar:
+1. Cantidad óptima de pedido: Q* = √(2DS/H)
+2. Número de pedidos por año: N = D/Q*
+3. Punto de reorden: ROP = d × L (demanda diaria × lead time)
+4. Costo total anual: CT = (D/Q*)S + (Q*/2)H + DC
+5. Comparación con el pedido actual y ahorro proyectado.
+6. Análisis de sensibilidad: ¿Qué pasa si la demanda sube 20%? ¿Si el costo de pedido baja 30%?
+FORMATO: Tabla de cálculo EOQ + comparativa costo actual vs. óptimo + gráfico de inventario.`
       }
     ]
   };
