@@ -1,0 +1,29 @@
+{
+  "name": "academia-virtual-nasser-pdvsa",
+  "version": "2.0.0",
+  "description": "Plataforma IA para Líderes de Negocio - PDVSA | Academia Virtual Nasser Group",
+  "private": true,
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev:frontend": "cd frontend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "vercel-build": "cd frontend && npm install && npm run build",
+    "seed": "node api/seed-content.js",
+    "start": "node api/index.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.12.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {},
+  "keywords": ["pdvsa", "inteligencia-artificial", "oil-gas", "educacion"],
+  "author": "Nasser Group",
+  "license": "UNLICENSED"
+}
