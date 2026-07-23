@@ -10,7 +10,7 @@
     "dev:frontend": "cd frontend && npm start",
     "dev:backend": "cd backend && npm run dev",
     "build": "cd frontend && npm install && npm run build",
-    "vercel-build": "cd frontend && npm install && npm run build",
+    "vercel-build": "node build-vercel.js",
     "seed": "node api/seed-content.js",
     "start": "node api/index.js"
   },
@@ -22,7 +22,9 @@
     "pg": "^8.12.0",
     "uuid": "^9.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  },
   "keywords": ["pdvsa", "inteligencia-artificial", "oil-gas", "educacion"],
   "author": "Nasser Group",
   "license": "UNLICENSED"
