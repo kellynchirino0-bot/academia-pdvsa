@@ -898,9 +898,9 @@ const Cuestionario = ({ preguntas, moduloId, onCompletar }) => {
 
       <div style={{ display: 'flex', gap: '10px', marginTop: '16px' }}>
         {!enviado ? (
-          <button onClick={evaluar} disabled={Object.keys(respuestas).length < preguntas.length}
-            style={{ flex: 1, padding: '12px', background: Object.keys(respuestas).length >= preguntas.length ? '#003366' : '#94a3b8',
-              color: '#fff', border: 'none', borderRadius: '8px', cursor: Object.keys(respuestas).length >= preguntas.length ? 'pointer' : 'not-allowed', fontWeight: '600' }}>
+          <button onClick={evaluar} disabled={Object.keys(respuestas || {}).length < (preguntas || []).length}
+            style={{ flex: 1, padding: '12px', background: Object.keys(respuestas || {}).length >= (preguntas || []).length ? '#003366' : '#94a3b8',
+              color: '#fff', border: 'none', borderRadius: '8px', cursor: Object.keys(respuestas || {}).length >= (preguntas || []).length ? 'pointer' : 'not-allowed', fontWeight: '600' }}>
             Evaluar Respuestas
           </button>
         ) : (

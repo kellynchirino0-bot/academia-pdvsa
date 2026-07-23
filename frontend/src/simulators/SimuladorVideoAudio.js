@@ -395,7 +395,7 @@ const SimuladorVideoAudio = () => {
                   gap: '12px',
                   marginBottom: '20px'
                 }}>
-                  {Object.entries(resultado.resultados).map(([key, value]) => (
+                  {Object.entries(resultado?.resultados || {}).map(([key, value]) => (
                     <div key={key} style={{
                       padding: '14px',
                       background: 'var(--bg-primary)',
@@ -421,7 +421,7 @@ const SimuladorVideoAudio = () => {
                     <Settings size={16} /> Metadatos Técnicos
                   </h4>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-                    {Object.entries(resultado.metadata).map(([key, value]) => (
+                    {Object.entries(resultado?.metadata || {}).map(([key, value]) => (
                       <div key={key} style={{ fontSize: '0.85rem' }}>
                         <span style={{ color: 'var(--text-secondary)' }}>{key.replace(/_/g, ' ')}: </span>
                         <span style={{ fontWeight: '500' }}>{value}</span>

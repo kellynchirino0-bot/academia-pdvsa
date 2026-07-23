@@ -285,7 +285,7 @@ const Evaluaciones = () => {
             fontSize: '0.85rem', 
             color: 'var(--text-secondary)' 
           }}>
-            Respondidas: {Object.keys(respuestas).length} / {evaluacionActiva.preguntas.length}
+            Respondidas: {Object.keys(respuestas || {}).length} / {(evaluacionActiva?.preguntas || []).length}
           </div>
         </div>
       </div>

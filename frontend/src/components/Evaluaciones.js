@@ -90,7 +90,7 @@ export default function Evaluaciones() {
         <div className="page-header">
           <h1>{quizActual?.titulo || 'Sin título'}</h1>
           <p>Responde todas las preguntas. Mínimo 80% para aprobar.</p>
-          <small>{Object.keys(respuestas).length} de {quizActual.preguntas.length} respondidas</small>
+          <small>{Object.keys(respuestas || {}).length} de {(quizActual?.preguntas || []).length} respondidas</small>
         </div>
         <div className="quiz-container">
           {quizActual.preguntas.map((p, i) => (
