@@ -1,4 +1,6 @@
 {
+  "installCommand": "npm install && rm -rf frontend/build",
+  "outputDirectory": "frontend/build",
   "env": {
     "NODE_ENV": "production",
     "JWT_SECRET": "nasser_group_pdvsa_academia_virtual_2024_secret_key"

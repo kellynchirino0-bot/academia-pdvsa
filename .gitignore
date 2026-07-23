@@ -1,7 +1,10 @@
 .vercel
 .env*.local
+.vercelignore
 
 node_modules/
 frontend/node_modules/
+frontend/build/
+build/
 .cache/
 frontend/src/.cache/

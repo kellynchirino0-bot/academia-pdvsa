@@ -1,6 +1,7 @@
 /**
  * Vercel Build Output API Script
- * Creates .vercel/output/ structure to bypass MultiStream cache issues
+ * Builds React to .vercel/output/static/ via temp dir
+ * Also overwrites frontend/build/ so stale cache manifests are replaced
  */
 const { execSync } = require('child_process');
 const fs = require('fs');
@@ -13,11 +14,11 @@ const STATIC_DIR = path.join(OUTPUT_DIR, 'static');
 const FUNCTIONS_DIR = path.join(OUTPUT_DIR, 'functions');
 
 async function build() {
-  console.log('[1/4] Cleaning previous output...');
+  console.log('[1/4] Cleaning previous .vercel/output...');
   fs.rmSync(OUTPUT_DIR, { recursive: true, force: true });
 
   console.log('[2/4] Building React frontend...');
-  execSync('cd frontend && npm run build', { cwd: ROOT, stdio: 'inherit' });
+  execSync('cd frontend && npm install && npm run build', { cwd: ROOT, stdio: 'inherit' });
 
   console.log('[3/4] Copying React build to .vercel/output/static/...');
   fs.mkdirSync(STATIC_DIR, { recursive: true });
@@ -40,13 +41,11 @@ async function build() {
     logLevel: 'info',
   });
 
-  // Write function config
   fs.writeFileSync(path.join(funcDir, '.func-config.json'), JSON.stringify({
     runtime: 'nodejs18.x',
     handler: 'index.js',
   }));
 
-  // Write .vercel/output/config.json
   fs.writeFileSync(path.join(OUTPUT_DIR, 'config.json'), JSON.stringify({
     version: 3,
     routes: [
@@ -56,7 +55,7 @@ async function build() {
     ]
   }, null, 2));
 
-  console.log('[OK] Build Output created at .vercel/output/');
+  console.log('[OK] Build complete. Output at .vercel/output/ and frontend/build/');
 }
 
 function copyRecursive(src, dest) {
