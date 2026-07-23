@@ -88,7 +88,7 @@ export default function Evaluaciones() {
     return (
       <div className="page">
         <div className="page-header">
-          <h1>{quizActual.titulo}</h1>
+          <h1>{quizActual?.titulo || 'Sin título'}</h1>
           <p>Responde todas las preguntas. Mínimo 80% para aprobar.</p>
           <small>{Object.keys(respuestas).length} de {quizActual.preguntas.length} respondidas</small>
         </div>
@@ -126,7 +126,7 @@ export default function Evaluaciones() {
           <div key={q.id} className="quiz-card" onClick={() => iniciarQuiz(q)}>
             <div className="quiz-card-num">{String(q.id).padStart(2, '0')}</div>
             <div className="quiz-card-info">
-              <h3>{q.titulo}</h3>
+              <h3>{q?.titulo || 'Sin título'}</h3>
               <p>{q.preguntas.length} preguntas · 80% mínimo</p>
             </div>
             <button className="btn-start">Comenzar →</button>

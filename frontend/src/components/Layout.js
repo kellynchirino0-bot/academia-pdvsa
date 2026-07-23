@@ -35,25 +35,25 @@ const Layout = ({ children }) => {
   };
 
   const navItems = [
-    { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/cursos', icon: BookOpen, label: 'Modulos del Curso', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/texto', icon: MessageSquare, label: 'Simulador GPT', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/imagenes', icon: Image, label: 'Simulador Imagenes', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/video-audio', icon: Video, label: 'Simulador Video/Audio', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/dashboard', icon: LayoutDashboard, label: 'Consola de Inteligencia', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/cursos', icon: BookOpen, label: 'Módulos del Curso', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/texto', icon: MessageSquare, label: 'Asistente Ejecutivo IA', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/imagenes', icon: Image, label: 'Análisis de Imágenes', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/video-audio', icon: Video, label: 'Síntesis Multimedia', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/evaluaciones', icon: ClipboardList, label: 'Evaluaciones', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/notas', icon: Target, label: 'Mis Notas', roles: ['participante'] },
-    { to: '/certificados', icon: Award, label: 'Certificados', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/notas', icon: Target, label: 'Mi Progreso', roles: ['participante'] },
+    { to: '/certificados', icon: Award, label: 'Certificaciones', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/mi-reporte', icon: FileBarChart, label: 'Mi Reporte', roles: ['participante'] },
     { divider: true, roles: ['administrador', 'tutor'] },
     { to: '/tutor', icon: Users, label: 'Panel Tutor', roles: ['administrador', 'tutor'] },
     { to: '/tutor/editor-cursos', icon: Edit3, label: 'Editor Cursos', roles: ['administrador', 'tutor'] },
     { divider: true, roles: ['administrador'] },
-    { to: '/admin/dashboard', icon: BarChart3, label: 'Dashboard Ejecutivo', roles: ['administrador'] },
-    { to: '/leads', icon: UserPlus, label: 'Gestion Leads', roles: ['administrador'] },
-    { to: '/admin/usuarios', icon: UserCog, label: 'Gestion Usuarios', roles: ['administrador'] },
-    { to: '/usuarios', icon: Briefcase, label: 'Usuarios Basico', roles: ['administrador'] },
+    { to: '/admin/dashboard', icon: BarChart3, label: 'Consola Ejecutiva', roles: ['administrador'] },
+    { to: '/leads', icon: UserPlus, label: 'Gestión de Proyectos', roles: ['administrador'] },
+    { to: '/admin/usuarios', icon: UserCog, label: 'Gestión de Usuarios', roles: ['administrador'] },
+    { to: '/usuarios', icon: Briefcase, label: 'Usuarios Básico', roles: ['administrador'] },
     { to: '/admin/curso', icon: Settings, label: 'Admin Curso', roles: ['administrador'] },
-    { to: '/admin/certificados', icon: Award, label: 'Aprobar Certificados', roles: ['administrador'] },
+    { to: '/admin/certificados', icon: Award, label: 'Aprobar Certificaciones', roles: ['administrador'] },
     { to: '/admin/reportes', icon: FileBarChart, label: 'Reportes Gerencia', roles: ['administrador'] },
   ];
 
@@ -86,7 +86,7 @@ const Layout = ({ children }) => {
             <NotificationsCenter />
           </div>
           <div style={{ fontSize: '0.75rem', opacity: 0.6, marginTop: '8px' }}>
-            Academia Virtual PDVSA
+            Academia Virtual PDVSA — IUTPAL
           </div>
         </div>
         
@@ -105,7 +105,7 @@ const Layout = ({ children }) => {
                     letterSpacing: '1px',
                     opacity: 0.5
                   }}>
-                    {user?.rol === 'administrador' ? 'Administracion' : 'Gestion'}
+                    {user?.rol === 'administrador' ? 'Gestión Ejecutiva' : 'Gestión'}
                   </span>
                 </li>
               );

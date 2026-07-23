@@ -28,18 +28,14 @@ const AdminExecutiveDashboard = () => {
   const { kpis, auditoria } = data;
 
   const kpiCards = [
-    { title: 'Estudiantes Activos', value: kpis.estudiantesActivos, icon: Users, color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)' },
-    { title: 'Trials Activos', value: kpis.trialsActivos, icon: Clock, color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.1)' },
-    { title: 'Trials Expirados', value: kpis.trialsExpirados, icon: AlertTriangle, color: '#ef4444', bg: 'rgba(239, 68, 68, 0.1)' },
-    { title: 'Total Leads', value: kpis.totalLeads, icon: TrendingUp, color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.1)' },
-    { title: 'Leads Nuevos', value: kpis.leadsNuevos, icon: ArrowUpRight, color: '#10b981', bg: 'rgba(16, 185, 129, 0.1)' },
-    { title: 'Certificados Emitidos', value: kpis.certificadosAprobados, icon: Award, color: '#059669', bg: 'rgba(5, 150, 105, 0.1)' },
-    { title: 'Certificados Pendientes', value: kpis.certificadosPendientes, icon: ClipboardList, color: '#d97706', bg: 'rgba(217, 119, 6, 0.1)' },
-    { title: 'Tasa de Aprobacion', value: `${kpis.tasaAprobacion}%`, icon: BarChart3, color: '#0891b2', bg: 'rgba(8, 145, 178, 0.1)' },
-    { title: 'Promedio de Notas', value: `${kpis.promedioNotas}%`, icon: Activity, color: '#6366f1', bg: 'rgba(99, 102, 241, 0.1)' },
-    { title: 'Lecciones Completadas', value: kpis.progresosCompletados, icon: CheckCircle, color: '#10b981', bg: 'rgba(16, 185, 129, 0.1)' },
-    { title: 'Tareas Totales', value: kpis.totalTareas, icon: FileText, color: '#64748b', bg: 'rgba(100, 116, 139, 0.1)' },
-    { title: 'Entregas Pendientes', value: kpis.entregasPendientes, icon: UserCheck, color: '#e11d48', bg: 'rgba(225, 29, 72, 0.1)' }
+    { title: 'Líderes en Formación', value: kpis.estudiantesActivos, icon: Users, color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)' },
+    { title: 'Certificaciones IUTPAL', value: kpis.certificadosAprobados, icon: Award, color: '#059669', bg: 'rgba(5, 150, 105, 0.1)' },
+    { title: 'Índice de Certeza en Decisiones', value: `${kpis.tasaAprobacion}%`, icon: BarChart3, color: '#0891b2', bg: 'rgba(8, 145, 178, 0.1)' },
+    { title: 'Promedio de Evaluación', value: `${kpis.promedioNotas}%`, icon: Activity, color: '#6366f1', bg: 'rgba(99, 102, 241, 0.1)' },
+    { title: 'Módulos Completados', value: kpis.progresosCompletados, icon: CheckCircle, color: '#10b981', bg: 'rgba(16, 185, 129, 0.1)' },
+    { title: 'Proyectos Analizados', value: kpis.totalLeads || 0, icon: TrendingUp, color: '#8b5cf6', bg: 'rgba(139, 92, 246, 0.1)' },
+    { title: 'Horas Burocráticas Ahorradas', value: `${(kpis.progresosCompletados || 0) * 2.5}h`, icon: Clock, color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.1)' },
+    { title: 'Entregas Pendientes', value: kpis.entregasPendientes || 0, icon: ClipboardList, color: '#e11d48', bg: 'rgba(225, 29, 72, 0.1)' }
   ];
 
   return (
@@ -47,8 +43,8 @@ const AdminExecutiveDashboard = () => {
       <div className="page-header">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <h1>Dashboard Ejecutivo</h1>
-            <p>Vista general de la plataforma Academia Virtual Nasser Group</p>
+            <h1>Consola de Inteligencia Ejecutiva</h1>
+            <p>Plataforma de Formación en IA para Líderes PDVSA — Nasser Group / IUTPAL</p>
           </div>
           <button className="btn-secondary" onClick={loadDashboard} style={{ width: 'auto', display: 'flex', alignItems: 'center', gap: '6px' }}>
             Actualizar

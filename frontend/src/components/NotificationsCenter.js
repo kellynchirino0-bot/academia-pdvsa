@@ -157,7 +157,7 @@ const NotificationsCenter = () => {
                     <div style={{
                       fontWeight: n.leida ? '400' : '600',
                       fontSize: '0.9rem', marginBottom: '2px', color: '#1e293b'
-                    }}>{n.titulo}</div>
+                    }}>{n?.titulo || 'Sin título'}</div>
                     <div style={{
                       fontSize: '0.8rem', color: '#64748b',
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap'

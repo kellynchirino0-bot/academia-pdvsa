@@ -142,7 +142,7 @@ const ModulosList = () => {
                     Módulo {modulo.numero_modulo}
                   </div>
                   <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: '600' }}>
-                    {modulo.titulo}
+                    {modulo?.titulo || 'Sin título'}
                   </h3>
                 </div>
                 <div style={{ 

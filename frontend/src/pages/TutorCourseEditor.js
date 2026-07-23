@@ -111,7 +111,7 @@ const TutorCourseEditor = () => {
               <div onClick={() => toggleModulo(mod.id)} style={{ padding: '12px 16px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px', background: expandedModulos[mod.id] ? 'var(--bg-secondary)' : 'transparent' }}>
                 <span style={{ fontSize: '1.2rem' }}>{mod.icono}</span>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: '500', fontSize: '0.9rem' }}>{mod.titulo}</div>
+                  <div style={{ fontWeight: '500', fontSize: '0.9rem' }}>{mod?.titulo || 'Sin título'}</div>
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>{mod.total_lecciones || 0} lecciones</div>
                 </div>
                 {expandedModulos[mod.id] ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -121,7 +121,7 @@ const TutorCourseEditor = () => {
                   {selectedModulo.lecciones?.map(lec => (
                     <div key={lec.id} onClick={() => loadContenido(lec.id)} style={{ padding: '8px 12px', cursor: 'pointer', borderRadius: '6px', marginBottom: '4px', background: selectedLeccion === lec.id ? 'var(--primary-blue)' : 'transparent', color: selectedLeccion === lec.id ? '#fff' : 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem' }}>
                       <BookOpen size={14} />
-                      {lec.titulo}
+                      {lec?.titulo || 'Sin título'}
                     </div>
                   ))}
                 </div>
@@ -150,7 +150,7 @@ const TutorCourseEditor = () => {
                           {getTipoIcon(c.tipo)}
                         </div>
                         <div style={{ flex: 1 }}>
-                          <div style={{ fontWeight: '500', fontSize: '0.9rem' }}>{c.titulo || c.tipo}</div>
+                           <div style={{ fontWeight: '500', fontSize: '0.9rem' }}>{c?.titulo || c?.tipo || 'Sin título'}</div>
                           <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{c.descripcion || c.url}</div>
                         </div>
                         <span style={{ fontSize: '0.75rem', color: getTipoColor(c.tipo), textTransform: 'uppercase', fontWeight: '600' }}>{c.tipo}</span>
@@ -176,7 +176,7 @@ const TutorCourseEditor = () => {
                       <div key={t.id} style={{ padding: '12px', background: 'var(--bg-secondary)', borderRadius: '8px', marginBottom: '8px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                           <div>
-                            <div style={{ fontWeight: '600' }}>{t.titulo}</div>
+                             <div style={{ fontWeight: '600' }}>{t?.titulo || 'Sin título'}</div>
                             <div style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{t.descripcion}</div>
                           </div>
                           <span style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', padding: '4px 10px', borderRadius: '12px', fontSize: '0.8rem' }}>{t.puntos_maximos} pts</span>

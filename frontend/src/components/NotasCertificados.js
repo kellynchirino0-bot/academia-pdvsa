@@ -49,7 +49,7 @@ export default function NotasCertificados() {
             <tbody>
               {notas.map((n, i) => (
                 <tr key={i}>
-                  <td>{n.titulo}</td>
+                  <td>{n?.titulo || 'Sin título'}</td>
                   <td className={parseFloat(n.calificacion) >= 80 ? 'nota-alta' : 'nota-baja'}>{n.calificacion}%</td>
                   <td><span className={`badge ${n.estatus_aprobacion === 'Aprobado' ? 'badge-ok' : 'badge-fail'}`}>{n.estatus_aprobacion}</span></td>
                   <td>{new Date(n.fecha_evaluacion).toLocaleDateString()}</td>

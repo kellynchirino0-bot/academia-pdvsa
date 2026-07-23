@@ -184,7 +184,7 @@ export default function AdminCurso() {
                 {mod.icono}
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: '600', color: '#003366' }}>Módulo {mod.numero_modulo}: {mod.titulo}</div>
+                <div style={{ fontWeight: '600', color: '#003366' }}>Módulo {mod?.numero_modulo}: {mod?.titulo || 'Sin título'}</div>
                 <div style={{ fontSize: '0.85rem', color: '#6b7280', marginTop: '2px' }}>{mod.descripcion}</div>
                 <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
                   <span style={{ background: 'rgba(0,51,102,0.08)', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', color: '#003366' }}>
@@ -222,7 +222,7 @@ export default function AdminCurso() {
             <tbody>
               {evaluaciones.map((ev) => (
                 <tr key={ev.id} style={{ borderTop: '1px solid #e5e7eb' }}>
-                  <td style={{ padding: '12px 16px', fontWeight: '500' }}>{ev.titulo}</td>
+                   <td style={{ padding: '12px 16px', fontWeight: '500' }}>{ev?.titulo || 'Sin título'}</td>
                   <td style={{ padding: '12px 16px' }}>
                     <span style={{ background: 'rgba(0,51,102,0.08)', padding: '2px 8px', borderRadius: '12px', fontSize: '0.75rem', color: '#003366' }}>
                       {ev.modulo}

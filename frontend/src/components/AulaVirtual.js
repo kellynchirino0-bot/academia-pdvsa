@@ -33,7 +33,7 @@ export default function AulaVirtual() {
               onClick={() => { setModuloActual(i); }}>
               <span className="modulo-num">{String(m.id).padStart(2, '0')}</span>
               <div className="modulo-info">
-                <strong>{m.titulo}</strong>
+                <strong>{m?.titulo || 'Sin título'}</strong>
                 <small>{m.duracion} · {avance[m.id] ? '✅ Completado' : 'Pendiente'}</small>
               </div>
             </div>
@@ -43,13 +43,13 @@ export default function AulaVirtual() {
           {modulos[moduloActual] && (
             <div className="aula-content">
               <div className="aula-header">
-                <h2>Módulo {modulos[moduloActual].id}: {modulos[moduloActual].titulo}</h2>
+                <h2>Módulo {modulos[moduloActual]?.id}: {modulos[moduloActual]?.titulo || 'Sin título'}</h2>
                 <span className="aula-duracion">⏱ {modulos[moduloActual].duracion}</span>
               </div>
               <div className="aula-player">
                 <div className="player-placeholder">
                   <div className="play-icon">▶</div>
-                  <p>Reproductor Multimedia — Clase: {modulos[moduloActual].titulo}</p>
+                   <p>Reproductor Multimedia — Clase: {modulos[moduloActual]?.titulo || 'Sin título'}</p>
                   <small>Video incrustado desde el repositorio corporativo de Nasser Group</small>
                   <div className="player-controls">
                     <button className="btn-control" onClick={() => alert('Simulación: reproduciendo clase...')}>▶ Reproducir</button>

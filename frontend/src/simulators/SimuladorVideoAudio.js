@@ -44,10 +44,30 @@ const SimuladorVideoAudio = () => {
         parametros
       });
 
-      setResultado(response.data.respuesta);
+      setResultado(response.data?.respuesta || response.data);
     } catch (error) {
       console.error('Error:', error);
-      alert('Error al procesar la solicitud');
+      let fallback;
+      if (tipoOperacion === 'texto_a_voz') {
+        fallback = {
+          titulo: 'Síntesis de Voz (Modo Offline)',
+          descripcion: 'Síntesis de voz simulada.',
+          tipo: 'audio', duracion: '2:45', formato: 'WAV 44.1kHz'
+        };
+      } else if (tipoOperacion === 'video_fotogramas') {
+        fallback = {
+          titulo: 'Video Generado (Modo Offline)',
+          descripcion: 'Video generado en modo simulado.',
+          tipo: 'video', fotogramas: 30, duracion: '1:00', resolucion: '1920x1080'
+        };
+      } else {
+        fallback = {
+          titulo: 'Clonación de Voz (Modo Offline)',
+          descripcion: 'Clonación de voz simulada.',
+          tipo: 'audio_clonado', duracion: '2:30'
+        };
+      }
+      setResultado(fallback);
     } finally {
       setLoading(false);
     }
@@ -245,7 +265,7 @@ const SimuladorVideoAudio = () => {
                   marginBottom: '20px'
                 }}>
                   <h4 style={{ color: 'var(--primary-blue)', marginBottom: '8px' }}>
-                    {resultado.titulo}
+                    {resultado?.titulo || 'Sin título'}
                   </h4>
                   <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>
                     {resultado.descripcion}

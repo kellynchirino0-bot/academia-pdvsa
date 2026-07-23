@@ -210,7 +210,7 @@ const Evaluaciones = () => {
         <div className="page-header">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
-              <h1>{evaluacionActiva.titulo}</h1>
+              <h1>{evaluacionActiva?.titulo || 'Sin título'}</h1>
               <p>{evaluacionActiva.descripcion}</p>
             </div>
             <div className="timer-display">
@@ -319,7 +319,7 @@ const Evaluaciones = () => {
                 {estado === 'aprobada' ? <CheckCircle size={24} /> : <FileText size={24} />}
               </div>
               
-              <h3>{evaluacion.titulo}</h3>
+              <h3>{evaluacion?.titulo || 'Sin título'}</h3>
               <p>{evaluacion.descripcion}</p>
               
               <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>

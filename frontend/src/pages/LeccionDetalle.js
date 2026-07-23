@@ -65,7 +65,7 @@ const LeccionDetalle = () => {
         <div style={{ fontSize: '0.8rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '1px' }}>
           Módulo {modulo?.numero_modulo} — Lección {currentIndex + 1} de {lecciones.length}
         </div>
-        <h1 style={{ margin: '8px 0 0', fontSize: '1.3rem', fontWeight: '700' }}>{leccion.titulo}</h1>
+        <h1 style={{ margin: '8px 0 0', fontSize: '1.3rem', fontWeight: '700' }}>{leccion?.titulo || 'Sin título'}</h1>
       </div>
 
       <div style={{ background: '#fff', borderRadius: '12px', padding: '32px', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>

@@ -1042,7 +1042,7 @@ const ModuloDetalle = () => {
           </div>
           <div>
             <div style={{ fontSize: '0.8rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '1px' }}>Módulo {numModulo}</div>
-            <h1 style={{ margin: 0, fontSize: '1.3rem', fontWeight: '700' }}>{modulo.titulo}</h1>
+            <h1 style={{ margin: 0, fontSize: '1.3rem', fontWeight: '700' }}>{modulo?.titulo || 'Sin título'}</h1>
           </div>
           {modulosCompletados[id] && (
             <div style={{ marginLeft: 'auto', padding: '8px 16px', background: 'rgba(16,185,129,0.2)', borderRadius: '20px', color: '#6ee7b7', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -1083,7 +1083,7 @@ const ModuloDetalle = () => {
                     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     {l.completado ? <CheckCircle size={14} color="#fff" /> : <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#6b7280' }}>{i + 1}</span>}
                   </div>
-                  <span style={{ fontWeight: '500' }}>{l.titulo}</span>
+                  <span style={{ fontWeight: '500' }}>{l?.titulo || 'Sin título'}</span>
                 </button>
               ))}
             </div>
@@ -1092,10 +1092,10 @@ const ModuloDetalle = () => {
           <div>
             {teoria && (
               <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
-                <h3 style={{ color: '#003366', marginBottom: '20px' }}>{teoria.titulo}</h3>
+                <h3 style={{ color: '#003366', marginBottom: '20px' }}>{teoria?.titulo || 'Sin título'}</h3>
                 {teoria.temas.map((t, i) => (
                   <div key={i} style={{ marginBottom: '16px', padding: '16px', background: '#f8fafc', borderRadius: '10px', borderLeft: '4px solid #003366' }}>
-                    <h4 style={{ color: '#003366', marginBottom: '8px', fontSize: '1rem' }}>{t.titulo}</h4>
+                    <h4 style={{ color: '#003366', marginBottom: '8px', fontSize: '1rem' }}>{t?.titulo || 'Sin título'}</h4>
                     <p style={{ color: '#374151', margin: 0, lineHeight: '1.7', fontSize: '0.9rem' }}>{t.contenido}</p>
                   </div>
                 ))}
@@ -1104,7 +1104,7 @@ const ModuloDetalle = () => {
 
             {leccionActiva && (
               <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)' }}>
-                <h3 style={{ color: '#003366', marginBottom: '16px' }}>{leccionActiva.titulo}</h3>
+                <h3 style={{ color: '#003366', marginBottom: '16px' }}>{leccionActiva?.titulo || 'Sin título'}</h3>
                 <div style={{ lineHeight: '1.8', color: '#374151', whiteSpace: 'pre-wrap', fontSize: '0.92rem' }}>
                   {leccionActiva.contenido_markdown || 'Contenido no disponible'}
                 </div>

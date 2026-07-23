@@ -7,55 +7,55 @@
 const academicModules = [
   {
     id: 1, numero_modulo: 1,
-    titulo: 'Fundamentos de Inteligencia Artificial',
-    descripcion: 'Conceptos básicos de IA, ML y Deep Learning. Aplicaciones directas en mantenimiento predictivo, optimización de pozos y análisis sísmico en la industria Oil & Gas.',
-    icono: '🤖', duracion_horas: 8,
+    titulo: 'IA como Activo Estratégico y Soberanía Digital',
+    descripcion: 'Protección de datos en PDVSA, transparencia auditante y la IA como motor de decisiones estratégicas en tiempos de crisis. Marco para líderes que toman decisiones bajo presión.',
+    icono: '🛡️', duracion_horas: 8,
     objetivos: [
-      'Distinguir entre IA, Machine Learning y Deep Learning con claridad ejecutiva',
-      'Identificar casos de uso de IA aplicables a las operaciones de PDVSA',
-      'Evaluar el ROI potencial de proyectos de IA en activos petroleros',
-      'Comunicar iniciativas de IA a equipos técnicos y directivos'
+      'Comprender la IA como herramienta estratégica para la toma de decisiones ejecutivas',
+      'Evaluar el impacto de la IA en la soberanía digital y protección de datos de PDVSA',
+      'Diseñar marcos de transparencia y auditabilidad para decisiones basadas en IA',
+      'Liderar la transformación digital con enfoque en eficiencia y reducción de costos'
     ],
-    competencias: ['Análisis estratégico', 'Toma de decisiones basada en datos', 'Comunicación ejecutiva']
+    competencias: ['Liderazgo digital', 'Gestión de riesgos', 'Soberanía de datos']
   },
   {
     id: 2, numero_modulo: 2,
-    titulo: 'Prompt Engineering para Sector Oil & Gas',
-    descripcion: 'Principios de diseño de prompts efectivos para modelos de lenguaje. Plantillas operacionales para reportes técnicos, resumen de normativas y gestión en PDVSA.',
+    titulo: 'Inteligencia de Datos e Ingeniería de Prompts para Gerentes',
+    descripcion: 'Transformar reportes históricos desordenados en matrices de decisión. Cómo formular preguntas estratégicas a la IA para obtener resúmenes ejecutivos accionables.',
     icono: '💬', duracion_horas: 8,
     objetivos: [
-      'Diseñar prompts efectivos para diferentes contextos de negocio',
-      'Crear plantillas de prompts reutilizables para tareas comunes de PDVSA',
-      'Evaluar y mejorar la calidad de las respuestas generadas por IA',
-      'Aplicar técnicas avanzadas como Few-Shot, Chain of Thought y Role Prompting'
+      'Formular preguntas estratégicas a la IA para obtener resúmenes ejecutivos',
+      'Transformar datos operativos en inteligencia accionable para la toma de decisiones',
+      'Crear plantillas de prompts reutilizables para memorandums, informes y análisis',
+      'Evaluar y validar la calidad de las respuestas generadas por IA'
     ],
-    competencias: ['Comunicación con IA', 'Optimización de procesos', 'Generación de contenido técnico']
+    competencias: ['Comunicación ejecutiva', 'Análisis estratégico', 'Inteligencia de negocios']
   },
   {
     id: 3, numero_modulo: 3,
-    titulo: 'Gemelos Digitales en Industria Petrolera',
-    descripcion: 'Réplicas virtuales de activos y procesos industriales. Simulación de refinerías, monitoreo de campos en tiempo real y prevención de fallas.',
-    icono: '🏭', duracion_horas: 8,
+    titulo: 'Eficiencia Administrativa y Gestión de Recursos',
+    descripcion: 'Análisis comparativo de presupuestos, gestión inteligente de inventarios de repuestos críticos y eliminación de la burocracia en papeleo. Optimización de procesos administrativos con IA.',
+    icono: '📊', duracion_horas: 8,
     objetivos: [
-      'Comprender la arquitectura y componentes de un gemelo digital',
-      'Identificar activos prioritarios para digitalización en PDVSA',
-      'Diseñar estrategias de implementación de gemelos digitales',
-      'Interpretar visualizaciones y simulaciones para la toma de decisiones'
+      'Aplicar IA para análisis comparativo de presupuestos y optimización de costos',
+      'Implementar sistemas inteligentes de gestión de inventarios de repuestos críticos',
+      'Eliminar la burocracia en procesos administrativos mediante automatización',
+      'Medir el ahorro de horas-burocráticas logrado con la implementación de IA'
     ],
-    competencias: ['Simulación industrial', 'Monitoreo en tiempo real', 'Análisis predictivo']
+    competencias: ['Eficiencia operativa', 'Gestión de costos', 'Automatización administrativa']
   },
   {
     id: 4, numero_modulo: 4,
-    titulo: 'IA Generativa y Herramientas Multimodales',
-    descripcion: 'Uso de GPT, DALL-E, Stable Diffusion y modelos de código. Creación de prototipos, visualización de escenarios y automatización de scripts.',
-    icono: '🎨', duracion_horas: 8,
+    titulo: 'Simulación de Crisis, Gestión de Riesgos y Liderazgo Aumentado',
+    descripcion: 'Evaluación de decisiones bajo presión (paradas de planta, contingencias), validación de cumplimiento normativo y presentación de proyectos respaldados por IA.',
+    icono: '⚡', duracion_horas: 8,
     objetivos: [
-      'Utilizar GPT-4 para generación de contenido técnico y ejecutivo',
-      'Emplear herramientas de generación de imágenes para visualización de escenarios',
-      'Generar scripts de código para automatización de procesos',
-      'Evaluar la calidad y limitaciones del contenido generado por IA'
+      'Simular escenarios de crisis y evaluar decisiones bajo presión operativa',
+      'Diseñar planes de contingencia respaldados por análisis de IA',
+      'Validar el cumplimiento normativo mediante herramientas de inteligencia',
+      'Presentar proyectos estratégicos con datos y proyecciones generadas por IA'
     ],
-    competencias: ['IA generativa', 'Automatización', 'Visualización de datos']
+    competencias: ['Gestión de crisis', 'Cumplimiento normativo', 'Presentación ejecutiva']
   }
 ];
 
