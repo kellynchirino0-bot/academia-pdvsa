@@ -29,6 +29,14 @@ const SimuladorTexto = () => {
     { value: 'informe_gerencial', label: 'Informe Gerencial', icon: <TrendingUp size={16} /> }
   ];
 
+  const promptsEjemplo = [
+    'Generar memorándum ejecutivo para solicitud de presupuesto de mantenimiento de planta',
+    'Analizar riesgos operativos en la zona de procesamiento de crudo liviano',
+    'Crear matriz de decisión para selección de proveedores de repuestos críticos',
+    'Redactar informe gerencial de desviación presupuestaria del Q3 2024',
+    'Evaluar impacto de parada técnica no programada en producción de gas'
+  ];
+
   const plantillasPorArea = {
     finanzas: [
       {
