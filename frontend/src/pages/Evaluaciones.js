@@ -77,7 +77,7 @@ const Evaluaciones = () => {
     
     setEnviando(true);
     try {
-      const respuestasArray = evaluacionActiva.preguntas.map((pregunta) => ({
+      const respuestasArray = (evaluacionActiva?.preguntas || []).map((pregunta) => ({
         pregunta_id: pregunta.id,
         respuesta: respuestas[pregunta.id] ?? -1
       }));
@@ -221,7 +221,7 @@ const Evaluaciones = () => {
         </div>
 
         <div className="quiz-container">
-          {evaluacionActiva.preguntas.map((pregunta, index) => (
+          {(evaluacionActiva?.preguntas || []).map((pregunta, index) => (
             <div 
               key={pregunta.id} 
               className={`question-card ${respuestas[pregunta.id] !== undefined ? 'selected' : ''}`}
@@ -237,7 +237,7 @@ const Evaluaciones = () => {
                 {pregunta.pregunta}
               </h4>
               <div className="options-list">
-                {pregunta.opciones.map((opcion, opcionIndex) => (
+                {(pregunta?.opciones || []).map((opcion, opcionIndex) => (
                   <button
                     key={opcionIndex}
                     className={`option-btn ${respuestas[pregunta.id] === opcionIndex ? 'selected' : ''}`}
@@ -261,7 +261,7 @@ const Evaluaciones = () => {
             <button 
               className="btn-primary"
               onClick={handleSubmitEvaluacion}
-              disabled={enviando || Object.keys(respuestas).length < evaluacionActiva.preguntas.length}
+              disabled={enviando || Object.keys(respuestas).length < (evaluacionActiva?.preguntas || []).length}
               style={{ flex: 1 }}
             >
               {enviando ? 'Enviando...' : 'Finalizar Evaluación'}

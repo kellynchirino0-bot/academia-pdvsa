@@ -30,8 +30,8 @@ const NotificationsCenter = () => {
   const loadNotifications = async () => {
     try {
       const response = await axios.get(`${API_URL}/notifications`);
-      setNotifications(response.data.notificaciones);
-      setUnread(response.data.no_leidas);
+      setNotifications(response.data?.notificaciones || []);
+      setUnread(response.data?.no_leidas || 0);
     } catch (error) {
       setNotifications([]);
       setUnread(0);

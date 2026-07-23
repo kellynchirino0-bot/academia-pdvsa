@@ -23,6 +23,7 @@ import TutorDashboard from './pages/TutorDashboard';
 import TutorCourseEditor from './pages/TutorCourseEditor';
 import StudentReport from './pages/StudentReport';
 import CertificateVerify from './pages/CertificateVerify';
+import FaqPage from './pages/FaqPage';
 import Layout from './components/Layout';
 import TrialCountdownBanner from './components/TrialCountdownBanner';
 import './styles/index.css';
@@ -110,6 +111,11 @@ function App() {
           <Route path="/mi-reporte" element={
             <ProtectedRoute>
               <StudentReport />
+            </ProtectedRoute>
+          } />
+          <Route path="/ayuda" element={
+            <ProtectedRoute>
+              <FaqPage />
             </ProtectedRoute>
           } />
           

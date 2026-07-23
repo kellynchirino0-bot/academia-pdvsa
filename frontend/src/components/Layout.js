@@ -22,7 +22,8 @@ import {
   BarChart3,
   UserCog,
   Edit3,
-  FileBarChart
+  FileBarChart,
+  HelpCircle
 } from 'lucide-react';
 
 const Layout = ({ children }) => {
@@ -44,6 +45,7 @@ const Layout = ({ children }) => {
     { to: '/notas', icon: Target, label: 'Mi Progreso', roles: ['participante'] },
     { to: '/certificados', icon: Award, label: 'Certificaciones', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/mi-reporte', icon: FileBarChart, label: 'Mi Reporte', roles: ['participante'] },
+    { to: '/ayuda', icon: HelpCircle, label: 'Centro de Ayuda', roles: ['administrador', 'tutor', 'participante'] },
     { divider: true, roles: ['administrador', 'tutor'] },
     { to: '/tutor', icon: Users, label: 'Panel Tutor', roles: ['administrador', 'tutor'] },
     { to: '/tutor/editor-cursos', icon: Edit3, label: 'Editor Cursos', roles: ['administrador', 'tutor'] },

@@ -28,6 +28,8 @@ const AdminExecutiveDashboard = () => {
   if (!data) return <div className="card"><div className="empty-state"><h3>Error al cargar dashboard</h3></div></div>;
 
   const { kpis, auditoria } = data;
+  const loginsRecientes = auditoria?.loginsRecientes || [];
+  const leccionesRecientes = auditoria?.leccionesRecientes || [];
 
   const kpiCards = [
     { title: 'Líderes en Formación', value: kpis.estudiantesActivos, icon: Users, color: '#3b82f6', bg: 'rgba(59, 130, 246, 0.1)' },
@@ -197,11 +199,11 @@ const AdminExecutiveDashboard = () => {
         <div className="card">
           <div className="card-header"><h2>Logins Recientes</h2></div>
           <div style={{ padding: '16px' }}>
-            {auditoria.loginsRecientes.length === 0 ? (
+            {loginsRecientes.length === 0 ? (
               <div className="empty-state"><p>Sin actividad reciente</p></div>
             ) : (
-              auditoria.loginsRecientes.map((log, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: idx < auditoria.loginsRecientes.length - 1 ? '1px solid var(--border-color)' : 'none' }}>
+              loginsRecientes.map((log, idx) => (
+                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: idx < loginsRecientes.length - 1 ? '1px solid var(--border-color)' : 'none' }}>
                   <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--bg-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <UserCheck size={14} color="var(--text-secondary)" />
                   </div>
@@ -221,11 +223,11 @@ const AdminExecutiveDashboard = () => {
         <div className="card">
           <div className="card-header"><h2>Lecciones Completadas Recientes</h2></div>
           <div style={{ padding: '16px' }}>
-            {auditoria.leccionesRecientes.length === 0 ? (
+            {leccionesRecientes.length === 0 ? (
               <div className="empty-state"><p>Sin actividad reciente</p></div>
             ) : (
-              auditoria.leccionesRecientes.map((lec, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: idx < auditoria.leccionesRecientes.length - 1 ? '1px solid var(--border-color)' : 'none' }}>
+              leccionesRecientes.map((lec, idx) => (
+                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 0', borderBottom: idx < leccionesRecientes.length - 1 ? '1px solid var(--border-color)' : 'none' }}>
                   <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <CheckCircle size={14} color="#10b981" />
                   </div>

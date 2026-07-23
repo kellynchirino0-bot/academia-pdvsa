@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { BookOpen, Clock, ChevronRight, CheckCircle, Lock } from 'lucide-react';
+import { BookOpen, Clock, ChevronRight, CheckCircle, Lock, Download, FileText } from 'lucide-react';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
@@ -81,6 +81,244 @@ const ModulosList = () => {
           }}>
             Avance total: {modulos.length > 0 ? (modulos.reduce((acc, m) => acc + m.porcentaje_avance, 0) / modulos.length).toFixed(1) : 0}%
           </div>
+        </div>
+      </div>
+
+      {/* Biblioteca de Prompts Descargable */}
+      <div style={{ 
+        marginBottom: '24px', 
+        padding: '20px 24px', 
+        background: 'linear-gradient(135deg, rgba(0,51,102,0.04), rgba(212,168,67,0.06))', 
+        borderRadius: 'var(--radius-lg)', 
+        border: '1px solid rgba(0,51,102,0.12)' 
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '12px' }}>
+          <div style={{ 
+            width: '40px', height: '40px', borderRadius: '10px', 
+            background: 'rgba(0,51,102,0.1)', display: 'flex', 
+            alignItems: 'center', justifyContent: 'center' 
+          }}>
+            <FileText size={20} color="#003366" />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: '700', color: '#003366', fontSize: '0.95rem' }}>Biblioteca de Prompts Gerenciales</div>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>Plantillas compiladas por departamento — Archivo .TXT descargable</div>
+          </div>
+          <button
+            onClick={() => {
+              const biblioteca = `BIBLIOTECA DE PROMPTS GERENCIALES — PDVSA / IUTPAL
+${'═'.repeat(60)}
+Plataforma: Academia Virtual Nasser Group
+Fecha de descarga: ${new Date().toLocaleDateString('es-VE')}
+${'═'.repeat(60)}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 1: FINANZAS Y AUDITORÍA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[FIN-01] Análisis de Desviación Presupuestaria
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Director Financiero de PDVSA.
+[CONTEXTO]: Se ha detectado una desviación del [X]% en el presupuesto del área de [Nombre Área] durante el período [Trimestre/Año].
+[TAREA]: Evalúa el siguiente plan de gastos [Pegar Datos] y genera:
+1. Matriz de costo-beneficio por categoría de gasto.
+2. Identificación de las 3 partidas con mayor desviación.
+3. Proyección de flujo de caja para los próximos 3 meses.
+4. Recomendaciones de reasignación presupuestaria.
+FORMATO: Tabla ejecutiva con indicadores financieros clave.
+└─────────────────────────────────────────────────┘
+
+[FIN-02] Evaluación de ROI en Proyectos Petroleros
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Analista de Inversiones Senior.
+[CONTEXTO]: Se presenta el siguiente proyecto de inversión: [Descripción del Proyecto].
+[TAREA]: Calcula y presenta:
+1. ROI proyectado a 1, 3 y 5 años.
+2. Tasa de retorno interno (TIR) estimada.
+3. Período de recuperación de la inversión.
+4. Análisis de sensibilidad con 3 escenarios.
+FORMATO: Ficha de inversión ejecutiva con gráficos de tendencia.
+└─────────────────────────────────────────────────┘
+
+[FIN-03] Auditoría de Inconsistencias Contables
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Auditor Senior certificado con 15 años de experiencia.
+[CONTEXTO]: Se requiere revisar el siguiente listado de asientos contables del período [Período].
+[TAREA]: Identifica:
+1. Inconsistencias y partidas sospechosas.
+2. Riesgos de incumplimiento normativo (NIIF/CPC).
+3. Oportunidades de optimización fiscal.
+4. Recomendaciones de ajuste contable.
+FORMATO: Informe de auditoría con clasificación de riesgos (Alto/Medio/Bajo).
+└─────────────────────────────────────────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 2: TALENTO HUMANO Y PLANIFICACIÓN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[RRHH-01] Evaluación de Desempeño y Planificación
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Gerente de Recursos Humanos de PDVSA.
+[CONTEXTO]: Se presenta la siguiente situación de personal: [Descripción].
+[TAREA]: Desarrolla:
+1. Evaluación de desempeño del personal involucrado.
+2. Plan de contingencia para redistribuir cargas de trabajo.
+3. Identificación de necesidades de capacitación urgente.
+4. Propuesta de incentivos para retención de talento.
+FORMATO: Plan de acción ejecutivo con cronograma de 30/60/90 días.
+└─────────────────────────────────────────────────┘
+
+[RRHH-02] Análisis de Clima Organizacional
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Especialista en Organización y Métodos.
+[CONTEXTO]: Se realizó una encuesta de clima organizacional con [N] respuestas del área de [Nombre].
+[TAREA]: Analiza los resultados y presenta:
+1. Top 3 fortalezas organizacionales.
+2. Top 3 áreas de mejora con plan de acción.
+3. Índice de satisfacción general y comparativa histórico.
+4. Recomendaciones para mejorar el clima laboral.
+FORMATO: Reporte ejecutivo con gráficos de tendencia y acción inmediata.
+└─────────────────────────────────────────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 3: MARKETING Y COMUNICACIONES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[MKT-01] Posicionamiento Institucional
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Gerente de Relaciones Institucionales.
+[CONTEXTO]: Se requiere mejorar la imagen institucional de PDVSA ante [Audiencia Objetivo].
+[TAREA]: Diseña:
+1. Estrategia de posicionamiento en 3 canales clave.
+2. Mensajes principales para comunicación de crisis.
+3. Calendario de comunicados para los próximos 3 meses.
+4. KPIs de medición de impacto reputacional.
+FORMATO: Plan de comunicación ejecutivo con matriz de mensajes.
+└─────────────────────────────────────────────────┘
+
+[MKT-02] Análisis de Competidores
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Analista de Mercado Senior.
+[CONTEXTO]: Evaluar la posición competitiva de PDVSA frente a [Competidores/Países].
+[TAREA]: Realiza:
+1. Análisis FODA comparativo con 5 competidores.
+2. Benchmarking de precios y servicios.
+3. Identificación de ventajas competitivas diferenciadoras.
+4. Estrategias de diferenciación para el mercado internacional.
+FORMATO: Matriz competitiva ejecutiva con recomendaciones estratégicas.
+└─────────────────────────────────────────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 4: INVESTIGACIÓN DE OPERACIONES (I.O.)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[IO-01] Optimización de Mezclas — Método Simplex
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Ingeniero de I.O. y Optimización Financiera.
+[CONTEXTO]: Se requiere determinar la proporción óptima de procesamiento entre Crudo Pesado y Crudo Liviano en la refinería de [Nombre], con una capacidad de refinación de [X] BPD.
+[TAREA]: Utiliza el enfoque del Método Simplex para resolver el problema de programación lineal:
+1. Define las variables de decisión (X1 = crudo pesado, X2 = crudo liviano).
+2. Establece la función objetivo: Maximizar Z = C1·X1 + C2·X2.
+3. Restricciones de capacidad, mezcla mínima y disponibilidad.
+4. Presenta la tabla Simplex paso a paso con iteraciones.
+5. Indica la solución óptima y el margen máximo alcanzable.
+FORMATO: Tabla de iteraciones Simplex + resultado óptimo.
+└─────────────────────────────────────────────────┘
+
+[IO-02] Parada de Planta — Ruta Crítica CPM/PERT
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Gerente de Proyectos (PMP/I.O.).
+[CONTEXTO]: Planificar la parada técnica de mantenimiento de la Planta de Fraccionamiento [Nombre].
+[TAREA]: Aplica el método CPM/PERT:
+1. Lista de tareas con duración, predecesoras y holguras.
+2. Diagrama de red (AON o AOA).
+3. Cálculo de tiempos tempranos, tardíos y holguras.
+4. Identificación del camino crítico.
+5. Análisis PERT con estimaciones y varianza.
+FORMATO: Tabla de actividades + diagrama de ruta crítica.
+└─────────────────────────────────────────────────┘
+
+[IO-03] Gestión de Inventario — Lote Económico EOQ
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Especialista en Logística e Inventarios.
+[CONTEXTO]: Optimizar el stock de [Repuesto] para [N] bombas del Campo [Nombre].
+[TAREA]: Utiliza el modelo EOQ:
+1. Cantidad óptima de pedido: Q* = √(2DS/H)
+2. Número de pedidos por año.
+3. Punto de reorden.
+4. Costo total anual vs. costo actual.
+5. Análisis de sensibilidad.
+FORMATO: Tabla de cálculo EOQ + comparativa costo actual vs. óptimo.
+└─────────────────────────────────────────────────┘
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+SECCIÓN 5: ANÁLISIS DE RIESGOS Y ESTRATEGIA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+[GEN-01] Evaluación de Riesgos y Matriz de Contención
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Especialista en Gestión de Riesgos.
+[CONTEXTO]: Se presenta la siguiente eventualidad: [Describir falla o contingencia].
+[TAREA]: Proyecta 3 escenarios hipotéticos (Conservador, Moderado, Crítico):
+- Impacto financiero proyectado.
+- Tiempo de recuperación estimado (MTTR).
+- Protocolo de mitigación inmediato.
+FORMATO: Tabla comparativa de escenarios con recomendación.
+└─────────────────────────────────────────────────┘
+
+[GEN-02] Resumen Ejecutivo de Informes Extensos
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Analista Ejecutivo de Junta Directiva.
+[TAREA]: Sintetiza el siguiente informe [Pegar Texto] en una "Ficha Gerencial de 1 Página":
+- Resumen en 3 oraciones.
+- 3 KPIs más relevantes.
+- Riesgo principal detectado.
+- Decisión recomendada (Aprobar / Rechazar / Requerir más datos).
+FORMATO: Ficha ejecutiva de 1 página.
+└─────────────────────────────────────────────────┘
+
+${'═'.repeat(60)}
+Documento generado por la Plataforma Academia Virtual PDVSA
+Nasser Group — IUTPAL
+Línea de desarrollo: Investigación de Operaciones y Toma de Decisiones
+${'═'.repeat(60)}`;
+              const blob = new Blob([biblioteca], { type: 'text/plain;charset=utf-8' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = 'biblioteca_prompts_gerenciales_pdvsa.txt';
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+            style={{
+              padding: '10px 20px',
+              background: '#003366',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontWeight: '600',
+              fontSize: '0.85rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              flexShrink: 0
+            }}
+          >
+            <Download size={16} />
+            Descargar Biblioteca
+          </button>
+        </div>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {['Finanzas', 'Talento Humano', 'Marketing', 'Investigación de Operaciones', 'Riesgos'].map(dept => (
+            <span key={dept} style={{ 
+              fontSize: '0.72rem', padding: '3px 10px', 
+              background: 'rgba(0,51,102,0.08)', color: '#003366', 
+              borderRadius: '12px', fontWeight: '500' 
+            }}>
+              {dept}
+            </span>
+          ))}
         </div>
       </div>
 
