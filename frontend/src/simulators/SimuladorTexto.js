@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, Copy, Download, RotateCcw, Sparkles, FileText, TrendingUp, Shield, BarChart3 } from 'lucide-react';
+import { Send, Copy, Download, RotateCcw, Sparkles, FileText, TrendingUp, Shield, BarChart3, BookOpen, CheckCircle } from 'lucide-react';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
@@ -27,6 +27,72 @@ const SimuladorTexto = () => {
     'Elabora una evaluación comparativa de 3 proveedores de servicios de mantenimiento industrial considerando costo, tiempo de respuesta y garantía.',
     'Diseña un plan de contingencia para garantizar la continuidad operativa ante una emergencia climática que afecte las instalaciones principales.'
   ];
+
+  const plantillasGerenciales = [
+    {
+      id: 1,
+      titulo: 'Análisis de Oportunidades y Reducción de Costos',
+      icon: <TrendingUp size={16} />,
+      color: '#10b981',
+      plantilla: `[ROL]: Actúa como Asesor Senior de Eficiencia Operativa en PDVSA.
+[CONTEXTO]: Se ha detectado una variación del [X]% en el presupuesto asignado a la división [Nombre División].
+[TAREA]: Analiza los siguientes datos operativos [Pegar Datos/Reporte] e identifica:
+1. Tres áreas de desperdicio o sobrecosto inmediato.
+2. Dos medidas de optimización sin afectar la seguridad de la planta/unidad.
+3. Formato de salida: Tabla comparativa con Costo vs. Impacto Estimado.`
+    },
+    {
+      id: 2,
+      titulo: 'Redacción de Memorándums Ejecutivos de Alto Impacto',
+      icon: <FileText size={16} />,
+      color: '#3b82f6',
+      plantilla: `[ROL]: Actúa como Director de Comunicaciones Corporativas.
+[CONTEXTO]: Se requiere solicitar la aprobación inmediata para [Objeto de la Solicitud] dirigida a [Destinatario/Gerencia].
+[TAREA]: Redacta un memorándum de no más de 300 palabras estructurado en:
+- Antecedentes clave en 2 viñetas.
+- Justificación de ROI/Impacto en continuidad operativa.
+- Petición concreta y fecha límite de respuesta.
+- Tono: Formal, institucional, directo.`
+    },
+    {
+      id: 3,
+      titulo: 'Evaluación de Riesgos y Matriz de Contención',
+      icon: <Shield size={16} />,
+      color: '#f59e0b',
+      plantilla: `[ROL]: Actúa como Especialista en Gestión de Riesgos e Inclemencias Operativas.
+[CONTEXTO]: Se presenta la siguiente eventualidad no programada: [Describir falla o contingencia].
+[TAREA]: Proyecta 3 escenarios hipotéticos (Conservador, Moderado, Crítico) evaluando:
+- Impacto financiero proyectado.
+- Tiempo de recuperación estimado (MTTR).
+- Protocolo de mitigación inmediato para supervisores de campo.`
+    },
+    {
+      id: 4,
+      titulo: 'Resumen Ejecutivo de Informes Extensos',
+      icon: <BarChart3 size={16} />,
+      color: '#8b5cf6',
+      plantilla: `[ROL]: Actúa como Analista Ejecutivo de Junta Directiva.
+[TAREA]: Sintetiza el siguiente informe técnico/financiero [Pegar Texto Extenso] en una "Ficha Gerencial de 1 Página" que contenga:
+- Resumen en 3 oraciones principales.
+- 3 KPIs o cifras más relevantes.
+- Riesgo principal detectado.
+- Decisión recomendada (Aprobar / Rechazar / Requerir más datos).`
+    }
+  ];
+
+  const [plantillaActiva, setPlantillaActiva] = useState(null);
+  const [copiado, setCopiado] = useState(false);
+
+  const cargarPlantilla = (plantilla) => {
+    setPrompt(plantilla.plantilla);
+    setPlantillaActiva(plantilla.id);
+  };
+
+  const copiarPlantilla = (texto) => {
+    navigator.clipboard.writeText(texto);
+    setCopiado(true);
+    setTimeout(() => setCopiado(false), 2000);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -225,6 +291,53 @@ ${'═'.repeat(56)}`;
                   >
                     {ejemplo}
                   </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Biblioteca de Plantillas Rápidas */}
+            <div style={{ marginTop: '24px', padding: '16px', background: 'linear-gradient(135deg, rgba(0,51,102,0.03), rgba(212,168,67,0.05))', borderRadius: 'var(--radius-md)', border: '1px solid rgba(0,51,102,0.1)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                <BookOpen size={18} color="#003366" />
+                <h4 style={{ fontSize: '0.9rem', color: '#003366', margin: 0 }}>Guía de Plantillas Gerenciales PDVSA/IUTPAL</h4>
+              </div>
+              <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '12px', lineHeight: '1.5' }}>
+                Plantillas oficiales del Módulo 2. Selecciona una para cargarla en el editor o cópiala para uso personal.
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {plantillasGerenciales.map((plantilla) => (
+                  <div key={plantilla.id} style={{
+                    padding: '10px 12px',
+                    background: plantillaActiva === plantilla.id ? `${plantilla.color}10` : '#fff',
+                    border: `1px solid ${plantillaActiva === plantilla.id ? plantilla.color : 'var(--border-color)'}`,
+                    borderRadius: '8px',
+                    transition: 'all 0.2s'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <span style={{ color: plantilla.color }}>{plantilla.icon}</span>
+                        <span style={{ fontSize: '0.8rem', fontWeight: '600', color: '#003366' }}>{plantilla.titulo}</span>
+                      </div>
+                      <div style={{ display: 'flex', gap: '4px' }}>
+                        <button
+                          onClick={() => copiarPlantilla(plantilla.plantilla)}
+                          style={{ padding: '4px 8px', background: copiado ? '#10b981' : 'var(--bg-secondary)', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '4px' }}
+                        >
+                          {copiado ? <CheckCircle size={12} /> : <Copy size={12} />}
+                          {copiado ? 'Copiado' : 'Copiar'}
+                        </button>
+                        <button
+                          onClick={() => cargarPlantilla(plantilla)}
+                          style={{ padding: '4px 8px', background: plantilla.color, color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.7rem' }}
+                        >
+                          Cargar
+                        </button>
+                      </div>
+                    </div>
+                    <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', whiteSpace: 'pre-line', lineHeight: '1.4', maxHeight: '60px', overflow: 'hidden' }}>
+                      {plantilla.plantilla.substring(0, 120)}...
+                    </div>
+                  </div>
                 ))}
               </div>
             </div>

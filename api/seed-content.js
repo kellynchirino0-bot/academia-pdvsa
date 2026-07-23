@@ -489,96 +489,87 @@ La respuesta debe ser:
   {
     modulo_id: 2, titulo: 'Plantillas de Prompts para PDVSA — Kit de Herramientas',
     orden: 3,
-    contenido_markdown: `# Lección 2.3: Plantillas de Prompts para PDVSA
+    contenido_markdown: `# Lección 2.3: Guía Oficial de Plantillas de Prompts Ejecutivos PDVSA/IUTPAL
 
 ## Descripción
-Crear y aplicar un kit de plantillas de prompts reutilizables para las tareas más comunes.
+Kit completo de plantillas oficiales para gerentes, supervisores y administrativos de PDVSA. Incluye 4 plantillas estratégicas de uso inmediato.
 
 ## Duración: 2 horas
 
 ---
 
-## Contenido Teórico
+## 📋 RECURSO DESCARGABLE
+**Guía_Oficial_Prompts_Gerenciales_PDVSA_IUTPAL.pdf**
 
-### Categorías de Prompts para Oil & Gas
+*Accede al Asistente Ejecutivo IA para usar estas plantillas interactivamente con un solo clic.*
 
-| Categoría | Uso Principal | Frecuencia |
-|-----------|--------------|------------|
-| **Reportes Técnicos** | Informes de producción, incidentes, mantenimiento | Diaria |
-| **Resumen de Normativas** | Sintetizar regulaciones de seguridad | Semanal |
-| **Análisis de Datos** | Interpretar tendencias, identificar anomalías | Diaria |
-| **Comunicación** | Emails, memorandos, presentaciones | Diaria |
-| **Planificación** | Planes de trabajo, cronogramas, presupuestos | Semanal |
+---
 
-### Plantilla 1: Reporte Técnico de Producción
+## Plantillas Ejecutivas Oficiales
+
+### Plantilla 1: Análisis de Oportunidades y Reducción de Costos
 
 \`\`\`
-ACTÚA como: Ingeniero de Producción Senior con 15 años de experiencia en la Faja del Orinoco.
-
-CONTEXTO: Trabajo en PDVSA, campo [NOMBRE]. Generando reporte de [PERÍODO].
-
-TAREA: Reporte técnico que incluya:
-1. Resumen ejecutivo (1 párrafo)
-2. Producción total vs. meta
-3. Análisis de tendencia
-4. Factores que afectan la producción
-5. Recomendaciones para el próximo período
-
-FORMATO: 500-700 palabras, títulos numerados, tabla resumen, lenguaje técnico accesible
+[ROL]: Actúa como Asesor Senior de Eficiencia Operativa en PDVSA.
+[CONTEXTO]: Se ha detectado una variación del [X]% en el presupuesto asignado a la división [Nombre División].
+[TAREA]: Analiza los siguientes datos operativos [Pegar Datos/Reporte] e identifica:
+1. Tres áreas de desperdicio o sobrecosto inmediato.
+2. Dos medidas de optimización sin afectar la seguridad de la planta/unidad.
+3. Formato de salida: Tabla comparativa con Costo vs. Impacto Estimado.
 \`\`\`
 
-### Plantilla 2: Resumen de Normativa de Seguridad
+### Plantilla 2: Redacción de Memorándums Ejecutivos de Alto Impacto
 
 \`\`\`
-ACTÚA como: Especialista en Seguridad Industrial con certificación en normativas petroleras.
-
-TAREA: Resume la normativa [NOMBRE]:
-1. Propósito principal
-2. Requisitos clave para el personal
-3. Consecuencias del incumplimiento
-4. Documentos requeridos
-5. Frecuencia de revisión
-
-FORMATO: 300-400 palabras, lista numerada, tabla de cumplimiento Sí/No
+[ROL]: Actúa como Director de Comunicaciones Corporativas.
+[CONTEXTO]: Se requiere solicitar la aprobación inmediata para [Objeto de la Solicitud] dirigida a [Destinatario/Gerencia].
+[TAREA]: Redacta un memorándum de no más de 300 palabras estructurado en:
+- Antecedentes clave en 2 viñetas.
+- Justificación de ROI/Impacto en continuidad operativa.
+- Petición concreta y fecha límite de respuesta.
+- Tono: Formal, institucional, directo.
 \`\`\`
 
-### Plantilla 3: Análisis de Causa Raíz
+### Plantilla 3: Evaluación de Riesgos y Matriz de Contención
 
 \`\`\`
-ACTÚA como: Investigador de Incidentes con experiencia en Root Cause Analysis.
-
-CONTEXTO: Incidente: [DESCRIPCIÓN]
-
-TAREA: Análisis de causa raíz usando "5 Por Qués":
-- Tabla con 5 niveles de causa
-- Cada nivel: Causa → Evidencia → Siguiente pregunta
-- Conclusión con causa raíz
-- 3 recomendaciones (inmediata, corto plazo, largo plazo)
+[ROL]: Actúa como Especialista en Gestión de Riesgos e Inclemencias Operativas.
+[CONTEXTO]: Se presenta la siguiente eventualidad no programada: [Describir falla o contingencia].
+[TAREA]: Proyecta 3 escenarios hipotéticos (Conservador, Moderado, Crítico) evaluando:
+- Impacto financiero proyectado.
+- Tiempo de recuperación estimado (MTTR).
+- Protocolo de mitigación inmediato para supervisores de campo.
 \`\`\`
 
-### Plantilla 4: Email Ejecutivo
+### Plantilla 4: Resumen Ejecutivo de Informes Extensos
 
 \`\`\`
-ACTÚA como: Gerente de Área de PDVSA.
-
-TAREA: Email ejecutivo:
-1. Asunto claro (máx. 10 palabras)
-2. Contexto en 1-2 oraciones
-3. Puntos principales (máx. 3 bullets)
-4. Solución o recomendación específica
-5. Próximos pasos
-
-FORMATO: 150-250 palabras, tono profesional, directo
+[ROL]: Actúa como Analista Ejecutivo de Junta Directiva.
+[TAREA]: Sintetiza el siguiente informe técnico/financiero [Pegar Texto Extenso] en una "Ficha Gerencial de 1 Página" que contenga:
+- Resumen en 3 oraciones principales.
+- 3 KPIs o cifras más relevantes.
+- Riesgo principal detectado.
+- Decisión recomendada (Aprobar / Rechazar / Requerir más datos).
 \`\`\`
 
 ---
 
-## Ejercicio: Creación de Prompt Personalizado
+## Cómo Usar Estas Plantillas
 
-1. Identifique una tarea repetitiva en su trabajo diario
-2. Use la plantilla maestra para crear un prompt personalizado
-3. Pruebe en ChatGPT o Claude
-4. Mejore iterativamente hasta obtener resultado satisfactorio`,
+1. **Ingresa al Asistente Ejecutivo IA** desde el menú lateral
+2. **Selecciona la plantilla** que deseas usar de la "Guía de Plantillas Gerenciales"
+3. **Personaliza los campos** entre corchetes [X] con tus datos reales
+4. **Genera el análisis** y revisa la respuesta del asistente
+5. **Copia o descarga** el informe resultante
+
+---
+
+## Ejercicio Práctico
+
+1. Seleccione una de las 4 plantillas ejecutivas
+2. Personalice los campos con un escenario real de su área en PDVSA
+3. Genere el análisis con el Asistente Ejecutivo IA
+4. Presente el resultado a un compañero para retroalimentación`,
     duracion_minutos: 120
   },
   {
