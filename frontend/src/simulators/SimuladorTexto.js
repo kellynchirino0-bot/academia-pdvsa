@@ -629,16 +629,18 @@ ${'═'.repeat(56)}`;
                     className="btn-gold"
                     onClick={() => {
                       const content = respuesta?.resultado?.respuesta || respuesta?.resultado?.contenido || '';
-                      const blob = new Blob([content], { type: 'text/plain' });
+                      const header = `FICHA DE DECISIÓN EJECUTIVA\n${'═'.repeat(60)}\nInstitución: Nasser Group / IUTPAL\nPlataforma: Academia Virtual PDVSA\nFecha: ${new Date().toLocaleDateString('es-VE')}\nHora: ${new Date().toLocaleTimeString('es-VE')}\nTipo de Documento: ${tiposDocumento.find(t => t.value === tipoDocumento)?.label || tipoDocumento}\n${'═'.repeat(60)}\n\nSOLICITUD ORIGINAL:\n${respuesta?.prompt || 'N/A'}\n${'─'.repeat(60)}\n\nRESPUESTA DEL ASISTENTE IA:\n${'─'.repeat(60)}\n\n${content}\n\n${'═'.repeat(60)}\nDocumento generado por la Plataforma Academia Virtual PDVSA\nNasser Group — Instituto Universitario de Tecnología de Processos\nLínea de desarrollo: Investigación de Operaciones y Toma de Decisiones\n${'═'.repeat(60)}\nEste documento puede ser utilizado como respaldo institucional.\nFirma autorizada: ___________________________`;
+                      const blob = new Blob([header], { type: 'text/plain;charset=utf-8' });
                       const url = URL.createObjectURL(blob);
                       const a = document.createElement('a');
                       a.href = url;
-                      a.download = `informe_ejecutivo_${Date.now()}.txt`;
+                      a.download = `ficha_decision_${Date.now()}.txt`;
                       a.click();
+                      URL.revokeObjectURL(url);
                     }}
                     style={{ flex: 1, padding: '10px', color: 'var(--primary-blue-dark)' }}
                   >
-                    <Download size={16} /> Descargar
+                    <Download size={16} /> Exportar Ficha
                   </button>
                 </div>
               </div>

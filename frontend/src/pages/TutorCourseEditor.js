@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   BookOpen, Plus, Video, FileText, File, ClipboardList, Trash2, 
-  Edit2, Upload, Link as LinkIcon, Save, X, ChevronDown, ChevronUp
+  Edit2, Upload, Link as LinkIcon, Save, X, ChevronDown, ChevronUp, Play, Zap
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -19,6 +19,7 @@ const TutorCourseEditor = () => {
   const [expandedModulos, setExpandedModulos] = useState({});
   const [contentForm, setContentForm] = useState({ tipo: 'video', titulo: '', url: '', descripcion: '' });
   const [taskForm, setTaskForm] = useState({ titulo: '', descripcion: '', puntos_maximos: 100, fecha_limite: '' });
+  const [showGuiaSimulacion, setShowGuiaSimulacion] = useState(false);
 
   useEffect(() => { loadModulos(); }, []);
 
@@ -101,6 +102,112 @@ const TutorCourseEditor = () => {
       <div className="page-header">
         <h1>Editor de Cursos</h1>
         <p>Gestiona videos, documentos, PDFs y tareas de cada leccion</p>
+      </div>
+
+      {/* Guía de Simulación en Vivo */}
+      <div className="card" style={{ marginBottom: '24px', border: '2px solid #0891b2' }}>
+        <div 
+          onClick={() => setShowGuiaSimulacion(!showGuiaSimulacion)}
+          style={{ 
+            padding: '14px 20px', 
+            cursor: 'pointer', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '12px',
+            background: 'linear-gradient(135deg, rgba(8,145,178,0.05), rgba(2,132,199,0.08))'
+          }}
+        >
+          <div style={{ 
+            width: '36px', height: '36px', borderRadius: '8px', 
+            background: 'rgba(8,145,178,0.15)', display: 'flex', 
+            alignItems: 'center', justifyContent: 'center'
+          }}>
+            <Play size={18} color="#0891b2" />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: '700', fontSize: '0.9rem', color: '#003366' }}>
+              Guía de Apertura y Ejercicios en Vivo (5 Minutos)
+            </div>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+              Casos prácticos de I.O. para proyectar durante las jornadas con directiva PDVSA
+            </div>
+          </div>
+          {showGuiaSimulacion ? <ChevronUp size={18} color="#0891b2" /> : <ChevronDown size={18} color="#0891b2" />}
+        </div>
+
+        {showGuiaSimulacion && (
+          <div style={{ padding: '0 20px 16px', borderTop: '1px solid var(--border-color)' }}>
+            <div style={{ padding: '12px 16px', background: 'rgba(8,145,178,0.03)', borderRadius: '8px', marginTop: '14px' }}>
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.5', margin: 0 }}>
+                <strong style={{ color: '#003366' }}>Instrucciones:</strong> Abra el <strong>Asistente Ejecutivo IA</strong> en una pestaña separada. Cargue la plantilla correspondiente y ejecute el caso en vivo.
+              </p>
+            </div>
+
+            {/* Caso 1: Simplex */}
+            <div style={{ marginTop: '12px', padding: '14px', background: '#fff', border: '1px solid var(--border-color)', borderRadius: '8px', borderLeft: '3px solid #0891b2' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <div style={{ 
+                  width: '28px', height: '28px', borderRadius: '6px', 
+                  background: 'rgba(8,145,178,0.1)', display: 'flex', 
+                  alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: '700', color: '#0891b2'
+                }}>1</div>
+                <div style={{ fontWeight: '700', color: '#003366', fontSize: '0.88rem' }}>Método Simplex — Mezcla de Crudo</div>
+              </div>
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.5', margin: '0 0 8px' }}>
+                Cargue la plantilla <code>io1</code> para demostrar la proporción óptima de crudo pesado/liviano que maximiza el margen bajo capacidad limitada.
+              </p>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.68rem', padding: '2px 7px', background: 'rgba(8,145,178,0.1)', color: '#0891b2', borderRadius: '10px' }}>Simplex</span>
+                <span style={{ fontSize: '0.68rem', padding: '2px 7px', background: 'rgba(8,145,178,0.1)', color: '#0891b2', borderRadius: '10px' }}>Prog. Lineal</span>
+              </div>
+            </div>
+
+            {/* Caso 2: CPM/PERT */}
+            <div style={{ marginTop: '8px', padding: '14px', background: '#fff', border: '1px solid var(--border-color)', borderRadius: '8px', borderLeft: '3px solid #0369a1' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <div style={{ 
+                  width: '28px', height: '28px', borderRadius: '6px', 
+                  background: 'rgba(3,105,161,0.1)', display: 'flex', 
+                  alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: '700', color: '#0369a1'
+                }}>2</div>
+                <div style={{ fontWeight: '700', color: '#003366', fontSize: '0.88rem' }}>CPM/PERT — Parada de Planta</div>
+              </div>
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.5', margin: '0 0 8px' }}>
+                Cargue la plantilla <code>io2</code> para calcular holguras, ruta crítica y reducción de tiempo en parada de mantenimiento.
+              </p>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.68rem', padding: '2px 7px', background: 'rgba(3,105,161,0.1)', color: '#0369a1', borderRadius: '10px' }}>CPM/PERT</span>
+                <span style={{ fontSize: '0.68rem', padding: '2px 7px', background: 'rgba(3,105,161,0.1)', color: '#0369a1', borderRadius: '10px' }}>Ruta Crítica</span>
+              </div>
+            </div>
+
+            {/* Caso 3: EOQ */}
+            <div style={{ marginTop: '8px', padding: '14px', background: '#fff', border: '1px solid var(--border-color)', borderRadius: '8px', borderLeft: '3px solid #0284c7' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                <div style={{ 
+                  width: '28px', height: '28px', borderRadius: '6px', 
+                  background: 'rgba(2,132,199,0.1)', display: 'flex', 
+                  alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: '700', color: '#0284c7'
+                }}>3</div>
+                <div style={{ fontWeight: '700', color: '#003366', fontSize: '0.88rem' }}>EOQ — Repuestos Críticos</div>
+              </div>
+              <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', lineHeight: '1.5', margin: '0 0 8px' }}>
+                Cargue la plantilla <code>io3</code> para simular la reducción de costos de almacén aplicando el Lote Económico de Pedido.
+              </p>
+              <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.68rem', padding: '2px 7px', background: 'rgba(2,132,199,0.1)', color: '#0284c7', borderRadius: '10px' }}>EOQ</span>
+                <span style={{ fontSize: '0.68rem', padding: '2px 7px', background: 'rgba(2,132,199,0.1)', color: '#0284c7', borderRadius: '10px' }}>Inventarios</span>
+              </div>
+            </div>
+
+            <div style={{ marginTop: '12px', padding: '10px 14px', background: 'rgba(212,168,67,0.08)', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <Zap size={14} color="#d4a843" />
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>
+                <strong>Tip:</strong> Pida a los participantes proponer sus propios datos para resolver en vivo.
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '20px' }}>

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   Users, BookOpen, Award, TrendingUp, Clock, FileText, 
   ClipboardList, UserCheck, BarChart3, Activity, CheckCircle,
-  AlertTriangle, ArrowUpRight, ArrowDownRight, GitBranch, Package, Target
+  AlertTriangle, ArrowUpRight, ArrowDownRight, GitBranch, Package, Target,
+  Play, ChevronDown, ChevronUp, Zap
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -11,6 +12,7 @@ const API_URL = process.env.REACT_APP_API_URL || '/api';
 const AdminExecutiveDashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showGuiaSimulacion, setShowGuiaSimulacion] = useState(false);
 
   useEffect(() => { loadDashboard(); }, []);
 
@@ -70,6 +72,125 @@ const AdminExecutiveDashboard = () => {
             </div>
           );
         })}
+      </div>
+
+      {/* Guía de Simulación en Vivo para el Profesor Jarvis */}
+      <div className="card" style={{ marginBottom: '24px', border: '2px solid #0891b2' }}>
+        <div 
+          onClick={() => setShowGuiaSimulacion(!showGuiaSimulacion)}
+          style={{ 
+            padding: '16px 20px', 
+            cursor: 'pointer', 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: '12px',
+            background: 'linear-gradient(135deg, rgba(8,145,178,0.05), rgba(2,132,199,0.08))'
+          }}
+        >
+          <div style={{ 
+            width: '40px', height: '40px', borderRadius: '10px', 
+            background: 'rgba(8,145,178,0.15)', display: 'flex', 
+            alignItems: 'center', justifyContent: 'center'
+          }}>
+            <Play size={20} color="#0891b2" />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: '700', fontSize: '0.95rem', color: '#003366' }}>
+              Guía de Apertura y Ejercicios en Vivo (5 Minutos)
+            </div>
+            <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+              Casos prácticos de Investigación de Operaciones para proyectar durante las jornadas con directiva PDVSA
+            </div>
+          </div>
+          {showGuiaSimulacion ? <ChevronUp size={20} color="#0891b2" /> : <ChevronDown size={20} color="#0891b2" />}
+        </div>
+
+        {showGuiaSimulacion && (
+          <div style={{ padding: '0 20px 20px', borderTop: '1px solid var(--border-color)' }}>
+            <div style={{ padding: '16px', background: 'rgba(8,145,178,0.03)', borderRadius: '8px', marginTop: '16px' }}>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', lineHeight: '1.6', margin: 0 }}>
+                <strong style={{ color: '#003366' }}>Instrucciones para el Profesor Jarvis:</strong> Durante la jornada con directiva y supervisores de PDVSA, proyecte esta guía y ejecute cada caso en el <strong>Asistente Ejecutivo IA</strong> en vivo. Cada ejercicio toma aproximadamente 5 minutos.
+              </p>
+            </div>
+
+            {/* Caso 1: Simplex */}
+            <div style={{ marginTop: '16px', padding: '16px', background: '#fff', border: '1px solid var(--border-color)', borderRadius: '10px', borderLeft: '4px solid #0891b2' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                <div style={{ 
+                  width: '32px', height: '32px', borderRadius: '8px', 
+                  background: 'rgba(8,145,178,0.1)', display: 'flex', 
+                  alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', fontWeight: '700', color: '#0891b2'
+                }}>1</div>
+                <div>
+                  <div style={{ fontWeight: '700', color: '#003366', fontSize: '0.95rem' }}>Caso 1 — Método Simplex: Mezcla de Crudo</div>
+                  <div style={{ fontSize: '0.75rem', color: '#0891b2' }}>Plantilla I.O.: <code>io1</code></div>
+                </div>
+              </div>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: '1.6', margin: '0 0 10px' }}>
+                Cargue en el Asistente Ejecutivo la plantilla <strong>io1</strong> para demostrar cómo calcular la proporción óptima de procesamiento entre Crudo Pesado y Liviano que maximiza el margen operativo bajo capacidad limitada de refinación.
+              </p>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.7rem', padding: '3px 8px', background: 'rgba(8,145,178,0.1)', color: '#0891b2', borderRadius: '12px' }}>Método Simplex</span>
+                <span style={{ fontSize: '0.7rem', padding: '3px 8px', background: 'rgba(8,145,178,0.1)', color: '#0891b2', borderRadius: '12px' }}>Programación Lineal</span>
+                <span style={{ fontSize: '0.7rem', padding: '3px 8px', background: 'rgba(8,145,178,0.1)', color: '#0891b2', borderRadius: '12px' }}>Optimización de Mezclas</span>
+              </div>
+            </div>
+
+            {/* Caso 2: CPM/PERT */}
+            <div style={{ marginTop: '12px', padding: '16px', background: '#fff', border: '1px solid var(--border-color)', borderRadius: '10px', borderLeft: '4px solid #0369a1' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                <div style={{ 
+                  width: '32px', height: '32px', borderRadius: '8px', 
+                  background: 'rgba(3,105,161,0.1)', display: 'flex', 
+                  alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', fontWeight: '700', color: '#0369a1'
+                }}>2</div>
+                <div>
+                  <div style={{ fontWeight: '700', color: '#003366', fontSize: '0.95rem' }}>Caso 2 — CPM/PERT: Parada de Planta</div>
+                  <div style={{ fontSize: '0.75rem', color: '#0369a1' }}>Plantilla I.O.: <code>io2</code></div>
+                </div>
+              </div>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: '1.6', margin: '0 0 10px' }}>
+                Cargue la plantilla <strong>io2</strong> para mostrar el cálculo probabilístico de holguras, ruta crítica y reducción del tiempo total en la parada de mantenimiento de una planta de fraccionamiento.
+              </p>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.7rem', padding: '3px 8px', background: 'rgba(3,105,161,0.1)', color: '#0369a1', borderRadius: '12px' }}>CPM/PERT</span>
+                <span style={{ fontSize: '0.7rem', padding: '3px 8px', background: 'rgba(3,105,161,0.1)', color: '#0369a1', borderRadius: '12px' }}>Ruta Crítica</span>
+                <span style={{ fontSize: '0.7rem', padding: '3px 8px', background: 'rgba(3,105,161,0.1)', color: '#0369a1', borderRadius: '12px' }}>Gestión de Proyectos</span>
+              </div>
+            </div>
+
+            {/* Caso 3: EOQ */}
+            <div style={{ marginTop: '12px', padding: '16px', background: '#fff', border: '1px solid var(--border-color)', borderRadius: '10px', borderLeft: '4px solid #0284c7' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                <div style={{ 
+                  width: '32px', height: '32px', borderRadius: '8px', 
+                  background: 'rgba(2,132,199,0.1)', display: 'flex', 
+                  alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', fontWeight: '700', color: '#0284c7'
+                }}>3</div>
+                <div>
+                  <div style={{ fontWeight: '700', color: '#003366', fontSize: '0.95rem' }}>Caso 3 — EOQ: Repuestos Críticos</div>
+                  <div style={{ fontSize: '0.75rem', color: '#0284c7' }}>Plantilla I.O.: <code>io3</code></div>
+                </div>
+              </div>
+              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: '1.6', margin: '0 0 10px' }}>
+                Cargue la plantilla <strong>io3</strong> para simular la reducción de costos en almacén aplicando el Lote Económico de Pedido (EOQ) sin arriesgar la continuidad operativa por falta de bombas o repuestos críticos.
+              </p>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '0.7rem', padding: '3px 8px', background: 'rgba(2,132,199,0.1)', color: '#0284c7', borderRadius: '12px' }}>EOQ</span>
+                <span style={{ fontSize: '0.7rem', padding: '3px 8px', background: 'rgba(2,132,199,0.1)', color: '#0284c7', borderRadius: '12px' }}>Inventarios</span>
+                <span style={{ fontSize: '0.7rem', padding: '3px 8px', background: 'rgba(2,132,199,0.1)', color: '#0284c7', borderRadius: '12px' }}>Reducción de Costos</span>
+              </div>
+            </div>
+
+            {/* Nota al pie */}
+            <div style={{ marginTop: '16px', padding: '12px 16px', background: 'rgba(212,168,67,0.08)', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <Zap size={16} color="#d4a843" />
+              <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+                <strong style={{ color: '#003366' }}>Tip:</strong> Después de cada ejercicio, pida a los participantes que propongan sus propios datos para resolver en tiempo real con el Asistente Ejecutivo IA.
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
