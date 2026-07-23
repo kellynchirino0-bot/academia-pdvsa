@@ -10,7 +10,7 @@
     "dev:frontend": "cd frontend && npm start",
     "dev:backend": "cd backend && npm run dev",
     "build": "cd frontend && npm run build",
-    "vercel-build": "cd frontend && rm -rf build && npm install && npm run build",
+    "vercel-build": "cd frontend && npm install && npm run build",
     "seed": "node api/seed-content.js",
     "start": "node api/index.js"
   },
