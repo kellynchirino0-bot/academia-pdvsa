@@ -37,7 +37,10 @@ const Login = () => {
       }
 
       if (result.success) {
-        navigate('/dashboard');
+        const rol = result.user?.rol;
+        if (rol === 'administrador') navigate('/admin/dashboard');
+        else if (rol === 'tutor') navigate('/tutor');
+        else navigate('/dashboard');
       } else {
         setError(result.error);
       }

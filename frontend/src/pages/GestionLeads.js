@@ -50,6 +50,30 @@ const GestionLeads = () => {
     }
   };
 
+  const exportLeads = async (format) => {
+    try {
+      const response = await axios.get(`${API_URL}/leads/export?format=${format}`, { responseType: format === 'csv' ? 'blob' : 'json' });
+      if (format === 'csv') {
+        const url = URL.createObjectURL(new Blob([response.data]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'leads_export.csv';
+        a.click();
+        URL.revokeObjectURL(url);
+      } else {
+        const blob = new Blob([JSON.stringify(response.data, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'leads_export.json';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      alert('Error al exportar leads');
+    }
+  };
+
   const convertirLead = async (leadId) => {
     try {
       const response = await axios.post(`${API_URL}/leads/${leadId}/convertir`);
@@ -116,6 +140,22 @@ const GestionLeads = () => {
           <div>
             <h1>Gestión de Leads</h1>
             <p>Administra prospectos interesados en el curso de IA para PDVSA</p>
+          </div>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button 
+              className="btn-secondary" 
+              onClick={() => exportLeads('csv')}
+              style={{ width: 'auto', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}
+            >
+              <Download size={16} /> CSV
+            </button>
+            <button 
+              className="btn-secondary" 
+              onClick={() => exportLeads('json')}
+              style={{ width: 'auto', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem' }}
+            >
+              <Download size={16} /> JSON
+            </button>
           </div>
         </div>
       </div>

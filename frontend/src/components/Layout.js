@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import TrialCountdownBanner from './TrialCountdownBanner';
+import NotificationsCenter from './NotificationsCenter';
 import { 
   LayoutDashboard, 
   MessageSquare, 
@@ -16,11 +18,15 @@ import {
   Settings,
   Briefcase,
   Target,
-  ClipboardList
+  ClipboardList,
+  BarChart3,
+  UserCog,
+  Edit3,
+  FileBarChart
 } from 'lucide-react';
 
 const Layout = ({ children }) => {
-  const { user, logout } = useAuth();
+  const { user, logout, trial } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -30,19 +36,25 @@ const Layout = ({ children }) => {
 
   const navItems = [
     { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/cursos', icon: BookOpen, label: 'Módulos del Curso', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/cursos', icon: BookOpen, label: 'Modulos del Curso', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/simulador/texto', icon: MessageSquare, label: 'Simulador GPT', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/imagenes', icon: Image, label: 'Simulador Imágenes', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/imagenes', icon: Image, label: 'Simulador Imagenes', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/simulador/video-audio', icon: Video, label: 'Simulador Video/Audio', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/evaluaciones', icon: ClipboardList, label: 'Evaluaciones', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/notas', icon: Target, label: 'Mis Notas', roles: ['participante'] },
     { to: '/certificados', icon: Award, label: 'Certificados', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/mi-reporte', icon: FileBarChart, label: 'Mi Reporte', roles: ['participante'] },
     { divider: true, roles: ['administrador', 'tutor'] },
     { to: '/tutor', icon: Users, label: 'Panel Tutor', roles: ['administrador', 'tutor'] },
+    { to: '/tutor/editor-cursos', icon: Edit3, label: 'Editor Cursos', roles: ['administrador', 'tutor'] },
     { divider: true, roles: ['administrador'] },
-    { to: '/leads', icon: UserPlus, label: 'Gestión Leads', roles: ['administrador'] },
-    { to: '/usuarios', icon: Briefcase, label: 'Usuarios', roles: ['administrador'] },
+    { to: '/admin/dashboard', icon: BarChart3, label: 'Dashboard Ejecutivo', roles: ['administrador'] },
+    { to: '/leads', icon: UserPlus, label: 'Gestion Leads', roles: ['administrador'] },
+    { to: '/admin/usuarios', icon: UserCog, label: 'Gestion Usuarios', roles: ['administrador'] },
+    { to: '/usuarios', icon: Briefcase, label: 'Usuarios Basico', roles: ['administrador'] },
     { to: '/admin/curso', icon: Settings, label: 'Admin Curso', roles: ['administrador'] },
+    { to: '/admin/certificados', icon: Award, label: 'Aprobar Certificados', roles: ['administrador'] },
+    { to: '/admin/reportes', icon: FileBarChart, label: 'Reportes Gerencia', roles: ['administrador'] },
   ];
 
   const filteredNavItems = navItems.filter(item => 
@@ -55,7 +67,7 @@ const Layout = ({ children }) => {
         <div className="sidebar-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
             <GraduationCap size={28} color="#d4a843" />
-            <div>
+            <div style={{ flex: 1 }}>
               <h2 style={{ fontSize: '1rem', margin: 0 }}>Nasser Group</h2>
               <span className="user-role" style={{ 
                 display: 'inline-block',
@@ -71,6 +83,7 @@ const Layout = ({ children }) => {
                 {user?.rol}
               </span>
             </div>
+            <NotificationsCenter />
           </div>
           <div style={{ fontSize: '0.75rem', opacity: 0.6, marginTop: '8px' }}>
             Academia Virtual PDVSA
@@ -92,7 +105,7 @@ const Layout = ({ children }) => {
                     letterSpacing: '1px',
                     opacity: 0.5
                   }}>
-                    {user?.rol === 'administrador' ? 'Administración' : 'Gestión'}
+                    {user?.rol === 'administrador' ? 'Administracion' : 'Gestion'}
                   </span>
                 </li>
               );
@@ -125,12 +138,13 @@ const Layout = ({ children }) => {
           </div>
           <button className="logout-btn" onClick={handleLogout}>
             <LogOut size={16} />
-            <span>Cerrar Sesión</span>
+            <span>Cerrar Sesion</span>
           </button>
         </div>
       </aside>
       
       <main className="main-content">
+        <TrialCountdownBanner trial={trial} />
         {children}
       </main>
     </div>

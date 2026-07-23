@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { BookOpen, Clock, ChevronRight, CheckCircle, Lock } from 'lucide-react';
 import axios from 'axios';
@@ -231,6 +231,27 @@ const ModulosList = () => {
                    estaEnProgreso ? `${modulo.lecciones_completadas} de ${modulo.total_lecciones} lecciones` :
                    'No iniciado'}
                 </div>
+
+                <Link 
+                  to={`/cursos/modulo/${modulo.id}`}
+                  onClick={(e) => e.stopPropagation()}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    marginTop: '12px',
+                    padding: '10px 20px',
+                    background: 'var(--primary-blue)',
+                    color: '#fff',
+                    borderRadius: '8px',
+                    textDecoration: 'none',
+                    fontWeight: '600',
+                    fontSize: '0.9rem',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Entrar al Módulo →
+                </Link>
               </div>
             </div>
           );

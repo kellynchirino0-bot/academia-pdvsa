@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import ModulosList from './pages/ModulosList';
 import ModuloDetalle from './pages/ModuloDetalle';
+import LeccionDetalle from './pages/LeccionDetalle';
 import SimuladorTexto from './simulators/SimuladorTexto';
 import SimuladorImagenes from './simulators/SimuladorImagenes';
 import SimuladorVideoAudio from './simulators/SimuladorVideoAudio';
@@ -14,8 +15,16 @@ import Certificados from './pages/Certificados';
 import Usuarios from './pages/Usuarios';
 import GestionLeads from './pages/GestionLeads';
 import AdminCurso from './pages/AdminCurso';
+import AdminCertificados from './pages/AdminCertificados';
+import AdminUsersManager from './pages/AdminUsersManager';
+import AdminExecutiveDashboard from './pages/AdminExecutiveDashboard';
+import AdminConsolidatedReport from './pages/AdminConsolidatedReport';
 import TutorDashboard from './pages/TutorDashboard';
+import TutorCourseEditor from './pages/TutorCourseEditor';
+import StudentReport from './pages/StudentReport';
+import CertificateVerify from './pages/CertificateVerify';
 import Layout from './components/Layout';
+import TrialCountdownBanner from './components/TrialCountdownBanner';
 import './styles/index.css';
 import './styles/App.css';
 
@@ -39,6 +48,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/verify/:certificateId" element={<CertificateVerify />} />
           
           {/* Rutas generales */}
           <Route path="/dashboard" element={
@@ -56,6 +66,11 @@ function App() {
           <Route path="/cursos/modulo/:id" element={
             <ProtectedRoute>
               <ModuloDetalle />
+            </ProtectedRoute>
+          } />
+          <Route path="/cursos/modulo/:id/leccion/:lessonId" element={
+            <ProtectedRoute>
+              <LeccionDetalle />
             </ProtectedRoute>
           } />
           
@@ -92,11 +107,26 @@ function App() {
               <Certificados />
             </ProtectedRoute>
           } />
+          <Route path="/mi-reporte" element={
+            <ProtectedRoute>
+              <StudentReport />
+            </ProtectedRoute>
+          } />
           
           {/* Rutas Admin */}
           <Route path="/usuarios" element={
             <ProtectedRoute allowedRoles={['administrador']}>
               <Usuarios />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/usuarios" element={
+            <ProtectedRoute allowedRoles={['administrador']}>
+              <AdminUsersManager />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/dashboard" element={
+            <ProtectedRoute allowedRoles={['administrador']}>
+              <AdminExecutiveDashboard />
             </ProtectedRoute>
           } />
           <Route path="/leads" element={
@@ -109,11 +139,26 @@ function App() {
               <AdminCurso />
             </ProtectedRoute>
           } />
+          <Route path="/admin/certificados" element={
+            <ProtectedRoute allowedRoles={['administrador']}>
+              <AdminCertificados />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/reportes" element={
+            <ProtectedRoute allowedRoles={['administrador']}>
+              <AdminConsolidatedReport />
+            </ProtectedRoute>
+          } />
           
           {/* Rutas Tutor */}
           <Route path="/tutor" element={
             <ProtectedRoute allowedRoles={['administrador', 'tutor']}>
               <TutorDashboard />
+            </ProtectedRoute>
+          } />
+          <Route path="/tutor/editor-cursos" element={
+            <ProtectedRoute allowedRoles={['administrador', 'tutor']}>
+              <TutorCourseEditor />
             </ProtectedRoute>
           } />
           

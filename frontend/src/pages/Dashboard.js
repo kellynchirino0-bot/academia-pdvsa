@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
   MessageSquare, 
@@ -178,10 +178,7 @@ const Dashboard = () => {
             <div 
               key={index}
               className="module-card"
-              style={{ borderTopColor: module.color, cursor: 'pointer', transition: 'transform 0.2s, box-shadow 0.2s' }}
-              onClick={() => navigate(`/cursos/modulo/${module.id}`)}
-              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)'; }}
-              onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = ''; }}
+              style={{ borderTopColor: module.color }}
             >
               <div className="module-icon" style={{ color: module.color }}>
                 {module.icon}
@@ -191,6 +188,26 @@ const Dashboard = () => {
               <div className="progress-bar">
                 <div className="progress-fill" style={{ width: '0%' }}></div>
               </div>
+              <Link 
+                to={`/cursos/modulo/${module.id}`}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  marginTop: '16px',
+                  padding: '10px 20px',
+                  background: module.color,
+                  color: '#fff',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  fontWeight: '600',
+                  fontSize: '0.9rem',
+                  cursor: 'pointer',
+                  transition: 'opacity 0.2s'
+                }}
+              >
+                Entrar al Módulo →
+              </Link>
             </div>
           ))}
         </div>
@@ -206,3 +223,16 @@ const Dashboard = () => {
             diseñado especialmente para los equipos de PDVSA. Incluye fundamentos de IA,
             Prompt Engineering, Gemelos Digitales y aplicaciones prácticas con simuladores interactivos.
           </p>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <span className="badge badge-info">40 Horas</span>
+            <span className="badge badge-success">4 Módulos</span>
+            <span className="badge badge-warning">3 Evaluaciones</span>
+            <span className="badge badge-info">Certificado Digital</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;
