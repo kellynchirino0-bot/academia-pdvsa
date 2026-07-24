@@ -25,6 +25,7 @@ import StudentReport from './pages/StudentReport';
 import CertificateVerify from './pages/CertificateVerify';
 import FaqPage from './pages/FaqPage';
 import GuionEstrategicoPDF from './components/GuionEstrategicoPDF';
+import IOLeccionView from './pages/IOLeccionView';
 import PromptsPDVSA from './pages/PromptsPDVSA';
 import RecursosEnterprise from './pages/RecursosEnterprise';
 import VerificarCertificado from './pages/VerificarCertificado';
@@ -71,6 +72,12 @@ function App() {
           <Route path="/cursos/modulo/:id" element={
             <ProtectedRoute>
               <ModuloDetalle />
+            </ProtectedRoute>
+          } />
+          {/* Pista Académica I.O. - debe ir ANTES de la ruta genérica */}
+          <Route path="/cursos/modulo/4/leccion/:leccionId" element={
+            <ProtectedRoute>
+              <IOLeccionView />
             </ProtectedRoute>
           } />
           <Route path="/cursos/modulo/:id/leccion/:lessonId" element={
