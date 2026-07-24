@@ -27,6 +27,7 @@ import FaqPage from './pages/FaqPage';
 import GuionEstrategicoPDF from './components/GuionEstrategicoPDF';
 import PromptsPDVSA from './pages/PromptsPDVSA';
 import RecursosEnterprise from './pages/RecursosEnterprise';
+import VerificarCertificado from './pages/VerificarCertificado';
 import Layout from './components/Layout';
 import TrialCountdownBanner from './components/TrialCountdownBanner';
 import './styles/index.css';
@@ -124,6 +125,7 @@ function App() {
           <Route path="/guion-pdf" element={<GuionEstrategicoPDF />} />
           <Route path="/prompts-pdvsa" element={<PromptsPDVSA />} />
           <Route path="/recursos-enterprise" element={<RecursosEnterprise />} />
+          <Route path="/verificar-certificado" element={<VerificarCertificado />} />
           
           {/* Rutas Admin */}
           <Route path="/usuarios" element={

@@ -2,6 +2,7 @@
   "version": 2,
   "outputDirectory": "frontend/build",
   "rewrites": [
+    { "source": "/api/prompts", "destination": "/api/prompts/pdvsa" },
     { "source": "/api/prompts/(.*)", "destination": "/api/prompts/pdvsa" },
     { "source": "/api/(.*)", "destination": "/api/index.js" },
     { "source": "/(.*)", "destination": "/index.html" }

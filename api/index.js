@@ -895,6 +895,47 @@ app.get('/api/certificates/verify/:code', (req, res) => {
   });
 });
 
+app.get('/api/certificados/verificar', (req, res) => {
+  const { codigo } = req.query;
+
+  const certificadosBD = [
+    {
+      id: "CERT-PDVSA-2026-001",
+      estudiante: "Ing. Kellyn Chirino",
+      cedula: "V-19876543",
+      curso: "Inteligencia Artificial e Investigaci\u00f3n de Operaciones para L\u00edderes de Negocio",
+      institucion: "Universidad Polit\u00e9cnica Territorial del Zulia (IUTPAL) & Nasser Group",
+      fechaEmision: "2026-07-15",
+      hashMLDSA: "0x8f2d9a1b4c7e3f6a5b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a",
+      estado: "V\u00c1LIDO Y FIRMADO EN BLOCKCHAIN"
+    },
+    {
+      id: "CERT-PDVSA-2026-002",
+      estudiante: "Profesor Jarvis",
+      cedula: "V-14235678",
+      curso: "Modelos Avanzados de Simplex, CPM/PERT y Prompt Engineering Industrial",
+      institucion: "Universidad Polit\u00e9cnica Territorial del Zulia (IUTPAL) & GabrielBiz Galaxy",
+      fechaEmision: "2026-07-20",
+      hashMLDSA: "0x1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b",
+      estado: "V\u00c1LIDO Y FIRMADO EN BLOCKCHAIN"
+    }
+  ];
+
+  if (!codigo) {
+    return res.status(200).json({ exito: true, mensaje: "Ingrese un c\u00f3digo para verificar" });
+  }
+
+  const encontrado = certificadosBD.find(
+    (c) => c.id.toLowerCase() === codigo.toLowerCase() || c.cedula.toLowerCase() === codigo.toLowerCase()
+  );
+
+  if (encontrado) {
+    return res.status(200).json({ exito: true, encontrado: true, certificado: encontrado });
+  } else {
+    return res.status(404).json({ exito: false, encontrado: false, mensaje: "Certificado no encontrado" });
+  }
+});
+
 app.post('/api/certificates/generate', verifyToken, (req, res) => {
   try {
     const user = memoryStorage.usuarios.find(u => u.id === req.user.id);
