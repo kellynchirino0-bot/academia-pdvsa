@@ -247,7 +247,7 @@ const StudentReport = () => {
                 <tr><th>Modulo</th><th>Lecciones</th><th>Promedio</th><th>Estado</th></tr>
               </thead>
               <tbody>
-                {data.calificaciones.map((cal, idx) => (
+                {(data.calificaciones || []).map((cal, idx) => (
                   <tr key={idx}>
                     <td style={{ fontWeight: '500' }}>{cal.modulo || `Modulo ${idx + 1}`}</td>
                     <td>{cal.lecciones_completadas || 0}/{cal.total_lecciones || 0}</td>
@@ -268,7 +268,7 @@ const StudentReport = () => {
         </div>
       )}
 
-      {data.badges && data.badges.filter(b => b.otorgada).length > 0 && (
+      {(data.badges || []).filter(b => b.otorgada).length > 0 && (
         <div className="card">
           <div className="card-header">
             <h2 style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -276,7 +276,7 @@ const StudentReport = () => {
             </h2>
           </div>
           <div style={{ padding: '16px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-            {data.badges.filter(b => b.otorgada).map((badge, idx) => (
+            {(data.badges || []).filter(b => b.otorgada).map((badge, idx) => (
               <div key={idx} style={{
                 padding: '12px 16px', borderRadius: '12px', textAlign: 'center',
                 background: `${badge.color}15`, border: `2px solid ${badge.color}`,

@@ -341,9 +341,9 @@ en un plazo no mayor a 30 días.
                 </div>
                 <div style={{ fontSize: '0.85rem', color: '#6b7280' }}>Calidad RICE</div>
               </div>
-              {evaluacion.feedback.length > 0 && (
+              {(evaluacion.feedback || []).length > 0 && (
                 <div>
-                  {evaluacion.feedback.map((f, i) => (
+                  {(evaluacion.feedback || []).map((f, i) => (
                     <div key={i} style={{ padding: '6px 10px', background: '#fef3c7', borderRadius: '6px', marginBottom: '4px', fontSize: '0.8rem', color: '#92400e', borderLeft: '3px solid #f59e0b' }}>
                       {f}
                     </div>
@@ -867,7 +867,7 @@ const Cuestionario = ({ preguntas, moduloId, onCompletar }) => {
         </div>
       )}
 
-      {preguntas.map((p, idx) => (
+      {(preguntas || []).map((p, idx) => (
         <div key={p.id} style={{ marginBottom: '18px', padding: '16px', background: '#f8fafc', borderRadius: '10px',
           border: enviado ? `2px solid ${respuestas[p.id] === p.correcta ? '#10b981' : '#CC0000'}` : '2px solid transparent'
         }}>
@@ -875,7 +875,7 @@ const Cuestionario = ({ preguntas, moduloId, onCompletar }) => {
             {idx + 1}. {p.pregunta}
           </div>
           <div style={{ display: 'grid', gap: '8px' }}>
-            {p.opciones.map((op, opIdx) => (
+            {(p.opciones || []).map((op, opIdx) => (
               <button key={opIdx} onClick={() => seleccionarRespuesta(p.id, opIdx)}
                 style={{
                   padding: '10px 14px', textAlign: 'left', borderRadius: '8px', fontSize: '0.88rem',
@@ -1093,7 +1093,7 @@ const ModuloDetalle = () => {
             {teoria && (
               <div style={{ background: '#fff', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 4px rgba(0,0,0,0.06)', marginBottom: '20px' }}>
                 <h3 style={{ color: '#003366', marginBottom: '20px' }}>{teoria?.titulo || 'Sin título'}</h3>
-                {teoria.temas.map((t, i) => (
+                {(teoria.temas || []).map((t, i) => (
                   <div key={i} style={{ marginBottom: '16px', padding: '16px', background: '#f8fafc', borderRadius: '10px', borderLeft: '4px solid #003366' }}>
                     <h4 style={{ color: '#003366', marginBottom: '8px', fontSize: '1rem' }}>{t?.titulo || 'Sin título'}</h4>
                     <p style={{ color: '#374151', margin: 0, lineHeight: '1.7', fontSize: '0.9rem' }}>{t.contenido}</p>

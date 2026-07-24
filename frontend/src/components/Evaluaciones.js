@@ -93,11 +93,11 @@ export default function Evaluaciones() {
           <small>{Object.keys(respuestas || {}).length} de {(quizActual?.preguntas || []).length} respondidas</small>
         </div>
         <div className="quiz-container">
-          {quizActual.preguntas.map((p, i) => (
+          {(quizActual.preguntas || []).map((p, i) => (
             <div key={i} className="quiz-pregunta">
               <h3>{i + 1}. {p.enunciado}</h3>
               <div className="quiz-opciones">
-                {p.opciones.map((o, j) => (
+                {(p.opciones || []).map((o, j) => (
                   <label key={j} className={`quiz-opcion ${respuestas[i] === j ? 'selected' : ''}`}>
                     <input type="radio" name={`p_${i}`} checked={respuestas[i] === j}
                       onChange={() => seleccionarRespuesta(i, j)} />

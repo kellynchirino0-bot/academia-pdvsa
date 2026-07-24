@@ -10,7 +10,7 @@ export default function Dashboard() {
       const data = r.data;
       setStats({
         evaluaciones: data.length,
-        aprobadas: data.filter(n => n.estatus_aprobacion === 'Aprobado').length,
+        aprobadas: (data || []).filter(n => n.estatus_aprobacion === 'Aprobado').length,
         promedio: data.length > 0
           ? (data.reduce((s, n) => s + parseFloat(n.calificacion), 0) / data.length).toFixed(1)
           : 0,

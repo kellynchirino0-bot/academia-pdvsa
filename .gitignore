@@ -8,3 +8,4 @@ frontend/build/
 build/
 .cache/
 frontend/src/.cache/
+*.log

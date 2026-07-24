@@ -133,7 +133,7 @@ const AdminConsolidatedReport = () => {
               <tr><th>Nombre</th><th>Cedula</th><th>Empresa</th><th>Progreso</th><th>Promedio</th><th>Certificado</th><th>Estado</th></tr>
             </thead>
             <tbody>
-              {data.matriz_talento.map(est => (
+              {(data.matriz_talento || []).map(est => (
                 <tr key={est.id}>
                   <td style={{ fontWeight: '500' }}>{est.nombre}</td>
                   <td>{est.cedula}</td>

@@ -41,7 +41,7 @@ const Dashboard = () => {
       
       setStats({
         evaluaciones: evalRes.data.length,
-        aprobadas: notasRes.data.filter(n => n.estatus_aprobacion).length,
+        aprobadas: (notasRes.data || []).filter(n => n.estatus_aprobacion).length,
         pendientes: evalRes.data.length - notasRes.data.length,
         certificados: certRes.data.length
       });

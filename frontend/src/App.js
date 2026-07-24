@@ -24,6 +24,7 @@ import TutorCourseEditor from './pages/TutorCourseEditor';
 import StudentReport from './pages/StudentReport';
 import CertificateVerify from './pages/CertificateVerify';
 import FaqPage from './pages/FaqPage';
+import GuionEstrategicoPDF from './components/GuionEstrategicoPDF';
 import Layout from './components/Layout';
 import TrialCountdownBanner from './components/TrialCountdownBanner';
 import './styles/index.css';
@@ -118,6 +119,7 @@ function App() {
               <FaqPage />
             </ProtectedRoute>
           } />
+          <Route path="/guion-pdf" element={<GuionEstrategicoPDF />} />
           
           {/* Rutas Admin */}
           <Route path="/usuarios" element={
