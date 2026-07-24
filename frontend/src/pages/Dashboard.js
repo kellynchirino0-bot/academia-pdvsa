@@ -119,13 +119,14 @@ const Dashboard = () => {
 
   return (
     <div>
-      <div style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', padding: '25px', borderRadius: '12px', marginBottom: '25px', border: '1px solid #334155' }}>
+      <div style={{ backgroundColor: '#1E293B', padding: '25px', borderRadius: '12px', marginBottom: '25px', border: '1px solid #334155' }}>
         <h1 style={{ color: '#38BDF8', fontSize: '26px', margin: '0 0 10px 0' }}>
           Bienvenido al Portal de Decisiones Estrat\u00e9gicas PDVSA — IUTPAL
         </h1>
-        <blockquote style={{ margin: 0, fontStyle: 'italic', color: '#CBD5E1', borderLeft: '3px solid #38BDF8', paddingLeft: '15px', fontSize: '15px' }}>
+        <blockquote style={{ margin: '0 0 20px 0', fontStyle: 'italic', color: '#CBD5E1', borderLeft: '3px solid #38BDF8', paddingLeft: '15px', fontSize: '15px' }}>
           &ldquo;En PDVSA no nos falta talento ni experiencia; nos falta velocidad para procesar datos complejos. Esta plataforma transforma la intuici\u00f3n en precisi\u00f3n matem\u00e1tica mediante el Motor de Inteligencia Ejecutiva y la Investigaci\u00f3n de Operaciones.&rdquo;
         </blockquote>
+        <MatrizEnfoqueEjecutivo />
       </div>
 
       <div className="stats-grid">
