@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { 
   Award, CheckCircle, XCircle, Clock, Search, Eye, 
-  User, Mail, Calendar, Hash, Filter
+  User, Mail, Calendar, Hash, Filter, Edit3, Save, X, Download
 } from 'lucide-react';
-import { QRCodeSVG } from 'qrcode.react';
 import axios from 'axios';
+import DigitalBadgeGSS from '../components/DigitalBadgeGSS';
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 
@@ -16,9 +16,12 @@ const AdminCertificados = () => {
   const [filtro, setFiltro] = useState('pendiente');
   const [busqueda, setBusqueda] = useState('');
   const [selectedCert, setSelectedCert] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [notasRechazo, setNotasRechazo] = useState('');
   const [processing, setProcessing] = useState(null);
+  const [editForm, setEditForm] = useState({});
 
   useEffect(() => {
     loadCertificados();
@@ -40,8 +43,6 @@ const AdminCertificados = () => {
     try {
       await axios.post(`${API_URL}/admin/certificates/${certId}/approve`);
       loadCertificados();
-      setShowModal(false);
-      setSelectedCert(null);
     } catch (error) {
       alert(error.response?.data?.error || 'Error al aprobar certificado');
     } finally {
@@ -54,7 +55,7 @@ const AdminCertificados = () => {
     try {
       await axios.post(`${API_URL}/admin/certificates/${certId}/reject`, { notas: notasRechazo });
       loadCertificados();
-      setShowModal(false);
+      setShowRejectModal(false);
       setSelectedCert(null);
       setNotasRechazo('');
     } catch (error) {
@@ -62,6 +63,33 @@ const AdminCertificados = () => {
     } finally {
       setProcessing(null);
     }
+  };
+
+  const editarCertificado = async () => {
+    if (!selectedCert) return;
+    setProcessing(selectedCert.id);
+    try {
+      await axios.put(`${API_URL}/admin/certificates/${selectedCert.id}`, editForm);
+      loadCertificados();
+      setShowEditModal(false);
+      setSelectedCert(null);
+    } catch (error) {
+      alert(error.response?.data?.error || 'Error al editar certificado');
+    } finally {
+      setProcessing(null);
+    }
+  };
+
+  const openEditModal = (cert) => {
+    setSelectedCert(cert);
+    setEditForm({
+      nombre_estudiante: cert.nombre_estudiante,
+      curso: cert.curso,
+      fecha_emision: cert.fecha_emision ? cert.fecha_emision.split('T')[0] : '',
+      codigo_verificacion: cert.codigo_verificacion,
+      calificacion_final: cert.calificacion_final
+    });
+    setShowEditModal(true);
   };
 
   const getEstadoBadge = (estado) => {
@@ -95,7 +123,7 @@ const AdminCertificados = () => {
     <div>
       <div className="page-header">
         <h1>Aprobación de Certificados</h1>
-        <p>Revisa y aprueba certificados de estudiantes que completaron el curso</p>
+        <p>Revisa, edita y aprueba certificados con aval Global Safety Solutions</p>
       </div>
 
       <div className="stats-grid">
@@ -145,16 +173,7 @@ const AdminCertificados = () => {
                 {estado === 'todos' ? 'Todos' : estado.charAt(0).toUpperCase() + estado.slice(1)}
                 {estado === 'pendiente' && stats.pendientes > 0 && (
                   <span style={{ 
-                    marginLeft: '6px', 
-                    background: '#f59e0b', 
-                    color: '#fff', 
-                    borderRadius: '50%', 
-                    width: '20px', 
-                    height: '20px', 
-                    display: 'inline-flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
-                    fontSize: '0.75rem' 
+                    marginLeft: '6px', background: '#f59e0b', color: '#fff', borderRadius: '50%', width: '20px', height: '20px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem' 
                   }}>{stats.pendientes}</span>
                 )}
               </button>
@@ -199,10 +218,7 @@ const AdminCertificados = () => {
                       </div>
                     </td>
                     <td>
-                      <span style={{ 
-                        fontWeight: '600', 
-                        color: parseFloat(cert.calificacion_final) >= 70 ? 'var(--success-green)' : 'var(--danger-red)' 
-                      }}>
+                      <span style={{ fontWeight: '600', color: parseFloat(cert.calificacion_final) >= 70 ? 'var(--success-green)' : 'var(--danger-red)' }}>
                         {cert.calificacion_final}%
                       </span>
                     </td>
@@ -220,63 +236,37 @@ const AdminCertificados = () => {
                       </code>
                     </td>
                     <td>
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
                         {cert.estado === 'pendiente' && (
                           <>
                             <button
                               onClick={() => aprobarCertificado(cert.id)}
                               disabled={processing === cert.id}
-                              style={{
-                                background: 'rgba(16, 185, 129, 0.1)',
-                                color: '#10b981',
-                                border: 'none',
-                                padding: '6px 12px',
-                                borderRadius: '6px',
-                                cursor: 'pointer',
-                                fontSize: '0.8rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '4px'
-                              }}
+                              style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}
                               title="Aprobar certificado"
                             >
                               <CheckCircle size={14} /> Aprobar
                             </button>
                             <button
-                              onClick={() => { setSelectedCert(cert); setShowModal(true); setNotasRechazo(''); }}
-                              style={{
-                                background: 'rgba(239, 68, 68, 0.1)',
-                                color: '#ef4444',
-                                border: 'none',
-                                padding: '6px 12px',
-                                borderRadius: '6px',
-                                cursor: 'pointer',
-                                fontSize: '0.8rem',
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '4px'
-                              }}
+                              onClick={() => { setSelectedCert(cert); setShowRejectModal(true); setNotasRechazo(''); }}
+                              style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}
                               title="Rechazar certificado"
                             >
                               <XCircle size={14} /> Rechazar
                             </button>
                           </>
                         )}
+                        <button
+                          onClick={() => openEditModal(cert)}
+                          style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}
+                          title="Editar certificado"
+                        >
+                          <Edit3 size={14} /> Editar
+                        </button>
                         {cert.estado === 'aprobado' && (
                           <button
-                            onClick={() => setSelectedCert(cert)}
-                            style={{
-                              background: 'rgba(10, 35, 66, 0.1)',
-                              color: 'var(--primary-blue)',
-                              border: 'none',
-                              padding: '6px 12px',
-                              borderRadius: '6px',
-                              cursor: 'pointer',
-                              fontSize: '0.8rem',
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '4px'
-                            }}
+                            onClick={() => { setSelectedCert(cert); setShowPreviewModal(true); }}
+                            style={{ background: 'rgba(2, 132, 199, 0.1)', color: '#0284c7', border: 'none', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '4px' }}
                           >
                             <Eye size={14} /> Ver Badge
                           </button>
@@ -299,12 +289,13 @@ const AdminCertificados = () => {
         )}
       </div>
 
-      {showModal && selectedCert && (
-        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+      {/* Modal Rechazar */}
+      {showRejectModal && selectedCert && (
+        <div className="modal-overlay" onClick={() => setShowRejectModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '500px' }}>
             <div className="modal-header">
               <h2>Rechazar Certificado</h2>
-              <button className="close-btn" onClick={() => setShowModal(false)}>
+              <button className="close-btn" onClick={() => setShowRejectModal(false)}>
                 <X size={24} />
               </button>
             </div>
@@ -324,86 +315,79 @@ const AdminCertificados = () => {
               />
             </div>
             <div style={{ display: 'flex', gap: '12px', padding: '0 20px 20px' }}>
-              <button 
-                className="btn-primary"
-                onClick={() => rechazarCertificado(selectedCert.id)}
-                disabled={processing === selectedCert.id}
-                style={{ flex: 1, background: '#ef4444' }}
-              >
+              <button className="btn-primary" onClick={() => rechazarCertificado(selectedCert.id)} disabled={processing === selectedCert.id} style={{ flex: 1, background: '#ef4444' }}>
                 {processing === selectedCert.id ? 'Procesando...' : 'Confirmar Rechazo'}
               </button>
-              <button className="btn-secondary" onClick={() => setShowModal(false)}>
-                Cancelar
-              </button>
+              <button className="btn-secondary" onClick={() => setShowRejectModal(false)}>Cancelar</button>
             </div>
           </div>
         </div>
       )}
 
-      {selectedCert && !showModal && selectedCert.estado === 'aprobado' && (
-        <div className="modal-overlay" onClick={() => setSelectedCert(null)}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '550px', padding: 0 }}>
-            <div style={{ 
-              background: 'linear-gradient(135deg, #0a2342 0%, #0d6e6e 50%, #2d8a4e 100%)', 
-              padding: '40px 32px',
-              borderRadius: '12px',
-              position: 'relative'
-            }}>
-              <button 
-                onClick={() => setSelectedCert(null)}
-                style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(255,255,255,0.2)', border: 'none', color: '#fff', borderRadius: '50%', width: '32px', height: '32px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                <X size={18} />
+      {/* Modal Editar */}
+      {showEditModal && selectedCert && (
+        <div className="modal-overlay" onClick={() => setShowEditModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '550px' }}>
+            <div className="modal-header">
+              <h2>Editar Certificado</h2>
+              <button className="close-btn" onClick={() => setShowEditModal(false)}>
+                <X size={24} />
               </button>
-              
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-                <div style={{ 
-                  width: '48px', height: '48px', borderRadius: '50%', 
-                  background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                }}>
-                  <Award size={28} color="#d4a843" />
-                </div>
-                <div>
-                  <div style={{ fontSize: '0.7rem', letterSpacing: '3px', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Nasser Group</div>
-                  <div style={{ color: '#d4a843', fontWeight: '700', letterSpacing: '4px', fontSize: '1rem' }}>DIGITAL BADGE</div>
-                </div>
+            </div>
+            <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              <div>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Nombre del Estudiante</label>
+                <input type="text" value={editForm.nombre_estudiante || ''} onChange={(e) => setEditForm({ ...editForm, nombre_estudiante: e.target.value })} style={{ width: '100%' }} />
               </div>
+              <div>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Curso / Diplomado</label>
+                <input type="text" value={editForm.curso || ''} onChange={(e) => setEditForm({ ...editForm, curso: e.target.value })} style={{ width: '100%' }} />
+              </div>
+              <div>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Fecha de Emisión</label>
+                <input type="date" value={editForm.fecha_emision || ''} onChange={(e) => setEditForm({ ...editForm, fecha_emision: e.target.value })} style={{ width: '100%' }} />
+              </div>
+              <div>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Calificación Final (%)</label>
+                <input type="number" min="0" max="100" step="0.1" value={editForm.calificacion_final || ''} onChange={(e) => setEditForm({ ...editForm, calificacion_final: e.target.value })} style={{ width: '100%' }} />
+              </div>
+              <div>
+                <label style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '6px' }}>Código de Verificación (ID)</label>
+                <input type="text" value={editForm.codigo_verificacion || ''} onChange={(e) => setEditForm({ ...editForm, codigo_verificacion: e.target.value })} style={{ width: '100%', fontFamily: 'monospace' }} />
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: '12px', padding: '0 20px 20px' }}>
+              <button className="btn-primary" onClick={editarCertificado} disabled={processing === selectedCert.id} style={{ flex: 1 }}>
+                <Save size={16} /> {processing === selectedCert.id ? 'Guardando...' : 'Guardar Cambios'}
+              </button>
+              <button className="btn-secondary" onClick={() => setShowEditModal(false)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
 
-              <div style={{ background: 'rgba(255,255,255,0.95)', borderRadius: '8px', padding: '24px', display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
-                <div style={{ flex: 1 }}>
-                  <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>Course</div>
-                    <div style={{ fontWeight: '500', color: '#1a1a1a' }}>{selectedCert.curso}</div>
-                  </div>
-                  <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>Awarded to</div>
-                    <div style={{ fontWeight: '600', color: '#1a1a1a' }}>{selectedCert.nombre_estudiante}</div>
-                  </div>
-                  <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>Issued</div>
-                    <div style={{ fontWeight: '500', color: '#1a1a1a' }}>
-                      {new Date(selectedCert.fecha_emision).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                    </div>
-                  </div>
-                  <div style={{ marginBottom: '12px' }}>
-                    <div style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>Language</div>
-                    <div style={{ fontWeight: '500', color: '#1a1a1a' }}>ES</div>
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>ID</div>
-                    <div style={{ fontWeight: '500', color: '#1a1a1a', fontFamily: 'monospace' }}>{selectedCert.codigo_verificacion}</div>
-                  </div>
-                </div>
-                <div style={{ textAlign: 'center' }}>
-                  <QRCodeSVG 
-                    value={`${window.location.origin}/verify/${selectedCert.codigo_verificacion}`}
-                    size={100}
-                    level="H"
-                    includeMargin={false}
-                  />
-                  <div style={{ fontSize: '0.65rem', color: '#666', marginTop: '4px' }}>Scan to verify</div>
-                </div>
-              </div>
+      {/* Modal Vista Previa Badge */}
+      {showPreviewModal && selectedCert && (
+        <div className="modal-overlay" onClick={() => setShowPreviewModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '650px', padding: 0, background: 'transparent', boxShadow: 'none' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
+              <button onClick={() => setShowPreviewModal(false)} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', borderRadius: '50%', width: '36px', height: '36px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>
+                <X size={20} />
+              </button>
+            </div>
+            <DigitalBadgeGSS certificado={{
+              id: selectedCert.codigo_verificacion,
+              estudiante: selectedCert.nombre_estudiante,
+              curso: selectedCert.curso,
+              fecha: selectedCert.fecha_emision ? new Date(selectedCert.fecha_emision).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pendiente',
+              idioma: 'ES',
+              calificacion: selectedCert.calificacion_final
+            }} />
+            <div style={{ textAlign: 'center', marginTop: '16px' }}>
+              <a href={`${window.location.origin}/verificar-certificado?id=${selectedCert.codigo_verificacion}`} target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '10px 20px', background: '#0284C7', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem' }}>
+                <Download size={16} /> Vista Pública de Verificación
+              </a>
             </div>
           </div>
         </div>

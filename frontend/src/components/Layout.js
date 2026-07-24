@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import TrialCountdownBanner from './TrialCountdownBanner';
 import NotificationsCenter from './NotificationsCenter';
+import FooterGabrielBiz from './FooterGabrielBiz';
 import { 
   LayoutDashboard, 
   MessageSquare, 
@@ -148,6 +149,7 @@ const Layout = ({ children }) => {
       <main className="main-content">
         <TrialCountdownBanner trial={trial} />
         {children}
+        <FooterGabrielBiz />
       </main>
     </div>
   );

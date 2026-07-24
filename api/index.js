@@ -589,7 +589,37 @@ app.post('/api/courses/lecciones/completar', verifyToken, (req, res) => {
     // Notify student
     createNotification(req.user.id, 'contenido', 'Leccion completada', `Has completado la leccion: ${leccion.titulo}`);
 
-    res.json({ message: 'Leccion marcada como completada', new_badges: newBadges || [] });
+    // Auto-certify when ALL lessons are completed
+    const totalLecciones = memoryStorage.lecciones.length;
+    const completadas = memoryStorage.progresos.filter(p => p.user_id === req.user.id && p.completado).length;
+    let autoCert = null;
+    if (completadas >= totalLecciones && totalLecciones > 0) {
+      const existingCert = memoryStorage.certificados.find(c => c.estudiante_id === req.user.id && (c.estado === 'aprobado' || c.estado === 'pendiente'));
+      if (!existingCert) {
+        const user = memoryStorage.usuarios.find(u => u.id === req.user.id);
+        const hash = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
+        autoCert = {
+          id: memoryStorage.certificados.length + 1,
+          estudiante_id: req.user.id,
+          nombre_estudiante: user?.nombre_completo || 'Estudiante',
+          curso: 'Inteligencia Artificial e Investigacion de Operaciones para Lideres de Negocio',
+          fecha_solicitud: new Date().toISOString(),
+          fecha_emision: null,
+          fecha_aprobacion: null,
+          codigo_verificacion: 'CERT_' + hash,
+          calificacion_final: '100.0',
+          estado: 'pendiente',
+          aprobado_por: null,
+          notas_admin: '',
+          activo: true
+        };
+        memoryStorage.certificados.push(autoCert);
+        createNotification(req.user.id, 'alerta', 'Certificacion Automatica', 'Has completado todos los modulos. Tu certificado con aval Global Safety Solutions esta pendiente de aprobacion administrativa.');
+        checkAndAwardBadges(req.user.id);
+      }
+    }
+
+    res.json({ message: 'Leccion marcada como completada', new_badges: newBadges || [], auto_certificate: autoCert ? { id: autoCert.id, codigo: autoCert.codigo_verificacion } : null });
   } catch (error) {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
@@ -1036,6 +1066,22 @@ app.post('/api/admin/certificates/:id/approve', verifyToken, verifyRole(1), (req
   createNotification(cert.estudiante_id, 'alerta', 'Certificado Aprobado', 'Tu certificado ha sido aprobado. Codigo: ' + cert.codigo_verificacion);
 
   res.json({ message: 'Certificado aprobado exitosamente', certificado: cert });
+});
+
+// EDIT Certificate (admin)
+app.put('/api/admin/certificates/:id', verifyToken, verifyRole(1), (req, res) => {
+  const cert = memoryStorage.certificados.find(c => c.id === parseInt(req.params.id));
+  if (!cert) return res.status(404).json({ error: 'Certificado no encontrado' });
+
+  const { nombre_estudiante, curso, fecha_emision, codigo_verificacion, calificacion_final } = req.body;
+  if (nombre_estudiante !== undefined) cert.nombre_estudiante = nombre_estudiante;
+  if (curso !== undefined) cert.curso = curso;
+  if (fecha_emision !== undefined) cert.fecha_emision = new Date(fecha_emision).toISOString();
+  if (codigo_verificacion !== undefined) cert.codigo_verificacion = codigo_verificacion;
+  if (calificacion_final !== undefined) cert.calificacion_final = calificacion_final;
+
+  logAuditoria(req.user.id, 'editar_certificado', `Certificado ${cert.id} editado por admin`);
+  res.json({ message: 'Certificado actualizado exitosamente', certificado: cert });
 });
 
 app.post('/api/admin/certificates/:id/reject', verifyToken, verifyRole(1), (req, res) => {

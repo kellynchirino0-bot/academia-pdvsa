@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Award, Download, CheckCircle, Search, Clock, XCircle, ExternalLink } from 'lucide-react';
-import { QRCodeSVG } from 'qrcode.react';
 import axios from 'axios';
+import DigitalBadgeGSS from '../components/DigitalBadgeGSS';
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 
@@ -191,61 +191,15 @@ const Certificados = () => {
             return (
               <div key={cert.id} style={{ marginBottom: '32px' }}>
                 {isAprobado ? (
-                  <div style={{ 
-                    background: 'linear-gradient(135deg, #0a2342 0%, #0d6e6e 50%, #2d8a4e 100%)', 
-                    padding: '32px', 
-                    borderRadius: '12px',
-                    position: 'relative'
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-                      <div style={{ 
-                        width: '48px', height: '48px', borderRadius: '50%', 
-                        background: 'rgba(255,255,255,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center'
-                      }}>
-                        <Award size={28} color="#d4a843" />
-                      </div>
-                      <div>
-                        <div style={{ fontSize: '0.7rem', letterSpacing: '3px', color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase' }}>Nasser Group</div>
-                        <div style={{ color: '#d4a843', fontWeight: '700', letterSpacing: '4px', fontSize: '1rem' }}>DIGITAL BADGE</div>
-                      </div>
-                    </div>
-
-                    <div style={{ background: 'rgba(255,255,255,0.95)', borderRadius: '8px', padding: '24px', display: 'flex', gap: '24px', alignItems: 'flex-start' }}>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ marginBottom: '12px' }}>
-                          <div style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>Course</div>
-                          <div style={{ fontWeight: '500', color: '#1a1a1a' }}>{cert.curso}</div>
-                        </div>
-                        <div style={{ marginBottom: '12px' }}>
-                          <div style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>Awarded to</div>
-                          <div style={{ fontWeight: '600', color: '#1a1a1a' }}>{cert.nombre_estudiante}</div>
-                        </div>
-                        <div style={{ marginBottom: '12px' }}>
-                          <div style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>Issued</div>
-                          <div style={{ fontWeight: '500', color: '#1a1a1a' }}>
-                            {new Date(cert.fecha_emision).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                          </div>
-                        </div>
-                        <div style={{ marginBottom: '12px' }}>
-                          <div style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>Language</div>
-                          <div style={{ fontWeight: '500', color: '#1a1a1a' }}>ES</div>
-                        </div>
-                        <div>
-                          <div style={{ fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>ID</div>
-                          <div style={{ fontWeight: '500', color: '#1a1a1a', fontFamily: 'monospace' }}>{cert.codigo_verificacion}</div>
-                        </div>
-                      </div>
-                      <div style={{ textAlign: 'center' }}>
-                        <QRCodeSVG 
-                          value={`${window.location.origin}/verify/${cert.codigo_verificacion}`}
-                          size={100}
-                          level="H"
-                          includeMargin={false}
-                        />
-                        <div style={{ fontSize: '0.65rem', color: '#666', marginTop: '4px' }}>Scan to verify</div>
-                      </div>
-                    </div>
-
+                  <div>
+                    <DigitalBadgeGSS certificado={{
+                      id: cert.codigo_verificacion,
+                      estudiante: cert.nombre_estudiante,
+                      curso: cert.curso,
+                      fecha: cert.fecha_emision ? new Date(cert.fecha_emision).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Pendiente',
+                      idioma: 'ES',
+                      calificacion: cert.calificacion_final
+                    }} />
                     <div style={{ marginTop: '16px', display: 'flex', gap: '12px', justifyContent: 'center' }}>
                       <button 
                         className="btn-primary"
@@ -255,13 +209,14 @@ const Certificados = () => {
                         <Download size={18} /> Descargar Badge
                       </button>
                       <a 
-                        href={`${window.location.origin}/verify/${cert.codigo_verificacion}`}
+                        href={`${window.location.origin}/verificar-certificado?id=${cert.codigo_verificacion}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         style={{ 
                           width: 'auto', display: 'flex', alignItems: 'center', gap: '6px',
-                          padding: '10px 20px', background: 'rgba(255,255,255,0.2)', color: '#fff',
-                          borderRadius: '8px', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem'
+                          padding: '10px 20px', background: 'rgba(2, 132, 199, 0.15)', color: '#38BDF8',
+                          borderRadius: '8px', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem',
+                          border: '1px solid rgba(2, 132, 199, 0.3)'
                         }}
                       >
                         <ExternalLink size={18} /> Verificar en Linea
