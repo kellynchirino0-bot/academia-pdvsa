@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import MatrizEnfoqueEjecutivo from '../components/MatrizEnfoqueEjecutivo';
 
 export const RecursosEnterprise = () => {
   const [copiadoIdx, setCopiadoIdx] = useState(null);
@@ -37,6 +38,8 @@ export const RecursosEnterprise = () => {
           Activos de alto impacto, estrategia de medios y respaldos de soberan\u00eda digital para Nasser Group & IUTPAL.
         </p>
       </div>
+
+      <MatrizEnfoqueEjecutivo />
 
       <h2 style={{ color: '#FFF', fontSize: '20px', borderLeft: '4px solid #38BDF8', paddingLeft: '10px', marginBottom: '20px' }}>
         Conceptos Gr\u00e1ficos de Alto Impacto (Dark Mode Pro)
