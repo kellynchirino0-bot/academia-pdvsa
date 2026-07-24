@@ -570,10 +570,19 @@ ${'═'.repeat(56)}`;
                       <div style={{ display: 'flex', gap: '4px' }}>
                         <button
                           onClick={() => copiarPlantilla(plantilla.plantilla)}
-                          style={{ padding: '4px 8px', background: copiado ? '#10b981' : 'var(--bg-secondary)', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '0.7rem', display: 'flex', alignItems: 'center', gap: '4px' }}
+                          style={{
+                            backgroundColor: copiado ? '#22C55E' : '#334155',
+                            color: '#FFF',
+                            border: 'none',
+                            padding: '8px 14px',
+                            borderRadius: '6px',
+                            cursor: 'pointer',
+                            fontSize: '12px',
+                            fontWeight: 'bold',
+                            transition: 'all 0.2s ease'
+                          }}
                         >
-                          {copiado ? <CheckCircle size={12} /> : <Copy size={12} />}
-                          {copiado ? 'Copiado' : 'Copiar'}
+                          {copiado ? '\u2713 Copiado al Portapapeles' : '\uD83D\uDCCB Copiar Plantilla'}
                         </button>
                         <button
                           onClick={() => cargarPlantilla(plantilla)}
@@ -673,6 +682,34 @@ ${'═'.repeat(56)}`;
                     style={{ flex: 1, padding: '10px', color: 'var(--primary-blue-dark)' }}
                   >
                     <Download size={16} /> Exportar Ficha
+                  </button>
+                </div>
+
+                <div style={{ marginTop: '20px', padding: '16px', backgroundColor: '#0F172A', borderRadius: '8px', border: '1px solid #0284C7' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                    <span style={{ fontSize: '16px' }}>🛡️</span>
+                    <h4 style={{ color: '#38BDF8', margin: 0, fontSize: '14px', fontWeight: 'bold' }}>
+                      Certificaci\u00f3n de Decisi\u00f3n Estrat\u00e9gica (Soberan\u00eda Criptogr\u00e1fica)
+                    </h4>
+                  </div>
+                  <p style={{ color: '#94A3B8', fontSize: '12px', margin: '0 0 12px 0', lineHeight: '1.4' }}>
+                    Genera un reporte matem\u00e1tico inmutable sellado con firma post-cu\u00e1ntica LagoChain ML-DSA para presentaci\u00f3n a Gerencia o Auditor\u00eda.
+                  </p>
+                  <button
+                    onClick={() => emitirDecisionFirmada(respuesta?.resultado)}
+                    style={{
+                      backgroundColor: copiadoSim ? '#22C55E' : '#0284C7',
+                      color: '#FFF',
+                      border: 'none',
+                      padding: '10px 18px',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontWeight: 'bold',
+                      fontSize: '13px',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    {copiadoSim ? '\u2713 Reporte Copiado y Sellado (ML-DSA)' : '\uD83D\uDD12 Emitir Decisi\u00f3n Inmutable (ML-DSA)'}
                   </button>
                 </div>
               </div>
