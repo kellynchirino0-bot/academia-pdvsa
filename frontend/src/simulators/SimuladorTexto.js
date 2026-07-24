@@ -12,6 +12,7 @@ const SimuladorTexto = () => {
   const [loading, setLoading] = useState(false);
   const [historial, setHistorial] = useState([]);
   const [areaFuncional, setAreaFuncional] = useState('todas');
+  const [plantillaActiva, setPlantillaActiva] = useState(null);
 
   const areasFuncionales = [
     { value: 'todas', label: 'Todas las Áreas', icon: <Brain size={16} />, color: '#003366' },
