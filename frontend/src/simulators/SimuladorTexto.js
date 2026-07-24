@@ -13,6 +13,8 @@ const SimuladorTexto = () => {
   const [historial, setHistorial] = useState([]);
   const [areaFuncional, setAreaFuncional] = useState('todas');
   const [plantillaActiva, setPlantillaActiva] = useState(null);
+  const [copiado, setCopiado] = useState(null);
+  const [copiadoSim, setCopiadoSim] = useState(false);
 
   const areasFuncionales = [
     { value: 'todas', label: 'Todas las Áreas', icon: <Brain size={16} />, color: '#003366' },
@@ -388,6 +390,27 @@ ${'═'.repeat(56)}`;
     setPrompt('');
     setContexto('');
     setRespuesta(null);
+  };
+
+  const copiarPlantilla = (texto) => {
+    navigator.clipboard.writeText(texto);
+    setCopiado(texto);
+    setTimeout(() => setCopiado(null), 2000);
+  };
+
+  const emitirDecisionFirmada = (datosResultado) => {
+    const hashSimulado = `ML-DSA-PDVSA-2026-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+    const reporteInmutable = {
+      institucion: "PDVSA - IUTPAL / Academia Virtual",
+      modulo: "Motor Matem\u00e1tico de Optimizaci\u00f3n I.O.",
+      fecha: new Date().toISOString(),
+      firmaCriptografica: hashSimulado,
+      estandarSoberano: "LagoChain Post-Quantum ML-DSA",
+      resultadoSimulacion: datosResultado
+    };
+    navigator.clipboard.writeText(JSON.stringify(reporteInmutable, null, 2));
+    setCopiadoSim(true);
+    setTimeout(() => setCopiadoSim(false), 3000);
   };
 
   return (
