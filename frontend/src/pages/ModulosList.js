@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { BookOpen, Clock, ChevronRight, CheckCircle, Lock, Download, FileText } from 'lucide-react';
+import { BookOpen, Clock, ChevronRight, CheckCircle, Lock, Download, FileText, GitBranch, TrendingUp, Package, Brain } from 'lucide-react';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
@@ -251,6 +251,19 @@ FORMATO: Tabla de actividades + diagrama de ruta crítica.
 FORMATO: Tabla de cálculo EOQ + comparativa costo actual vs. óptimo.
 └─────────────────────────────────────────────────┘
 
+[IO-04] Fundamentos de I.O. y Modelado Matemático
+┌─────────────────────────────────────────────────┐
+[ROL]: Actúa como Académico e Ingeniero de I.O. Senior.
+[CONTEXTO]: Se requiere introducir los fundamentos de Investigación de Operaciones para la toma de decisiones en PDVSA.
+[TAREA]: Desarrolla una explicación estructurada:
+1. Definición de I.O. y su aplicación en la industria petrolera.
+2. Variables de decisión, función objetivo y restricciones.
+3. Tipos de modelos: deterministas vs. estocásticos.
+4. Casos de uso en PDVSA (mezcla de crudo, logística, inventarios, mantenimiento).
+5. Rol de la IA en la resolución de modelos matemáticos complejos.
+FORMATO: Guía académica con ejemplos prácticos aplicados al sector petrolero.
+└─────────────────────────────────────────────────┘
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 SECCIÓN 5: ANÁLISIS DE RIESGOS Y ESTRATEGIA
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -310,7 +323,7 @@ ${'═'.repeat(60)}`;
           </button>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {['Finanzas', 'Talento Humano', 'Marketing', 'Investigación de Operaciones', 'Riesgos'].map(dept => (
+          {['Finanzas', 'Talento Humano', 'Marketing', 'Investigación de Operaciones', 'Riesgos', 'I.O. Académico'].map(dept => (
             <span key={dept} style={{ 
               fontSize: '0.72rem', padding: '3px 10px', 
               background: 'rgba(0,51,102,0.08)', color: '#003366', 
@@ -319,6 +332,73 @@ ${'═'.repeat(60)}`;
               {dept}
             </span>
           ))}
+        </div>
+      </div>
+
+      {/* Pista Académica: Investigación de Operaciones (I.O.) */}
+      <div style={{ 
+        marginBottom: '24px', 
+        padding: '20px 24px', 
+        background: 'linear-gradient(135deg, rgba(8,145,178,0.06), rgba(2,132,199,0.08))', 
+        borderRadius: 'var(--radius-lg)', 
+        border: '1px solid rgba(8,145,178,0.2)',
+        borderLeft: '4px solid #0891b2'
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+          <div style={{ 
+            width: '44px', height: '44px', borderRadius: '10px', 
+            background: 'rgba(8,145,178,0.12)', display: 'flex', 
+            alignItems: 'center', justifyContent: 'center' 
+          }}>
+            <GitBranch size={22} color="#0891b2" />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: '700', color: '#003366', fontSize: '0.95rem' }}>
+              Pista Académica: Investigación de Operaciones (I.O.) y Optimización Matemática
+            </div>
+            <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+              4 lecciones · Métodos cuantitativos para la toma de decisiones en PDVSA · IUTPAL
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '10px' }}>
+          <div style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <Brain size={16} color="#0891b2" />
+              <span style={{ fontWeight: '600', fontSize: '0.8rem', color: '#003366' }}>I.O. 1 — Fundamentos</span>
+            </div>
+            <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
+              Investigación de Operaciones y Modelado Matemático con IA.
+            </p>
+          </div>
+          <div style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <TrendingUp size={16} color="#0891b2" />
+              <span style={{ fontWeight: '600', fontSize: '0.8rem', color: '#003366' }}>I.O. 2 — Simplex</span>
+            </div>
+            <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
+              Optimización de Recursos con Programación Lineal y Método Simplex.
+            </p>
+          </div>
+          <div style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <GitBranch size={16} color="#0891b2" />
+              <span style={{ fontWeight: '600', fontSize: '0.8rem', color: '#003366' }}>I.O. 3 — CPM/PERT</span>
+            </div>
+            <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
+              Planificación Crítica de Proyectos Petroleros con CPM/PERT y Algoritmos de Red.
+            </p>
+          </div>
+          <div style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+              <Package size={16} color="#0891b2" />
+              <span style={{ fontWeight: '600', fontSize: '0.8rem', color: '#003366' }}>I.O. 4 — EOQ</span>
+            </div>
+            <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
+              Modelos de Inventario Inteligente (EOQ) para Reducción de Costos en Almacén.
+            </p>
+          </div>
         </div>
       </div>
 

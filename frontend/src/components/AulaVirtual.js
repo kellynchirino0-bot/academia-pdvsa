@@ -7,6 +7,10 @@ const modulos = [
   { id: 4, titulo: 'Síntesis de Video y Audio', duracion: '40:00', video: '', desc: 'Clonación de voz, texto a voz y predicción de fotogramas.' },
   { id: 5, titulo: 'Automatización Industrial con IA', duracion: '50:00', video: '', desc: 'Gemelos digitales, IoT y control predictivo de activos.' },
   { id: 6, titulo: 'Ética, Regulación y Despliegue', duracion: '35:00', video: '', desc: 'Marco regulatorio PDVSA, privacidad y gobernanza de IA.' },
+  { id: 7, titulo: 'Fundamentos de Investigación de Operaciones y Modelado Matemático con IA', duracion: '45:00', video: '', desc: 'Introducción a modelos matemáticos de optimización, variables de decisión, restricciones y función objetivo aplicados al sector petrolero.' },
+  { id: 8, titulo: 'Optimización de Recursos con Programación Lineal y Método Simplex', duracion: '50:00', video: '', desc: 'Solución de problemas de mezcla de crudo, asignación de presupuestos y maximización de márgenes usando el Método Simplex.' },
+  { id: 9, titulo: 'Planificación Crítica de Proyectos Petroleros con CPM/PERT y Algoritmos de Red', duracion: '55:00', video: '', desc: 'Gestión de paradas de planta, camino crítico, holguras y estimación probabilística de tiempos de mantenimiento preventivo.' },
+  { id: 10, titulo: 'Modelos de Inventario Inteligente (EOQ) para Reducción de Costos en Almacén', duracion: '40:00', video: '', desc: 'Lote Económico de Pedido, punto de reorden, costo total anual y análisis de sensibilidad para repuestos críticos.' },
 ];
 
 export default function AulaVirtual() {

@@ -5,6 +5,9 @@ const templates = [
   { label: 'Auditoría Financiera', prompt: 'Genera un resumen ejecutivo de auditoría financiera para el departamento de contabilidad de PDVSA, destacando hallazgos clave y acciones correctivas.' },
   { label: 'Código Automatización', prompt: 'Escribe un script en Python para monitorear sensores de temperatura y presión en una refinería, enviando alertas cuando los valores superen umbrales críticos.' },
   { label: 'Análisis de Riesgo Operacional', prompt: 'Realiza un análisis de riesgo operacional para un oleoducto de 200 km, considerando variables geológicas, climáticas y de mantenimiento.' },
+  { label: 'I.O. — Optimización Simplex (Mezcla de Crudo)', prompt: 'Actúa como Ingeniero de I.O. y Optimización Financiera. Utiliza el enfoque del Método Simplex para calcular la proporción óptima de procesamiento entre Crudo Pesado y Liviano con el fin de maximizar el margen operativo sujeto a restricciones de capacidad de refinación de [X] BPD.' },
+  { label: 'I.O. — CPM/PERT Parada de Planta', prompt: 'Actúa como Gerente de Proyectos (PMP/I.O.). Aplica el método de la Ruta Crítica (CPM/PERT) para estructurar el plan de parada de mantenimiento de la Planta de Fraccionamiento Y, determinando holguras, tareas críticas y tiempos esperados.' },
+  { label: 'I.O. — EOQ Gestión de Inventario', prompt: 'Actúa como Especialista en Logística e Inventarios. Utiliza el modelo de Lote Económico de Pedido (EOQ) para determinar la cantidad óptima de repuestos críticos a pedir sin sobrecargar capital de trabajo.' },
 ];
 
 export default function SimuladorTextos() {
