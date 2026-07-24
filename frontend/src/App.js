@@ -25,6 +25,8 @@ import StudentReport from './pages/StudentReport';
 import CertificateVerify from './pages/CertificateVerify';
 import FaqPage from './pages/FaqPage';
 import GuionEstrategicoPDF from './components/GuionEstrategicoPDF';
+import PromptsPDVSA from './pages/PromptsPDVSA';
+import RecursosEnterprise from './pages/RecursosEnterprise';
 import Layout from './components/Layout';
 import TrialCountdownBanner from './components/TrialCountdownBanner';
 import './styles/index.css';
@@ -120,6 +122,8 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/guion-pdf" element={<GuionEstrategicoPDF />} />
+          <Route path="/prompts-pdvsa" element={<PromptsPDVSA />} />
+          <Route path="/recursos-enterprise" element={<RecursosEnterprise />} />
           
           {/* Rutas Admin */}
           <Route path="/usuarios" element={
