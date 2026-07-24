@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import MatrizEnfoqueEjecutivo from '../components/MatrizEnfoqueEjecutivo';
 
 export const RecursosEnterprise = () => {
@@ -37,6 +38,47 @@ export const RecursosEnterprise = () => {
         <p style={{ color: '#94A3B8', margin: 0, fontSize: '14px' }}>
           Activos de alto impacto, estrategia de medios y respaldos de soberan\u00eda digital para Nasser Group & IUTPAL.
         </p>
+      </div>
+
+      <div style={{ 
+        marginBottom: '24px', 
+        padding: '16px 20px', 
+        background: 'linear-gradient(135deg, rgba(2,132,199,0.1), rgba(212,168,67,0.06))', 
+        borderRadius: '8px', 
+        border: '1px solid rgba(2,132,199,0.25)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px',
+        flexWrap: 'wrap'
+      }}>
+        <div style={{ flex: 1, minWidth: '200px' }}>
+          <div style={{ fontWeight: '700', color: '#38BDF8', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            Dossier y Plan de Estudios Oficial (PDF)
+          </div>
+          <div style={{ fontSize: '0.75rem', color: '#94A3B8', marginTop: '4px' }}>
+            Descarga el temario acad&eacute;mico oficial con el desglose de lecciones por m&oacute;dulo, avalado por IUTPAL, Global Safety Solutions y PDVSA.
+          </div>
+        </div>
+        <Link
+          to="/guion-pdf"
+          style={{
+            padding: '10px 24px',
+            background: '#0284C7',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontWeight: '600',
+            fontSize: '0.85rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            textDecoration: 'none',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          Descargar Programa Anal&iacute;tico (PDF)
+        </Link>
       </div>
 
       <MatrizEnfoqueEjecutivo />

@@ -335,6 +335,48 @@ ${'═'.repeat(60)}`;
         </div>
       </div>
 
+      {/* Banner: Descarga de Dossier PDF */}
+      <div style={{ 
+        marginBottom: '16px', 
+        padding: '16px 20px', 
+        background: 'linear-gradient(135deg, rgba(2,132,199,0.08), rgba(212,168,67,0.06))', 
+        borderRadius: 'var(--radius-lg)', 
+        border: '1px solid rgba(2,132,199,0.2)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '16px',
+        flexWrap: 'wrap'
+      }}>
+        <div style={{ flex: 1, minWidth: '200px' }}>
+          <div style={{ fontWeight: '700', color: '#003366', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <FileText size={18} color="#0284C7" /> Dossier y Plan de Estudios Oficial (PDF)
+          </div>
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '4px' }}>
+            Descarga el temario acad&eacute;mico oficial con el desglose de lecciones por m&oacute;dulo, avalado por IUTPAL, Global Safety Solutions y PDVSA.
+          </div>
+        </div>
+        <Link
+          to="/guion-pdf"
+          style={{
+            padding: '10px 24px',
+            background: '#0284C7',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontWeight: '600',
+            fontSize: '0.85rem',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            textDecoration: 'none',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          <Download size={16} /> Descargar Programa Anal&iacute;tico (PDF)
+        </Link>
+      </div>
+
       {/* Pista Académica: Investigación de Operaciones (I.O.) */}
       <div style={{ 
         marginBottom: '24px', 
@@ -354,49 +396,69 @@ ${'═'.repeat(60)}`;
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: '700', color: '#003366', fontSize: '0.95rem' }}>
-              Pista Académica: Investigación de Operaciones (I.O.) y Optimización Matemática
+              Pista Acad&eacute;mica: Investigaci&oacute;n de Operaciones (I.O.) y Optimizaci&oacute;n Matem&aacute;tica
             </div>
             <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
-              4 lecciones · Métodos cuantitativos para la toma de decisiones en PDVSA · IUTPAL
+              4 lecciones &middot; M&eacute;todos cuantitativos para la toma de decisiones en PDVSA &middot; IUTPAL
             </div>
           </div>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '10px' }}>
-          <div style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)' }}>
+          <div
+            onClick={() => navigate('/cursos/modulo/4/leccion/io-1')}
+            style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)', cursor: 'pointer', transition: 'all 0.2s' }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#0891b2'; e.currentTarget.style.boxShadow = '0 0 12px rgba(8,145,178,0.3)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(8,145,178,0.15)'; e.currentTarget.style.boxShadow = 'none'; }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
               <Brain size={16} color="#0891b2" />
               <span style={{ fontWeight: '600', fontSize: '0.8rem', color: '#003366' }}>I.O. 1 — Fundamentos</span>
             </div>
             <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
-              Investigación de Operaciones y Modelado Matemático con IA.
+              Investigaci&oacute;n de Operaciones y Modelado Matem&aacute;tico con IA.
             </p>
           </div>
-          <div style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)' }}>
+          <div
+            onClick={() => navigate('/cursos/modulo/4/leccion/io-2')}
+            style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)', cursor: 'pointer', transition: 'all 0.2s' }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#0891b2'; e.currentTarget.style.boxShadow = '0 0 12px rgba(8,145,178,0.3)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(8,145,178,0.15)'; e.currentTarget.style.boxShadow = 'none'; }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
               <TrendingUp size={16} color="#0891b2" />
               <span style={{ fontWeight: '600', fontSize: '0.8rem', color: '#003366' }}>I.O. 2 — Simplex</span>
             </div>
             <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
-              Optimización de Recursos con Programación Lineal y Método Simplex.
+              Optimizaci&oacute;n de Recursos con Programaci&oacute;n Lineal y M&eacute;todo Simplex.
             </p>
           </div>
-          <div style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)' }}>
+          <div
+            onClick={() => navigate('/cursos/modulo/4/leccion/io-3')}
+            style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)', cursor: 'pointer', transition: 'all 0.2s' }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#0891b2'; e.currentTarget.style.boxShadow = '0 0 12px rgba(8,145,178,0.3)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(8,145,178,0.15)'; e.currentTarget.style.boxShadow = 'none'; }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
               <GitBranch size={16} color="#0891b2" />
               <span style={{ fontWeight: '600', fontSize: '0.8rem', color: '#003366' }}>I.O. 3 — CPM/PERT</span>
             </div>
             <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
-              Planificación Crítica de Proyectos Petroleros con CPM/PERT y Algoritmos de Red.
+              Planificaci&oacute;n Cr&iacute;tica de Proyectos Petroleros con CPM/PERT y Algoritmos de Red.
             </p>
           </div>
-          <div style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)' }}>
+          <div
+            onClick={() => navigate('/cursos/modulo/4/leccion/io-4')}
+            style={{ padding: '12px 14px', background: '#fff', borderRadius: '8px', border: '1px solid rgba(8,145,178,0.15)', cursor: 'pointer', transition: 'all 0.2s' }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#0891b2'; e.currentTarget.style.boxShadow = '0 0 12px rgba(8,145,178,0.3)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(8,145,178,0.15)'; e.currentTarget.style.boxShadow = 'none'; }}
+          >
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
               <Package size={16} color="#0891b2" />
               <span style={{ fontWeight: '600', fontSize: '0.8rem', color: '#003366' }}>I.O. 4 — EOQ</span>
             </div>
             <p style={{ fontSize: '0.72rem', color: 'var(--text-secondary)', margin: 0, lineHeight: '1.4' }}>
-              Modelos de Inventario Inteligente (EOQ) para Reducción de Costos en Almacén.
+              Modelos de Inventario Inteligente (EOQ) para Reducci&oacute;n de Costos en Almac&eacute;n.
             </p>
           </div>
         </div>
