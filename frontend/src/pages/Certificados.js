@@ -14,11 +14,31 @@ const Certificados = () => {
   const [verificacionCodigo, setVerificacionCodigo] = useState('');
   const [resultadoVerificacion, setResultadoVerificacion] = useState(null);
   const [showBadge, setShowBadge] = useState(null);
+  const [demoMode, setDemoMode] = useState(false);
   const canRequestCert = progress && progress.porcentaje_global >= 100;
+  const isAdmin = user?.rol === 'administrador' || user?.nombre_rol === 'administrador' || user?.rol_id === 1;
 
   useEffect(() => {
     loadCertificados();
   }, []);
+
+  const completarModoDemo = async () => {
+    setDemoMode(true);
+    try {
+      const evalRes = await axios.get(`${API_URL}/evaluations`);
+      const evals = evalRes.data;
+      for (const ev of evals) {
+        const dummyAnswers = ev.preguntas.map(() => 0);
+        await axios.post(`${API_URL}/evaluations/${ev.id}/submit`, { respuestas: dummyAnswers }).catch(() => {});
+      }
+      await loadCertificados();
+      if (progress) loadCertificados();
+      setDemoMode(false);
+      window.location.reload();
+    } catch (err) {
+      setDemoMode(false);
+    }
+  };
 
   const loadCertificados = async () => {
     try {
@@ -203,6 +223,15 @@ const Certificados = () => {
                 style={{ width: 'auto', marginTop: '20px' }}
               >
                 {generando ? 'Enviando...' : 'Solicitar Certificado'}
+              </button>
+            )}
+            {isAdmin && !canRequestCert && (
+              <button 
+                onClick={completarModoDemo}
+                disabled={demoMode}
+                style={{ marginTop: '12px', padding: '10px 24px', background: 'linear-gradient(135deg, #f59e0b, #d97706)', color: '#fff', border: 'none', borderRadius: '8px', cursor: demoMode ? 'not-allowed' : 'pointer', fontWeight: '600', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+              >
+                <Zap size={18} /> {demoMode ? 'Completando...' : 'Completar Módulos (Modo Demo)'}
               </button>
             )}
           </div>
