@@ -1111,9 +1111,17 @@ app.post('/api/certificates/generate', verifyToken, (req, res) => {
     const userGrades = memoryStorage.notas.filter(n => n.estudiante_id === req.user.id);
     const approvedGrades = userGrades.filter(n => n.estatus_aprobacion);
 
-    if (approvedGrades.length < evalCount) {
-      return res.status(400).json({ error: `Debe aprobar todas las evaluaciones (${approvedGrades.length}/${evalCount} aprobadas)` });
+    const totalLecciones = memoryStorage.lecciones.length;
+    const completadas = memoryStorage.progresos.filter(p => p.user_id === req.user.id && p.completado).length;
+    const allLessonsDone = totalLecciones > 0 && completadas >= totalLecciones;
+
+    if (approvedGrades.length < evalCount && !allLessonsDone) {
+      return res.status(400).json({ error: `Debe aprobar todas las evaluaciones (${approvedGrades.length}/${evalCount}) o completar todas las lecciones (${completadas}/${totalLecciones})` });
     }
+
+    const avgGrade = approvedGrades.length > 0
+      ? approvedGrades.reduce((sum, g) => sum + parseFloat(g.calificacion), 0) / approvedGrades.length
+      : 100;
 
     const existingPending = memoryStorage.certificados.find(
       c => c.estudiante_id === req.user.id && c.estado === 'pendiente'
@@ -1129,7 +1137,6 @@ app.post('/api/certificates/generate', verifyToken, (req, res) => {
       return res.status(400).json({ error: 'Ya tiene un certificado aprobado' });
     }
 
-    const avgGrade = approvedGrades.reduce((sum, g) => sum + parseFloat(g.calificacion), 0) / approvedGrades.length;
     const hash = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
 
     const nuevoCertificado = {
