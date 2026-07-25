@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useParams } from 'react-router-dom';
 import API from '../services/api';
 import { QRCodeSVG } from 'qrcode.react';
 
+const DEFAULT_DEMO = 'ML-DSA-PDVSA-2026-FAJA-991';
+
 export const VerificarCertificado = () => {
+  const { id: paramId } = useParams();
   const [searchParams] = useSearchParams();
   const [codigoInput, setCodigoInput] = useState('');
   const [resultadoVerificacion, setResultadoVerificacion] = useState(null);
@@ -12,13 +15,13 @@ export const VerificarCertificado = () => {
   const [modoEscaneo, setModoEscaneo] = useState(false);
 
   useEffect(() => {
-    const idFromUrl = searchParams.get('id');
-    if (idFromUrl) {
+    const idFromUrl = paramId || searchParams.get('id');
+    if (idFromUrl && idFromUrl !== ':id') {
       setCodigoInput(idFromUrl);
       setModoEscaneo(true);
       ejecutarAuditoria(idFromUrl);
     }
-  }, [searchParams]);
+  }, [paramId, searchParams]);
 
   const ejecutarAuditoria = async (codigo) => {
     const query = (codigo || codigoInput).trim();

@@ -54,7 +54,8 @@ function App() {
       <Router>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/verify/:certificateId" element={<CertificateVerify />} />
+          <Route path="/verify/:id" element={<VerificarCertificado />} />
+          <Route path="/verificar-certificado/:id" element={<VerificarCertificado />} />
           
           {/* Rutas generales */}
           <Route path="/dashboard" element={
