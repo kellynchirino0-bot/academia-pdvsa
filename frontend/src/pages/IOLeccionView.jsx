@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
+
+const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 const LESSONS = {
   'io-1': {
@@ -29,8 +33,10 @@ const LESSON_IDS = ['io-1', 'io-2', 'io-3', 'io-4'];
 export default function IOLeccionView() {
   const { leccionId } = useParams();
   const navigate = useNavigate();
+  const { updateUserProgress } = useAuth();
   const [completed, setCompleted] = useState({});
   const [showConfetti, setShowConfetti] = useState(false);
+  const [lessonMap, setLessonMap] = useState({});
 
   useEffect(() => {
     const saved = localStorage.getItem('io_lesson_progress');
@@ -41,6 +47,20 @@ export default function IOLeccionView() {
         localStorage.removeItem('io_lesson_progress');
       }
     }
+    const fetchLessons = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get(`${API_URL}/courses/modulos/4/lecciones`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const mapping = {};
+        res.data.forEach((l, idx) => {
+          mapping[`io-${idx + 1}`] = l.id;
+        });
+        setLessonMap(mapping);
+      } catch {}
+    };
+    fetchLessons();
     window.scrollTo(0, 0);
   }, [leccionId]);
 
@@ -58,7 +78,9 @@ export default function IOLeccionView() {
     setShowConfetti(true);
     if (cleanupRef.current) clearTimeout(cleanupRef.current);
     cleanupRef.current = setTimeout(() => setShowConfetti(false), 2500);
-  }, [leccionId]);
+    const lessonId = lessonMap[leccionId];
+    if (lessonId) updateUserProgress(lessonId, 100);
+  }, [leccionId, lessonMap, updateUserProgress]);
 
   useEffect(() => {
     return () => {

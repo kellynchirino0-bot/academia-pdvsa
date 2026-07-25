@@ -7,13 +7,14 @@ import DigitalBadgeGSS from '../components/DigitalBadgeGSS';
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 const Certificados = () => {
-  const { user } = useAuth();
+  const { user, progress } = useAuth();
   const [certificados, setCertificados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [generando, setGenerando] = useState(false);
   const [verificacionCodigo, setVerificacionCodigo] = useState('');
   const [resultadoVerificacion, setResultadoVerificacion] = useState(null);
   const [showBadge, setShowBadge] = useState(null);
+  const canRequestCert = progress && progress.porcentaje_global >= 100;
 
   useEffect(() => {
     loadCertificados();
@@ -170,15 +171,40 @@ const Certificados = () => {
           <div className="empty-state">
             <div className="icon">🎓</div>
             <h3>Sin certificados aun</h3>
-            <p>Completa todas las evaluaciones con al menos 70% para solicitar tu certificado</p>
-            <button 
-              className="btn-primary" 
-              onClick={generarCertificado}
-              disabled={generando}
-              style={{ width: 'auto', marginTop: '20px' }}
-            >
-              {generando ? 'Enviando...' : 'Solicitar Certificado'}
-            </button>
+            <p>Completa el 100% del curso para solicitar tu certificado</p>
+
+            {progress && (
+              <div style={{ width: '100%', maxWidth: '400px', margin: '16px auto' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                  <span>Progreso del curso</span>
+                  <span>{progress.porcentaje_global}%</span>
+                </div>
+                <div style={{ height: '10px', background: 'rgba(0,0,0,0.06)', borderRadius: '5px', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${Math.min(progress.porcentaje_global, 100)}%`, background: 'linear-gradient(90deg, #003366, #0066cc)', borderRadius: '5px', transition: 'width 0.5s ease' }} />
+                </div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '8px' }}>
+                  {progress.lecciones_completadas} de {progress.total_lecciones} lecciones completadas
+                  {progress.evaluaciones_realizadas > 0 && ` · ${progress.evaluaciones_realizadas} evaluaciones realizadas`}
+                </div>
+                {progress.modulos?.map(m => (
+                  <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginTop: '6px', padding: '4px 8px', background: 'rgba(0,0,0,0.03)', borderRadius: '4px' }}>
+                    <span>Módulo {m.id}: {m.titulo?.substring(0, 30)}...</span>
+                    <span style={{ fontWeight: m.porcentaje >= 100 ? '600' : '400', color: m.porcentaje >= 100 ? '#10b981' : '#f59e0b' }}>{m.porcentaje}%</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {canRequestCert && (
+              <button 
+                className="btn-primary" 
+                onClick={generarCertificado}
+                disabled={generando}
+                style={{ width: 'auto', marginTop: '20px' }}
+              >
+                {generando ? 'Enviando...' : 'Solicitar Certificado'}
+              </button>
+            )}
           </div>
         </div>
       ) : (

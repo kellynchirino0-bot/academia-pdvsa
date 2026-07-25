@@ -10,6 +10,31 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [trial, setTrial] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(null);
+
+  const loadProgress = async (userId) => {
+    try {
+      const saved = localStorage.getItem('user_progress');
+      if (saved) setProgress(JSON.parse(saved));
+      const res = await axios.get(`${API_URL}/progress/${userId}`);
+      setProgress(res.data);
+      localStorage.setItem('user_progress', JSON.stringify(res.data));
+      return res.data;
+    } catch {
+      const saved = localStorage.getItem('user_progress');
+      if (saved) setProgress(JSON.parse(saved));
+    }
+  };
+
+  const updateUserProgress = async (lessonId, score = 100) => {
+    try {
+      const res = await axios.post(`${API_URL}/progress/update`, { lessonId, completed: true, score });
+      if (user) await loadProgress(user.id);
+      return res.data;
+    } catch (error) {
+      console.error('Error al actualizar progreso:', error);
+    }
+  };
 
   useEffect(() => {
     if (BYPASS_SECRET) {
@@ -29,6 +54,7 @@ export const AuthProvider = ({ children }) => {
       if (response.data.valid) {
         setUser(response.data.user);
         if (response.data.trial) setTrial(response.data.trial);
+        loadProgress(response.data.user.id);
       } else {
         logout();
       }
@@ -48,6 +74,7 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       if (trialData) setTrial(trialData);
       axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      if (userData?.id) loadProgress(userData.id);
       return { success: true, user: userData, trial: trialData };
     } catch (error) {
       return { success: false, error: error.response?.data?.error || 'Error de autenticacion' };
@@ -63,6 +90,7 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       if (trialData) setTrial(trialData);
       axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      if (userData?.id) loadProgress(userData.id);
       return { success: true, user: userData, trial: trialData };
     } catch (error) {
       return { success: false, error: error.response?.data?.error || 'Error de registro' };
@@ -71,14 +99,16 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user_progress');
     setToken(null);
     setUser(null);
     setTrial(null);
+    setProgress(null);
     delete axios.defaults.headers.common['Authorization'];
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, trial, loading, login, register, logout, isAuthenticated: !!token && !!user }}>
+    <AuthContext.Provider value={{ user, token, trial, loading, login, register, logout, isAuthenticated: !!token && !!user, progress, updateUserProgress, loadProgress }}>
       {children}
     </AuthContext.Provider>
   );

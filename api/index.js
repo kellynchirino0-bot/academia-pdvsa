@@ -537,7 +537,7 @@ app.get('/api/courses/modulos', verifyToken, (req, res) => {
   const modulos = memoryStorage.modulos.map(modulo => {
     const lecciones = memoryStorage.lecciones.filter(l => l.modulo_id === modulo.id);
     const leccionesCompletadas = memoryStorage.progresos.filter(
-      p => p.usuario_id === usuarioId && lecciones.some(l => l.id === p.leccion_id) && p.completado
+      p => p.user_id === usuarioId && lecciones.some(l => l.id === p.leccion_id) && p.completado
     ).length;
     const totalLecciones = lecciones.length;
     const porcentajeAvance = totalLecciones > 0 ? ((leccionesCompletadas / totalLecciones) * 100).toFixed(1) : 0;
@@ -552,7 +552,7 @@ app.get('/api/courses/modulos/:id', verifyToken, (req, res) => {
 
   const lecciones = memoryStorage.lecciones.filter(l => l.modulo_id === modulo.id).sort((a, b) => a.orden - b.orden);
   const leccionesConProgreso = lecciones.map(l => {
-    const progreso = memoryStorage.progresos.find(p => p.usuario_id === req.user.id && p.leccion_id === l.id);
+    const progreso = memoryStorage.progresos.find(p => p.user_id === req.user.id && p.leccion_id === l.id);
     return { ...l, completado: progreso?.completado || false, fecha_completado: progreso?.fecha_completado || null };
   });
 
@@ -565,7 +565,7 @@ app.get('/api/courses/modulos/:id/lecciones', verifyToken, (req, res) => {
 
   const lecciones = memoryStorage.lecciones.filter(l => l.modulo_id === modulo.id).sort((a, b) => a.orden - b.orden);
   const leccionesConProgreso = lecciones.map(l => {
-    const progreso = memoryStorage.progresos.find(p => p.usuario_id === req.user.id && p.leccion_id === l.id);
+    const progreso = memoryStorage.progresos.find(p => p.user_id === req.user.id && p.leccion_id === l.id);
     return { ...l, completado: progreso?.completado || false, fecha_completado: progreso?.fecha_completado || null };
   });
   res.json(leccionesConProgreso);
@@ -593,6 +593,18 @@ app.post('/api/courses/lecciones/completar', verifyToken, (req, res) => {
         calificacion: 100,
         fecha_completado: new Date().toISOString()
       });
+    }
+
+    // Update user's progress map
+    const userRecord = memoryStorage.usuarios.find(u => u.id === req.user.id);
+    if (userRecord) {
+      if (!userRecord.progreso) userRecord.progreso = {};
+      userRecord.progreso[`lesson_${leccion_id}`] = { completado: true, calificacion: 100, fecha: new Date().toISOString() };
+      // Recalculate overall percentage
+      const totalLecciones = memoryStorage.lecciones.length;
+      const completadas = memoryStorage.progresos.filter(p => p.user_id === req.user.id && p.completado).length;
+      userRecord.progreso.porcentaje_global = totalLecciones > 0 ? Math.round((completadas / totalLecciones) * 100) : 0;
+      userRecord.progreso.ultima_actualizacion = new Date().toISOString();
     }
 
     // Award badges
@@ -887,6 +899,14 @@ app.post('/api/evaluations/:id/submit', verifyToken, (req, res) => {
       fecha_evaluacion: new Date().toISOString()
     });
 
+    // Update user progress with evaluation score
+    const evalUser = memoryStorage.usuarios.find(u => u.id === req.user.id);
+    if (evalUser) {
+      if (!evalUser.progreso) evalUser.progreso = {};
+      evalUser.progreso[`eval_${ev.id}`] = { calificacion: parseFloat(calificacion), aprobado: estatus_aprobacion, fecha: new Date().toISOString() };
+      evalUser.progreso.ultima_actualizacion = new Date().toISOString();
+    }
+
     // Check badges after evaluation
     checkAndAwardBadges(req.user.id);
 
@@ -913,6 +933,96 @@ app.get('/api/evaluations/user/:userId/grades', verifyToken, (req, res) => {
   }
   const grades = memoryStorage.notas.filter(n => n.estudiante_id === userId);
   res.json(grades);
+});
+
+// ===================== PROGRESS ROUTES =====================
+app.get('/api/progress/:userId', verifyToken, (req, res) => {
+  try {
+    const userId = parseInt(req.params.userId);
+    if (req.user.rol_id === 3 && req.user.id !== userId) {
+      return res.status(403).json({ error: 'No tiene permisos' });
+    }
+
+    const totalLecciones = memoryStorage.lecciones.length;
+    const leccionesCompletadas = memoryStorage.progresos.filter(p => p.user_id === userId && p.completado);
+    const completadasCount = leccionesCompletadas.length;
+
+    const modulos = memoryStorage.modulos.map(modulo => {
+      const lecciones = memoryStorage.lecciones.filter(l => l.modulo_id === modulo.id);
+      const leccionesModCompletadas = leccionesCompletadas.filter(p => lecciones.some(l => l.id === p.leccion_id)).length;
+      const totalModLecciones = lecciones.length;
+      return {
+        id: modulo.id,
+        titulo: modulo.titulo,
+        total_lecciones: totalModLecciones,
+        lecciones_completadas: leccionesModCompletadas,
+        porcentaje: totalModLecciones > 0 ? Math.round((leccionesModCompletadas / totalModLecciones) * 100) : 0
+      };
+    });
+
+    const userGrades = memoryStorage.notas.filter(n => n.estudiante_id === userId);
+    const evaluacionesRealizadas = userGrades.length;
+
+    const porcentajeGlobal = totalLecciones > 0 ? Math.round((completadasCount / totalLecciones) * 100) : 0;
+
+    res.json({
+      userId,
+      porcentaje_global: porcentajeGlobal,
+      lecciones_completadas: completadasCount,
+      total_lecciones: totalLecciones,
+      evaluaciones_realizadas: evaluacionesRealizadas,
+      calificacion_promedio: userGrades.length > 0
+        ? parseFloat((userGrades.reduce((sum, g) => sum + parseFloat(g.calificacion), 0) / userGrades.length).toFixed(1))
+        : 0,
+      modulos: modulos,
+      ultima_actualizacion: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+app.post('/api/progress/update', verifyToken, (req, res) => {
+  try {
+    const { lessonId, moduleId, completed, score } = req.body;
+    if (!lessonId) return res.status(400).json({ error: 'lessonId es requerido' });
+
+    const existing = memoryStorage.progresos.find(p => p.user_id === req.user.id && p.leccion_id === parseInt(lessonId));
+    if (existing) {
+      if (completed !== undefined) existing.completado = completed;
+      if (score !== undefined) existing.calificacion = score;
+      existing.fecha_completado = new Date().toISOString();
+    } else {
+      const leccion = memoryStorage.lecciones.find(l => l.id === parseInt(lessonId));
+      memoryStorage.progresos.push({
+        id: memoryStorage.progresos.length + 1,
+        user_id: req.user.id,
+        leccion_id: parseInt(lessonId),
+        modulo_id: moduleId || leccion?.modulo_id || null,
+        completado: completed !== false,
+        calificacion: score || 100,
+        fecha_completado: new Date().toISOString()
+      });
+    }
+
+    // Update user's progress map
+    const userProg = memoryStorage.usuarios.find(u => u.id === req.user.id);
+    if (userProg) {
+      if (!userProg.progreso) userProg.progreso = {};
+      userProg.progreso[`lesson_${lessonId}`] = { completado: completed !== false, calificacion: score || 100, fecha: new Date().toISOString() };
+      const completadas = memoryStorage.progresos.filter(p => p.user_id === req.user.id && p.completado).length;
+      const totalLecciones = memoryStorage.lecciones.length;
+      userProg.progreso.porcentaje_global = totalLecciones > 0 ? Math.round((completadas / totalLecciones) * 100) : 0;
+      userProg.progreso.ultima_actualizacion = new Date().toISOString();
+    }
+
+    // Check badges
+    checkAndAwardBadges(req.user.id);
+
+    res.json({ message: 'Progreso actualizado', lessonId, completed: completed !== false });
+  } catch (error) {
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
 });
 
 // ===================== CERTIFICATES ROUTES =====================
@@ -1428,7 +1538,7 @@ function checkAndAwardBadges(userId) {
   if (!awarded.includes('puntaje_perfecto') && userProgress.some(p => (p.calificacion || 0) === 100)) { awards.push('puntaje_perfecto'); }
   if (!awarded.includes('especialista_ia') && completadas >= totalLecciones && totalLecciones > 0) { awards.push('especialista_ia'); }
   if (!awarded.includes('constante') && completadas >= 5) { awards.push('constante'); }
-  const userCerts = memoryStorage.certificados.filter(c => c.user_id === userId && c.estado === 'aprobado');
+  const userCerts = memoryStorage.certificados.filter(c => c.estudiante_id === userId && c.estado === 'aprobado');
   if (!awarded.includes('certificado') && userCerts.length > 0) { awards.push('certificado'); }
   awards.forEach(badgeId => {
     memoryStorage.user_badges.push({ user_id: userId, badge_id: badgeId, fecha_otorgada: new Date().toISOString() });

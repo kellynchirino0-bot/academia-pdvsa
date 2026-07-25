@@ -8,6 +8,7 @@ import {
   FileText, Award, Terminal
 } from 'lucide-react';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 
@@ -835,7 +836,7 @@ const Cuestionario = ({ preguntas, moduloId, onCompletar }) => {
     const pct = (correctas / preguntas.length) * 100;
     setResultado({ correctas, total: preguntas.length, pct, aprobado: pct >= 80 });
     setEnviado(true);
-    if (pct >= 80) onCompletar();
+    if (pct >= 80) onCompletar(pct);
   };
 
   const reiniciar = () => {
@@ -1008,8 +1009,14 @@ const ModuloDetalle = () => {
     } catch (err) { console.error(err); }
   };
 
-  const marcarModuloCompletado = () => {
+  const marcarModuloCompletado = (score = 100) => {
     setModulosCompletados(prev => ({ ...prev, [id]: true }));
+    modulo?.lecciones?.forEach(l => {
+      if (!l.completado) {
+        axios.post(`${API_URL}/courses/lecciones/completar`, { leccion_id: l.id }).catch(() => {});
+      }
+    });
+    axios.post(`${API_URL}/progress/update`, { lessonId: `mod${id}`, moduleId: parseInt(id), completed: true, score }).catch(() => {});
   };
 
   const renderSimulador = () => {
