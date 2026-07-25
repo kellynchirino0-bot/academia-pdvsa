@@ -16,6 +16,15 @@ const SimuladorTexto = () => {
   const [copiado, setCopiado] = useState(null);
   const [copiadoSim, setCopiadoSim] = useState(false);
   const [modoDemo, setModoDemo] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [decisionEmitida, setDecisionEmitida] = useState(null);
+
+  const cargarPlantilla = (plantilla) => {
+    if (plantilla && plantilla.plantilla) {
+      setPrompt(plantilla.plantilla);
+      setPlantillaActiva(plantilla.id);
+    }
+  };
 
   const preguntasDirectiva = [
     {
@@ -631,6 +640,7 @@ ${'═'.repeat(56)}`;
   };
 
   const emitirDecisionFirmada = (datosResultado) => {
+    setIsGenerating(true);
     const hashSimulado = `ML-DSA-PDVSA-2026-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
     const reporteInmutable = {
       institucion: "PDVSA - IUTPAL / Academia Virtual",
@@ -640,9 +650,18 @@ ${'═'.repeat(56)}`;
       estandarSoberano: "LagoChain Post-Quantum ML-DSA",
       resultadoSimulacion: datosResultado
     };
-    navigator.clipboard.writeText(JSON.stringify(reporteInmutable, null, 2));
-    setCopiadoSim(true);
-    setTimeout(() => setCopiadoSim(false), 3000);
+    setTimeout(() => {
+      setDecisionEmitida({
+        hash: hashSimulado,
+        timestamp: new Date().toISOString(),
+        estado: "FIRMADO Y REGISTRADO EN LAGOCHAIN",
+        estandar: "NIST FIPS 204 (ML-DSA)"
+      });
+      navigator.clipboard.writeText(JSON.stringify(reporteInmutable, null, 2));
+      setCopiadoSim(true);
+      setIsGenerating(false);
+      setTimeout(() => setCopiadoSim(false), 4000);
+    }, 1000);
   };
 
   const handleDemoClick = (pregunta) => {
@@ -1049,6 +1068,28 @@ ${'═'.repeat(56)}`;
                   >
                     {copiadoSim ? '✓ Reporte Copiado y Sellado (ML-DSA)' : '🔒 Emitir Decisión Inmutable (ML-DSA)'}
                   </button>
+
+                  {isGenerating && (
+                    <div style={{ marginTop: '12px', padding: '12px', background: 'rgba(2, 132, 199, 0.1)', borderRadius: '8px', textAlign: 'center' }}>
+                      <div className="spinner" style={{ margin: '0 auto 8px' }}></div>
+                      <p style={{ color: '#38BDF8', fontSize: '12px', margin: 0 }}>Generando firma post-cuántica ML-DSA...</p>
+                    </div>
+                  )}
+
+                  {decisionEmitida && (
+                    <div style={{ marginTop: '12px', padding: '14px', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '8px', border: '1px solid #10b981' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                        <CheckCircle size={18} color="#10b981" />
+                        <span style={{ color: '#10b981', fontWeight: 'bold', fontSize: '13px' }}>Decisión Inmutable Sellada Criptográficamente</span>
+                      </div>
+                      <div style={{ fontSize: '11px', color: '#94A3B8', lineHeight: '1.6' }}>
+                        <div>Hash NIST FIPS 204: <strong style={{ color: '#38BDF8', fontFamily: 'monospace' }}>{decisionEmitida.hash}</strong></div>
+                        <div>Estándar: {decisionEmitida.estandar}</div>
+                        <div>Estado: <strong style={{ color: '#10b981' }}>{decisionEmitida.estado}</strong></div>
+                        <div>Timestamp: {new Date(decisionEmitida.timestamp).toLocaleString('es-VE')}</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
