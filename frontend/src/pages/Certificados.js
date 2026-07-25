@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Award, Download, CheckCircle, Search, Clock, XCircle, ExternalLink } from 'lucide-react';
+import { Award, Download, CheckCircle, Search, Clock, XCircle, ExternalLink, Zap, RotateCcw } from 'lucide-react';
 import axios from 'axios';
 import DigitalBadgeGSS from '../components/DigitalBadgeGSS';
 
