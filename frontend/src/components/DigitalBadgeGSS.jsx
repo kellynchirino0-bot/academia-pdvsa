@@ -29,7 +29,7 @@ const DigitalBadgeGSS = ({ certificado, size = 'normal' }) => {
     calificacion = "100"
   } = certificado || {};
 
-  const verificationUrl = `${process.env.REACT_APP_VERIFY_BASE_URL || window.location.origin}/verificar-certificado?id=${id}`;
+  const verificationUrl = `${process.env.REACT_APP_VERIFY_BASE_URL || window.location.origin}/verificar-certificado?id=${encodeURIComponent(id)}`;
   const isCompact = size === 'compact';
 
   return (

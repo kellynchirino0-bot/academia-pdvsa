@@ -384,7 +384,7 @@ const AdminCertificados = () => {
               calificacion: selectedCert.calificacion_final
             }} />
             <div style={{ textAlign: 'center', marginTop: '16px' }}>
-              <a href={`${window.location.origin}/verificar-certificado?id=${selectedCert.codigo_verificacion}`} target="_blank" rel="noopener noreferrer"
+              <a href={`${window.location.origin}/verificar-certificado?id=${encodeURIComponent(selectedCert.codigo_verificacion)}`} target="_blank" rel="noopener noreferrer"
                 style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '10px 20px', background: '#0284C7', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem' }}>
                 <Download size={16} /> Vista Pública de Verificación
               </a>
