@@ -29,7 +29,7 @@ export const VerificarCertificado = () => {
     setResultadoVerificacion(null);
 
     try {
-      const response = await API.get(`/api/certificates/verify/${query}`);
+      const response = await API.get(`/certificates/verify/${query}`);
       const data = response.data;
       if (data.valido) {
         setResultadoVerificacion({
