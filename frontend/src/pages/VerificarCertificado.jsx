@@ -166,6 +166,13 @@ export const VerificarCertificado = () => {
                 <td style={{ color: '#38BDF8', padding: '6px 8px', fontFamily: 'monospace' }}>{resultadoVerificacion.estandar}</td>
               </tr>
               <tr>
+                <td style={{ color: '#64748B', padding: '6px 8px', verticalAlign: 'top' }}>Validador Infraestructura</td>
+                <td style={{ color: '#38BDF8', padding: '6px 8px', fontSize: '12px', fontWeight: 600, fontFamily: 'monospace', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#4ADE80', display: 'inline-block' }}></span>
+                  GabrielBiz CyberSecurity & Lago Chain
+                </td>
+              </tr>
+              <tr>
                 <td style={{ color: '#64748B', padding: '6px 8px', verticalAlign: 'top' }}>Sello Temporal</td>
                 <td style={{ color: '#CBD5E1', padding: '6px 8px' }}>{resultadoVerificacion.fechaEmision}</td>
               </tr>

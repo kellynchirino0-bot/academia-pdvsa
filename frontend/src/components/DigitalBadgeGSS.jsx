@@ -39,7 +39,7 @@ const DigitalBadgeGSS = ({ certificado, size = 'normal' }) => {
       background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)',
       border: '4px solid #0284C7',
       borderRadius: '12px',
-      padding: '24px',
+      padding: '24px 24px 16px 24px',
       boxSizing: 'border-box',
       position: 'relative',
       color: '#F8FAFC',
@@ -87,10 +87,19 @@ const DigitalBadgeGSS = ({ certificado, size = 'normal' }) => {
         <div style={{ fontSize: '9px', color: '#94A3B8', marginTop: '4px' }}>
           Scan to verify
         </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10px', color: '#38BDF8', fontFamily: 'monospace', marginTop: '2px', justifyContent: 'center' }}>
+          <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#38BDF8', display: 'inline-block' }}></span>
+          <span>GabrielBiz ✓</span>
+        </div>
       </div>
 
-      <div style={{ position: 'absolute', bottom: '15px', left: '24px', fontSize: '9px', color: '#64748B' }}>
-        Acreditado Internacionalmente por Global Safety Solutions &bull; PDVSA / IUTPAL
+      <div style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid rgba(100,116,139,0.5)', textAlign: 'center', fontSize: '11px', color: '#94A3B8' }}>
+        <div style={{ fontWeight: 500, color: '#CBD5E1', marginBottom: '2px' }}>
+          Infraestructura & Ciberseguridad: <span style={{ color: '#38BDF8', fontWeight: 600 }}>GabrielBiz CyberSecurity & Lago Chain</span>
+        </div>
+        <div style={{ fontSize: '10px', color: '#64748B' }}>
+          Acreditado por Global Safety Solutions &bull; PDVSA / IUTPAL
+        </div>
       </div>
     </div>
   );
