@@ -90,7 +90,7 @@ const Dashboard = () => {
     {
       id: 1,
       title: 'Módulo 1: Fundamentos de IA',
-      description: 'Conceptos básicos, ML, DL, y aplicaciones en industria petrolera',
+      description: 'Conceptos básicos, ML, DL y aplicaciones en la industria petrolera',
       icon: '🤖',
       color: 'var(--primary-blue)'
     },
@@ -121,10 +121,10 @@ const Dashboard = () => {
     <div>
       <div style={{ backgroundColor: '#1E293B', padding: '25px', borderRadius: '12px', marginBottom: '25px', border: '1px solid #334155' }}>
         <h1 style={{ color: '#38BDF8', fontSize: '26px', margin: '0 0 10px 0' }}>
-          Bienvenido al Portal de Decisiones Estrat\u00e9gicas PDVSA — IUTPAL
+          Bienvenido al Portal de Decisiones Estratégicas PDVSA — IUTPAL
         </h1>
         <blockquote style={{ margin: '0 0 20px 0', fontStyle: 'italic', color: '#CBD5E1', borderLeft: '3px solid #38BDF8', paddingLeft: '15px', fontSize: '15px' }}>
-          &ldquo;En PDVSA no nos falta talento ni experiencia; nos falta velocidad para procesar datos complejos. Esta plataforma transforma la intuici\u00f3n en precisi\u00f3n matem\u00e1tica mediante el Motor de Inteligencia Ejecutiva y la Investigaci\u00f3n de Operaciones.&rdquo;
+          &ldquo;En PDVSA no nos falta talento ni experiencia; nos falta velocidad para procesar datos complejos. Esta plataforma transforma la intuición en precisión matemática mediante el Motor de Inteligencia Ejecutiva y la Investigación de Operaciones.&rdquo;
         </blockquote>
         <MatrizEnfoqueEjecutivo />
       </div>
@@ -171,6 +171,43 @@ const Dashboard = () => {
               <p>{action.description}</p>
             </div>
           ))}
+
+          {/* Tarjeta destacada: Catálogo de Cursos */}
+          <div
+            onClick={() => navigate('/cursos')}
+            style={{
+              background: 'rgba(15,23,42,0.8)',
+              border: '1px solid rgba(56,189,248,0.4)',
+              borderRadius: '12px',
+              padding: '20px',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              gridColumn: '1 / -1'
+            }}
+            onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#38BDF8'; e.currentTarget.style.boxShadow = '0 0 20px rgba(56,189,248,0.2)'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(56,189,248,0.4)'; e.currentTarget.style.boxShadow = 'none'; }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ padding: '12px', background: 'rgba(56,189,248,0.1)', color: '#38BDF8', borderRadius: '8px', fontSize: '1.5rem' }}>
+                📚
+              </div>
+              <span style={{ fontSize: '0.75rem', fontFamily: 'monospace', color: '#38BDF8', background: 'rgba(12,74,110,0.5)', padding: '4px 10px', borderRadius: '999px', border: '1px solid rgba(56,189,248,0.3)' }}>
+                Acceso Inmediato
+              </span>
+            </div>
+            <div>
+              <h3 style={{ color: '#fff', margin: '0 0 4px 0', fontSize: '1.05rem', fontWeight: 700 }}>Catálogo de Cursos</h3>
+              <p style={{ color: '#94A3B8', fontSize: '0.78rem', margin: 0 }}>
+                Explora los módulos, pistas I.O. y contenido académico en academia-pdvsa.vercel.app/cursos
+              </p>
+            </div>
+            <button style={{ width: '100%', padding: '10px', background: '#0284C7', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              Ir a Cursos <span>→</span>
+            </button>
+          </div>
         </div>
       </div>
 
