@@ -25,14 +25,7 @@ const Certificados = () => {
   const completarModoDemo = async () => {
     setDemoMode(true);
     try {
-      const evalRes = await axios.get(`${API_URL}/evaluations`);
-      const evals = evalRes.data;
-      for (const ev of evals) {
-        const dummyAnswers = ev.preguntas.map(() => 0);
-        await axios.post(`${API_URL}/evaluations/${ev.id}/submit`, { respuestas: dummyAnswers }).catch(() => {});
-      }
-      await loadCertificados();
-      if (progress) loadCertificados();
+      await axios.post(`${API_URL}/demo/complete-all`);
       setDemoMode(false);
       window.location.reload();
     } catch (err) {

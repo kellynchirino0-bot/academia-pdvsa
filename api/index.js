@@ -1025,6 +1025,88 @@ app.post('/api/progress/update', verifyToken, (req, res) => {
   }
 });
 
+// ===================== DEMO: BATCH COMPLETE (single invocation) =====================
+app.post('/api/demo/complete-all', verifyToken, verifyRole(1), (req, res) => {
+  try {
+    // Complete all lessons
+    const lecciones = memoryStorage.lecciones;
+    lecciones.forEach(l => {
+      const existing = memoryStorage.progresos.find(p => p.user_id === req.user.id && p.leccion_id === l.id);
+      if (existing) {
+        existing.completado = true;
+        existing.fecha_completado = new Date().toISOString();
+      } else {
+        memoryStorage.progresos.push({
+          id: memoryStorage.progresos.length + 1,
+          user_id: req.user.id,
+          leccion_id: l.id,
+          modulo_id: l.modulo_id,
+          completado: true,
+          calificacion: 100,
+          fecha_completado: new Date().toISOString()
+        });
+      }
+    });
+
+    // Submit all evaluations with perfect score
+    const evals = memoryStorage.evaluaciones;
+    evals.forEach(ev => {
+      const correctAnswers = ev.preguntas.map(p => p.respuesta_correcta);
+      const correctas = ev.preguntas.length;
+      const calificacion = ((correctas / ev.preguntas.length) * 100).toFixed(1);
+      const existingGrade = memoryStorage.notas.find(n => n.estudiante_id === req.user.id && n.evaluacion_id === ev.id);
+      if (!existingGrade) {
+        memoryStorage.notas.push({
+          id: memoryStorage.notas.length + 1,
+          estudiante_id: req.user.id,
+          evaluacion_id: ev.id,
+          calificacion,
+          estatus_aprobacion: true,
+          fecha_evaluacion: new Date().toISOString()
+        });
+      }
+    });
+
+    // Auto-generate certificate
+    const existingCert = memoryStorage.certificados.find(c => c.estudiante_id === req.user.id && (c.estado === 'aprobado' || c.estado === 'pendiente'));
+    let cert = null;
+    if (!existingCert) {
+      const user = memoryStorage.usuarios.find(u => u.id === req.user.id);
+      const hash = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
+      cert = {
+        id: memoryStorage.certificados.length + 1,
+        estudiante_id: req.user.id,
+        nombre_estudiante: user?.nombre_completo || 'Estudiante',
+        curso: 'Inteligencia Artificial e Investigacion de Operaciones para Lideres de Negocio',
+        fecha_solicitud: new Date().toISOString(),
+        fecha_emision: null,
+        fecha_aprobacion: null,
+        codigo_verificacion: 'CERT_' + hash,
+        calificacion_final: '100.0',
+        estado: 'pendiente',
+        aprobado_por: null,
+        notas_admin: '',
+        activo: true
+      };
+      memoryStorage.certificados.push(cert);
+      createNotification(req.user.id, 'alerta', 'Certificacion Automatica', 'Certificado generado via Modo Demo. Pendiente de aprobacion administrativa.');
+      checkAndAwardBadges(req.user.id);
+    }
+
+    const completadas = memoryStorage.progresos.filter(p => p.user_id === req.user.id && p.completado).length;
+    res.json({
+      message: 'Modo Demo: todos los modulos completados exitosamente',
+      lecciones_completadas: completadas,
+      total_lecciones: lecciones.length,
+      evaluaciones_realizadas: evals.length,
+      certificado_generado: !!cert,
+      certificado: cert ? { id: cert.id, codigo: cert.codigo_verificacion } : null
+    });
+  } catch (error) {
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
 // ===================== CERTIFICATES ROUTES =====================
 app.get('/api/certificates', verifyToken, (req, res) => {
   if (req.user.rol_id === 3) {
