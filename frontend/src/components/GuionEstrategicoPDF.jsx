@@ -99,54 +99,54 @@ const DossierModuloPDF = () => {
           </div>
           <div style={{ textAlign: 'right', fontSize: '10px', color: '#64748B' }}>
             <div>Acreditacion Internacional</div>
-            <div style={{ color: '#22C55E', fontWeight: 'bold' }}>Soberania Criptografica ML-DSA</div>
+            <div style={{ color: '#22C55E', fontWeight: 'bold' }}>Soberanía Criptográfica ML-DSA</div>
           </div>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
           <div style={modStyle()}>
-            <h4 style={h4Style()}>Modulo 1: IA & Soberania Digital</h4>
+            <h4 style={h4Style()}>Módulo 1: IA & Soberanía Digital</h4>
             <ul style={liStyle}>
-              <li>Leccion 1.1: Proteccion de datos y etica en PDVSA</li>
-              <li>Leccion 1.2: Transparencia y auditoria algoritmica</li>
-              <li>Leccion 1.3: Toma de decisiones bajo presion</li>
-              <li>Leccion 1.4: Soberania tecnologica operacional</li>
+              <li>Lección 1.1: Protección de datos y ética en PDVSA</li>
+              <li>Lección 1.2: Transparencia y auditoría algorítmica</li>
+              <li>Lección 1.3: Toma de decisiones bajo presión</li>
+              <li>Lección 1.4: Soberanía tecnológica operacional</li>
             </ul>
           </div>
 
           <div style={modStyle()}>
-            <h4 style={h4Style()}>Modulo 2: Ingenieria de Prompts</h4>
+            <h4 style={h4Style()}>Módulo 2: Ingeniería de Prompts</h4>
             <ul style={liStyle}>
-              <li>Leccion 2.1: Transformacion de reportes complejos</li>
-              <li>Leccion 2.2: Formulacion de prompts ejecutivos</li>
-              <li>Leccion 2.3: Sintesis de datos para directivos</li>
-              <li>Leccion 2.4: Matrices de decision asistidas por IA</li>
+              <li>Lección 2.1: Transformación de reportes complejos</li>
+              <li>Lección 2.2: Formulación de prompts ejecutivos</li>
+              <li>Lección 2.3: Síntesis de datos para directivos</li>
+              <li>Lección 2.4: Matrices de decisión asistidas por IA</li>
             </ul>
           </div>
 
           <div style={modStyle()}>
-            <h4 style={h4Style()}>Modulo 3: Eficiencia y Recursos</h4>
+            <h4 style={h4Style()}>Módulo 3: Eficiencia y Recursos</h4>
             <ul style={liStyle}>
-              <li>Leccion 3.1: Analisis comparativo de presupuestos</li>
-              <li>Leccion 3.2: Gestion de inventario critico</li>
-              <li>Leccion 3.3: Automatizacion de flujo documental</li>
-              <li>Leccion 3.4: Optimizacion de procesos sin burocracia</li>
+              <li>Lección 3.1: Análisis comparativo de presupuestos</li>
+              <li>Lección 3.2: Gestión de inventario crítico</li>
+              <li>Lección 3.3: Automatización de flujo documental</li>
+              <li>Lección 3.4: Optimización de procesos sin burocracia</li>
             </ul>
           </div>
 
           <div style={modStyle('#0284C7', '#0F172A')}>
-            <h4 style={h4Style('#38BDF8')}>Modulo 4: Investigacion de Operaciones (I.O.)</h4>
+            <h4 style={h4Style('#38BDF8')}>Módulo 4: Investigación de Operaciones (I.O.)</h4>
             <ul style={liStyle}>
-              <li><strong style={{ color: '#38BDF8' }}>I.O. 1:</strong> Fundamentos y Modelado Matematico con IA</li>
+              <li><strong style={{ color: '#38BDF8' }}>I.O. 1:</strong> Fundamentos y Modelado Matemático con IA</li>
               <li><strong style={{ color: '#38BDF8' }}>I.O. 2:</strong> Algoritmo Simplex y Mezcla de Crudo (+$1.96M/d)</li>
-              <li><strong style={{ color: '#38BDF8' }}>I.O. 3:</strong> CPM/PERT en Parada de Planta UDA-1 (22.58 dias)</li>
-              <li><strong style={{ color: '#38BDF8' }}>I.O. 4:</strong> Lote Economico EOQ en Almacen ($790K ahorro)</li>
+              <li><strong style={{ color: '#38BDF8' }}>I.O. 3:</strong> CPM/PERT en Parada de Planta UDA-1 (22.58 días)</li>
+              <li><strong style={{ color: '#38BDF8' }}>I.O. 4:</strong> Lote Económico EOQ en Almacén ($790K ahorro)</li>
             </ul>
           </div>
         </div>
 
         <div style={{ marginTop: '20px', padding: '14px', background: '#0F172A', borderRadius: '8px', border: '1px solid #1E293B' }}>
-          <h4 style={{ color: '#FACC15', margin: '0 0 8px 0', fontSize: '12px' }}>SELLO DE INMUTABILIDAD Y VERIFICACION</h4>
+          <h4 style={{ color: '#FACC15', margin: '0 0 8px 0', fontSize: '12px' }}>SELLO DE INMUTABILIDAD Y VERIFICACIÓN</h4>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ fontSize: '10px', color: '#94A3B8', lineHeight: '1.6' }}>
               <div>Firma: <span style={{ color: '#4ADE80' }}>ML-DSA-PDVSA-2026-{Math.random().toString(36).substring(2, 10).toUpperCase()}</span></div>

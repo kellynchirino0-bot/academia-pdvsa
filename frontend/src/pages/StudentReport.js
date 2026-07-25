@@ -50,7 +50,7 @@ const StudentReport = () => {
 
       doc.setFontSize(8);
       doc.text(`Generado: ${new Date().toLocaleString('es-VE')}`, pageWidth / 2, 30, { align: 'center' });
-      doc.text(`Codigo Verificacion: ${data.estudiante.id}-${Date.now()}`, pageWidth / 2, 36, { align: 'center' });
+      doc.text(`Código Verificación: ${data.estudiante.id}-${Date.now()}`, pageWidth / 2, 36, { align: 'center' });
 
       // Student Info
       let y = 52;

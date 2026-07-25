@@ -52,7 +52,7 @@ const AdminConsolidatedReport = () => {
       doc.text(`Total Estudiantes: ${data.resumen.total_estudiantes}`, 15, y + 5);
       doc.text(`Activos: ${data.resumen.activos}`, 80, y + 5);
       doc.text(`Con Certificado: ${data.resumen.con_certificado}`, 130, y + 5);
-      doc.text(`Tasa Certificacion: ${data.resumen.tasa_certificacion}%`, 195, y + 5);
+      doc.text(`Tasa Certificación: ${data.resumen.tasa_certificacion}%`, 195, y + 5);
       doc.text(`Promedio General: ${data.resumen.promedio_general}%`, 260, y + 5);
       y += 25;
 
@@ -121,7 +121,7 @@ const AdminConsolidatedReport = () => {
         <div className="stat-card blue"><div className="stat-icon"><Users size={24} /></div><h3>Total Estudiantes</h3><div className="stat-value">{data.resumen.total_estudiantes}</div></div>
         <div className="stat-card green"><div className="stat-icon"><Users size={24} /></div><h3>Activos</h3><div className="stat-value">{data.resumen.activos}</div></div>
         <div className="stat-card gold"><div className="stat-icon"><Award size={24} /></div><h3>Con Certificado</h3><div className="stat-value">{data.resumen.con_certificado}</div></div>
-        <div className="stat-card" style={{ borderTopColor: '#8b5cf6' }}><div className="stat-icon"><TrendingUp size={24} color="#8b5cf6" /></div><h3>Tasa Certificacion</h3><div className="stat-value">{data.resumen.tasa_certificacion}%</div></div>
+        <div className="stat-card" style={{ borderTopColor: '#8b5cf6' }}><div className="stat-icon"><TrendingUp size={24} color="#8b5cf6" /></div><h3>Tasa Certificación</h3><div className="stat-value">{data.resumen.tasa_certificacion}%</div></div>
         <div className="stat-card teal"><div className="stat-icon"><BarChart3 size={24} /></div><h3>Promedio General</h3><div className="stat-value">{data.resumen.promedio_general}%</div></div>
       </div>
 

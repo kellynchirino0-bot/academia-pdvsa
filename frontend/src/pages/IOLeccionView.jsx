@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 const LESSONS = {
@@ -34,20 +34,37 @@ export default function IOLeccionView() {
 
   useEffect(() => {
     const saved = localStorage.getItem('io_lesson_progress');
-    if (saved) setCompleted(JSON.parse(saved));
+    if (saved) {
+      try {
+        setCompleted(JSON.parse(saved));
+      } catch {
+        localStorage.removeItem('io_lesson_progress');
+      }
+    }
     window.scrollTo(0, 0);
   }, [leccionId]);
 
   const currentIdx = LESSON_IDS.indexOf(leccionId);
   const lesson = LESSONS[leccionId];
 
+  const cleanupRef = useRef();
+
   const markComplete = useCallback(() => {
-    const next = { ...completed, [leccionId]: true };
-    setCompleted(next);
-    localStorage.setItem('io_lesson_progress', JSON.stringify(next));
+    setCompleted(prev => {
+      const next = { ...prev, [leccionId]: true };
+      localStorage.setItem('io_lesson_progress', JSON.stringify(next));
+      return next;
+    });
     setShowConfetti(true);
-    setTimeout(() => setShowConfetti(false), 2500);
-  }, [leccionId, completed]);
+    if (cleanupRef.current) clearTimeout(cleanupRef.current);
+    cleanupRef.current = setTimeout(() => setShowConfetti(false), 2500);
+  }, [leccionId]);
+
+  useEffect(() => {
+    return () => {
+      if (cleanupRef.current) clearTimeout(cleanupRef.current);
+    };
+  }, []);
 
   const goPrev = () => {
     if (currentIdx > 0) navigate(`/cursos/modulo/4/leccion/${LESSON_IDS[currentIdx - 1]}`);
@@ -107,7 +124,7 @@ export default function IOLeccionView() {
             {LESSON_IDS.map((id, i) => (
               <React.Fragment key={id}>
                 <div
-                  onClick={() => navigate(`/cursos/modulo/4/leccion/${id}`)}
+                  onClick={() => id !== leccionId && navigate(`/cursos/modulo/4/leccion/${id}`)}
                   style={{
                     width: '36px', height: '36px', borderRadius: '50%',
                     background: id === leccionId ? '#0284C7' : completed[id] ? '#22C55E' : 'rgba(56,189,248,0.1)',
@@ -417,12 +434,16 @@ function IO4Content() {
   const [costoOrdenar, setCostoOrdenar] = useState(850);
   const [costoMantener, setCostoMantener] = useState(180);
 
-  const eoq = Math.sqrt((2 * demanda * costoOrdenar) / costoMantener);
-  const numOrdenes = Math.ceil(demanda / eoq);
-  const costoTotalAnual = Math.sqrt(2 * demanda * costoOrdenar * costoMantener);
-  const ahorroBase = 790000;
-  const ahorroEstimado = ahorroBase * (1 - (costoMantener * eoq) / (costoMantener * Math.sqrt((2 * 12000 * 850) / 180)));
-  const ahorroFinal = Math.abs(ahorroEstimado).toFixed(0);
+  const D = Math.max(1, demanda);
+  const S = Math.max(1, costoOrdenar);
+  const H = Math.max(1, costoMantener);
+
+  const eoq = Math.sqrt((2 * D * S) / H);
+  const numOrdenes = Math.ceil(D / eoq);
+  const costoTotalAnual = Math.sqrt(2 * D * S * H);
+  const eoqBase = Math.sqrt((2 * 12000 * 850) / 180);
+  const ahorroEstimado = 790000 * (1 - (H * eoq) / (H * eoqBase));
+  const ahorroFinal = Number.isFinite(ahorroEstimado) ? Math.abs(ahorroEstimado).toFixed(0) : '0';
 
   return (
     <div>

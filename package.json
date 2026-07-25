@@ -9,8 +9,8 @@
   "scripts": {
     "dev:frontend": "cd frontend && npm start",
     "dev:backend": "cd backend && npm run dev",
-    "build": "cd frontend && npm install && npm run build",
-    "vercel-build": "cd frontend && npm install && npm run build",
+    "build": "cd frontend && npm ci && npm run build",
+    "vercel-build": "cd frontend && npm ci && CI=true npm run build",
     "seed": "node api/seed-content.js",
     "start": "node api/index.js"
   },

@@ -634,7 +634,7 @@ ${'═'.repeat(56)}`;
     const hashSimulado = `ML-DSA-PDVSA-2026-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
     const reporteInmutable = {
       institucion: "PDVSA - IUTPAL / Academia Virtual",
-      modulo: "Motor Matem\u00e1tico de Optimizaci\u00f3n I.O.",
+      modulo: "Motor Matemático de Optimización I.O.",
       fecha: new Date().toISOString(),
       firmaCriptografica: hashSimulado,
       estandarSoberano: "LagoChain Post-Quantum ML-DSA",
@@ -908,7 +908,7 @@ ${'═'.repeat(56)}`;
                             transition: 'all 0.2s ease'
                           }}
                         >
-                          {copiado ? '\u2713 Copiado al Portapapeles' : '\uD83D\uDCCB Copiar Plantilla'}
+                          {copiado ? '✓ Copiado al Portapapeles' : '📋 Copiar Plantilla'}
                         </button>
                         <button
                           onClick={() => cargarPlantilla(plantilla)}
@@ -1027,11 +1027,11 @@ ${'═'.repeat(56)}`;
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                     <span style={{ fontSize: '16px' }}>🛡️</span>
                     <h4 style={{ color: '#38BDF8', margin: 0, fontSize: '14px', fontWeight: 'bold' }}>
-                      Certificaci\u00f3n de Decisi\u00f3n Estrat\u00e9gica (Soberan\u00eda Criptogr\u00e1fica)
+                      Certificación de Decisión Estratégica (Soberanía Criptográfica)
                     </h4>
                   </div>
                   <p style={{ color: '#94A3B8', fontSize: '12px', margin: '0 0 12px 0', lineHeight: '1.4' }}>
-                    Genera un reporte matem\u00e1tico inmutable sellado con firma post-cu\u00e1ntica LagoChain ML-DSA para presentaci\u00f3n a Gerencia o Auditor\u00eda.
+                    Genera un reporte matemático inmutable sellado con firma post-cuántica LagoChain ML-DSA para presentación a Gerencia o Auditoría.
                   </p>
                   <button
                     onClick={() => emitirDecisionFirmada(respuesta?.resultado)}
@@ -1047,7 +1047,7 @@ ${'═'.repeat(56)}`;
                       transition: 'all 0.2s ease'
                     }}
                   >
-                    {copiadoSim ? '\u2713 Reporte Copiado y Sellado (ML-DSA)' : '\uD83D\uDD12 Emitir Decisi\u00f3n Inmutable (ML-DSA)'}
+                    {copiadoSim ? '✓ Reporte Copiado y Sellado (ML-DSA)' : '🔒 Emitir Decisión Inmutable (ML-DSA)'}
                   </button>
                 </div>
               </div>

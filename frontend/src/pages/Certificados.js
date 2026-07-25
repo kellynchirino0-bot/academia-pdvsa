@@ -158,7 +158,7 @@ const Certificados = () => {
               </div>
             ) : (
               <div className="alert alert-error">
-                {resultadoVerificacion.error || 'Certificado no encontrado o invalido'}
+                {resultadoVerificacion.error || 'Certificado no encontrado o inválido'}
               </div>
             )}
           </div>

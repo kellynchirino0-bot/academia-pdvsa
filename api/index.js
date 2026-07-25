@@ -9,10 +9,18 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 
 const app = express();
-const JWT_SECRET = process.env.JWT_SECRET || 'nasser_group_pdvsa_academia_virtual_2024_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET || 'pdvsa-iutpal-enterprise-secret-key-2026';
 
 // Middleware
-app.use(cors({ origin: '*', methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'] }));
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://academia-pdvsa.vercel.app,http://localhost:3000').split(',');
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || ALLOWED_ORIGINS.indexOf(origin) !== -1) return callback(null, true);
+    return callback(null, true);
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-vercel-protection-bypass']
+}));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
@@ -410,7 +418,7 @@ app.post('/api/auth/change-password', verifyToken, async (req, res) => {
 });
 
 // ===================== USERS ROUTES =====================
-app.get('/api/users', verifyToken, (req, res) => {
+app.get('/api/users', verifyToken, verifyRole(1), (req, res) => {
   const usuarios = memoryStorage.usuarios.map(u => ({
     id: u.id, cedula: u.cedula, nombre_completo: u.nombre_completo,
     cargo: u.cargo, correo: u.correo, rol_id: u.rol_id,
@@ -426,6 +434,10 @@ app.get('/api/users', verifyToken, (req, res) => {
 });
 
 app.get('/api/users/:id', verifyToken, (req, res) => {
+  const requestedId = parseInt(req.params.id);
+  if (req.user.rol_id !== 1 && req.user.id !== requestedId) {
+    return res.status(403).json({ error: 'No autorizado para ver este perfil' });
+  }
   const u = memoryStorage.usuarios.find(u => u.id === parseInt(req.params.id));
   if (!u) return res.status(404).json({ error: 'Usuario no encontrado' });
   res.json({
@@ -828,12 +840,26 @@ app.get('/api/admin/dashboard', verifyToken, verifyRole(1), (req, res) => {
 
 // ===================== EVALUATIONS ROUTES =====================
 app.get('/api/evaluations', verifyToken, (req, res) => {
-  res.json(memoryStorage.evaluaciones);
+  let data = memoryStorage.evaluaciones;
+  if (req.user.rol_id !== 1 && req.user.rol_id !== 2) {
+    data = data.map(e => ({
+      ...e,
+      preguntas: e.preguntas?.map(p => {
+        const { respuesta_correcta, ...rest } = p;
+        return rest;
+      })
+    }));
+  }
+  res.json(data);
 });
 
 app.get('/api/evaluations/:id', verifyToken, (req, res) => {
   const ev = memoryStorage.evaluaciones.find(e => e.id === parseInt(req.params.id));
   if (!ev) return res.status(404).json({ error: 'Evaluación no encontrada' });
+  if (req.user.rol_id !== 1 && req.user.rol_id !== 2) {
+    const { respuesta_correcta, ...filtered } = ev;
+    return res.json(filtered);
+  }
   res.json(ev);
 });
 
@@ -1531,6 +1557,12 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
     environment: 'vercel-serverless'
   });
+});
+
+// Global error handler — ensures JSON response for uncaught errors
+app.use((err, req, res, next) => {
+  console.error('Uncaught error:', err);
+  res.status(500).json({ error: 'Error interno del servidor' });
 });
 
 module.exports = app;

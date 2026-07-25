@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const AuthContext = createContext(null);
 const API_URL = process.env.REACT_APP_API_URL || '/api';
-const BYPASS_SECRET = process.env.REACT_APP_VERCEL_BYPASS || 'nasser_group_bypass_key';
+const BYPASS_SECRET = process.env.REACT_APP_VERCEL_BYPASS;
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -12,7 +12,9 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.defaults.headers.common['x-vercel-protection-bypass'] = BYPASS_SECRET;
+    if (BYPASS_SECRET) {
+      axios.defaults.headers.common['x-vercel-protection-bypass'] = BYPASS_SECRET;
+    }
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       verifyToken();

@@ -45,23 +45,9 @@ export const VerificarCertificado = () => {
       } else {
         setError('Certificado no encontrado o no válido');
       }
-    } catch {
-      setTimeout(() => {
-        const esHashDecision = query.includes('ML-DSA') || query.includes('FAJA') || query.includes('{') || query.includes('991');
-        setResultadoVerificacion({
-          valido: true,
-          tipo: esHashDecision ? 'Decisión Estratégica Inmutable' : 'Certificación de Competencia IA/IO',
-          identificador: query.toUpperCase(),
-          institucion: 'PDVSA - IUTPAL / Nasser Group',
-          estandar: 'Global Safety Solutions & LagoChain Post-Quantum ML-DSA (NIST FIPS 204)',
-          fechaEmision: new Date().toLocaleDateString('es-VE', { year: 'numeric', month: 'long', day: 'numeric' }),
-          detalles: esHashDecision
-            ? 'Firma válida. La corrida matemática de optimización no ha sufrido alteración desde su ejecución.'
-            : 'Participante registrado en la cohorte gerencial de Inteligencia Artificial y Toma de Decisiones. Avalado por Global Safety Solutions.'
-        });
-        setCargando(false);
-      }, 800);
-      return;
+    } catch (err) {
+      console.error('Error en verificación:', err);
+      setError('Error de conexión con el servicio de verificación. Verifique su conexión a internet e intente nuevamente.');
     }
     setCargando(false);
   };
@@ -86,7 +72,7 @@ export const VerificarCertificado = () => {
           {modoEscaneo ? 'QR SCAN - VERIFICACION EN VIVO' : 'CENTRO DE AUDITORIA FORENSE CRIPTOGRAFICA'}
         </span>
         <h1 style={{ color: '#38BDF8', margin: '10px 0 5px 0', fontSize: '26px' }}>
-          Verificacion y Trazabilidad ML-DSA
+          Verificación y Trazabilidad ML-DSA
         </h1>
         <p style={{ color: '#94A3B8', margin: 0, fontSize: '12px' }}>
           Global Safety Solutions &bull; LagoChain Post-Quantum &bull; IUTPAL / PDVSA
@@ -177,7 +163,7 @@ export const VerificarCertificado = () => {
                 <td style={{ color: '#CBD5E1', padding: '6px 8px' }}>{resultadoVerificacion.fechaEmision}</td>
               </tr>
               <tr>
-                <td style={{ color: '#64748B', padding: '6px 8px', verticalAlign: 'top' }}>Soberania</td>
+                <td style={{ color: '#64748B', padding: '6px 8px', verticalAlign: 'top' }}>Soberanía</td>
                 <td style={{ color: '#22C55E', padding: '6px 8px', fontWeight: 'bold' }}>IUTPAL / PDVSA / Global Safety Solutions</td>
               </tr>
             </tbody>
@@ -191,7 +177,7 @@ export const VerificarCertificado = () => {
             <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
               <div style={{ background: '#FFF', padding: '8px', borderRadius: '8px', display: 'inline-block' }}>
                 <QRCodeSVG 
-                  value={`https://academia-pdvsa.vercel.app/verificar-certificado?id=${resultadoVerificacion.certificado.codigo_verificacion}`}
+                  value={`${process.env.REACT_APP_VERIFY_BASE_URL || window.location.origin}/verificar-certificado?id=${resultadoVerificacion.certificado.codigo_verificacion}`}
                   size={120}
                   level="H"
                 />

@@ -6,27 +6,27 @@ export const PromptsPDVSA = () => {
   const promptsEstrategicos = [
     {
       id: 'simplex-faja',
-      titulo: '\uD83D\uDCCA Optimizaci\u00f3n de Mezcla de Crudo (Simplex)',
-      rol: 'Gerencia Financiera y Planificaci\u00f3n',
-      impacto: '+$1.96M / d\u00eda en Margen Operativo',
-      casoReal: 'Faja del Orinoco (16\u00b0 API) & Crudo Mediano (30\u00b0 API)',
-      promptTexto: 'Act\u00faa como Consultor Senior en Investigaci\u00f3n de Operaciones de PDVSA. Formula un modelo de Programaci\u00f3n Lineal (M\u00e9todo Simplex) para optimizar la mezcla de crudo extrapesado de la Faja del Orinoco (16\u00b0 API) con crudo mediano (30\u00b0 API). Define la funci\u00f3n objetivo para maximizar el margen de ganancia diaria sujeto a restricciones de capacidad de transporte por oleoducto, especificaciones de refinaci\u00f3n y contratos de exportaci\u00f3n, buscando alcanzar la meta de +$1.96M/d\u00eda.'
+      titulo: '📊 Optimización de Mezcla de Crudo (Simplex)',
+      rol: 'Gerencia Financiera y Planificación',
+      impacto: '+$1.96M / día en Margen Operativo',
+      casoReal: 'Faja del Orinoco (16° API) & Crudo Mediano (30° API)',
+      promptTexto: 'Actúa como Consultor Senior en Investigación de Operaciones de PDVSA. Formula un modelo de Programación Lineal (Método Simplex) para optimizar la mezcla de crudo extrapesado de la Faja del Orinoco (16° API) con crudo mediano (30° API). Define la función objetivo para maximizar el margen de ganancia diaria sujeto a restricciones de capacidad de transporte por oleoducto, especificaciones de refinación y contratos de exportación, buscando alcanzar la meta de +$1.96M/día.'
     },
     {
       id: 'pert-amuay',
-      titulo: '\u2699\uFE0F Ruta Cr\u00edtica en Parada de Planta UDA-1 (CPM/PERT)',
-      rol: 'Supervisi\u00f3n de Mantenimiento y Operaciones',
-      impacto: '94.3% Certidumbre / 22.58 D\u00edas Ejecuci\u00f3n',
-      casoReal: 'Refiner\u00eda Amuay - Unidad UDA-1',
-      promptTexto: 'Act\u00faa como Gerente de Mantenimiento Industrial en PDVSA Refinaci\u00f3n. Estructura el an\u00e1lisis CPM/PERT para la Parada de Planta de la Unidad UDA-1 de Amuay abarcando sus 16 actividades cr\u00edticas. Identifica las holguras, determina la Ruta Cr\u00edtica para garantizar una duraci\u00f3n m\u00e1xima de 22.58 d\u00edas y calcula la probabilidad estad\u00edstica (meta 94.3%) de cumplir el cronograma frente a eventos no planificados.'
+      titulo: '⚙️ Ruta Crítica en Parada de Planta UDA-1 (CPM/PERT)',
+      rol: 'Supervisión de Mantenimiento y Operaciones',
+      impacto: '94.3% Certidumbre / 22.58 Días Ejecución',
+      casoReal: 'Refinería Amuay - Unidad UDA-1',
+      promptTexto: 'Actúa como Gerente de Mantenimiento Industrial en PDVSA Refinación. Estructura el análisis CPM/PERT para la Parada de Planta de la Unidad UDA-1 de Amuay abarcando sus 16 actividades críticas. Identifica las holguras, determina la Ruta Crítica para garantizar una duración máxima de 22.58 días y calcula la probabilidad estadística (meta 94.3%) de cumplir el cronograma frente a eventos no planificados.'
     },
     {
       id: 'eoq-bare',
-      titulo: '\uD83D\uDCE6 Lote \u00d3ptimo de Inventario Cr\u00edtico (Modelo EOQ)',
-      rol: 'Log\u00edstica, Procura y Administraci\u00f3n',
-      impacto: '$790,996 / a\u00f1o en Ahorro de Capital',
-      casoReal: 'Campo Bare - V\u00e1lvulas PSV-409',
-      promptTexto: 'Act\u00faa como Especialista en Cadena de Suministros para PDVSA Exploraci\u00f3n y Producci\u00f3n. Aplica el modelo EOQ (Economic Order Quantity) para la gesti\u00f3n de inventario de V\u00e1lvulas de Seguridad PSV-409 en Campo Bare. Eval\u00faa el costo de ordenar vs. costo de mantenimiento de inventario, determina el lote \u00f3ptimo de 21 unidades y el punto de reorden, proyectando un ahorro de $790,996/a\u00f1o.'
+      titulo: '📦 Lote Óptimo de Inventario Crítico (Modelo EOQ)',
+      rol: 'Logística, Procura y Administración',
+      impacto: '$790,996 / año en Ahorro de Capital',
+      casoReal: 'Campo Bare - Válvulas PSV-409',
+      promptTexto: 'Actúa como Especialista en Cadena de Suministros para PDVSA Exploración y Producción. Aplica el modelo EOQ (Economic Order Quantity) para la gestión de inventario de Válvulas de Seguridad PSV-409 en Campo Bare. Evalúa el costo de ordenar vs. costo de mantenimiento de inventario, determina el lote óptimo de 21 unidades y el punto de reorden, proyectando un ahorro de $790,996/año.'
     }
   ];
 
@@ -43,7 +43,7 @@ export const PromptsPDVSA = () => {
           MOTOR DE INTELIGENCIA EJECUTIVA
         </span>
         <h1 style={{ color: '#38BDF8', margin: '10px 0 5px 0', fontSize: '26px' }}>
-          Optimizaci\u00f3n de Recursos y Toma de Decisiones Estrat\u00e9gicas
+          Optimización de Recursos y Toma de Decisiones Estratégicas
         </h1>
         <p style={{ color: '#94A3B8', margin: 0, fontSize: '13px' }}>
           Prompts maestros para Simplex, CPM/PERT y EOQ | Validado con LagoChain ML-DSA
@@ -108,7 +108,7 @@ export const PromptsPDVSA = () => {
                 transition: 'all 0.2s ease'
               }}
             >
-              {copiadoId === item.id ? '\u2713 Prompt Copiado a Portapapeles' : '\uD83D\uDCCB Copiar Prompt Estrat\u00e9gico'}
+              {copiadoId === item.id ? '✓ Prompt Copiado a Portapapeles' : '📋 Copiar Prompt Estratégico'}
             </button>
           </div>
         ))}
