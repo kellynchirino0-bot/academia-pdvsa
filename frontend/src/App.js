@@ -53,7 +53,7 @@ function ProtectedRoute({ children, allowedRoles }) {
   return <Layout>{children}</Layout>;
 }
 
-function PremiumRoute({ children, allowedRoles, planName }) {
+function PremiumRoute({ children, allowedRoles, planName, requiredPlan }) {
   const { user, isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
@@ -65,9 +65,13 @@ function PremiumRoute({ children, allowedRoles, planName }) {
   }
 
   const plan = user?.plan_suscripcion || 'gratuito';
-  const planesPago = ['vip_diplomado', 'b2b_enterprise', 'sim_petroleo', 'sim_calderas', 'sim_plc', 'sim_soldadura'];
+  const planesFullAccess = ['vip_diplomado', 'b2b_enterprise'];
 
-  if (!planesPago.includes(plan)) {
+  const hasAccess = requiredPlan
+    ? planesFullAccess.includes(plan) || plan === requiredPlan
+    : ['vip_diplomado', 'b2b_enterprise'].includes(plan);
+
+  if (!hasAccess) {
     return <Navigate to={`/suscripcion?recurso=${encodeURIComponent(planName || 'contenido premium')}`} replace />;
   }
 
@@ -130,22 +134,22 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/simulador/petroleo" element={
-            <PremiumRoute planName="Simulador 3D de Petróleo — Bombeo IA">
+            <PremiumRoute planName="Simulador 3D de Petróleo — Bombeo IA" requiredPlan="sim_petroleo">
               <SimuladorPetroleo />
             </PremiumRoute>
           } />
           <Route path="/simulador/calderas" element={
-            <PremiumRoute planName="Simulador 3D de Calderas — LIMS">
+            <PremiumRoute planName="Simulador 3D de Calderas — LIMS" requiredPlan="sim_calderas">
               <SimuladorCalderas />
             </PremiumRoute>
           } />
           <Route path="/simulador/plc" element={
-            <PremiumRoute planName="Simulador 3D de PLC / SCADA">
+            <PremiumRoute planName="Simulador 3D de PLC / SCADA" requiredPlan="sim_plc">
               <SimuladorPLC />
             </PremiumRoute>
           } />
           <Route path="/simulador/soldadura" element={
-            <PremiumRoute planName="Simulador 3D de Soldadura AWS + NDT">
+            <PremiumRoute planName="Simulador 3D de Soldadura AWS + NDT" requiredPlan="sim_soldadura">
               <SimuladorSoldadura />
             </PremiumRoute>
           } />

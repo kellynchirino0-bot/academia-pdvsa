@@ -44,7 +44,9 @@ const Layout = ({ children }) => {
   };
 
   const plan = user?.plan_suscripcion || 'gratuito';
-  const isPremium = ['vip_diplomado', 'b2b_enterprise', 'sim_petroleo', 'sim_calderas', 'sim_plc', 'sim_soldadura'].includes(plan);
+  const planesFullAccess = ['vip_diplomado', 'b2b_enterprise'];
+  const isPremium = planesFullAccess.includes(plan) || ['sim_petroleo', 'sim_calderas', 'sim_plc', 'sim_soldadura'].includes(plan);
+  const hasPlanAccess = (requiredPlan) => planesFullAccess.includes(plan) || plan === requiredPlan;
 
   const navItems = [
     { to: '/dashboard', icon: LayoutDashboard, label: '📊 Consola de Inteligencia', roles: ['administrador', 'tutor', 'participante'] },
@@ -56,10 +58,10 @@ const Layout = ({ children }) => {
     { to: '/simulador/video-audio', icon: Video, label: '🎬 Síntesis Multimedia', roles: ['administrador', 'tutor', 'participante'] },
     // --- Simuladores 3D VIP ---
     { divider: '🎮 Simuladores 3D Especializados (VIP)', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/petroleo', icon: Box, label: '🛢️ Petróleo — Bombeo IA', roles: ['administrador', 'tutor', 'participante'], premium: true },
-    { to: '/simulador/calderas', icon: Thermometer, label: '♨️ Calderas — LIMS 3D', roles: ['administrador', 'tutor', 'participante'], premium: true },
-    { to: '/simulador/plc', icon: Cpu, label: '⚡ PLC / SCADA Industrial', roles: ['administrador', 'tutor', 'participante'], premium: true },
-    { to: '/simulador/soldadura', icon: Flame, label: '👨‍🏭 Soldadura AWS + NDT', roles: ['administrador', 'tutor', 'participante'], premium: true },
+    { to: '/simulador/petroleo', icon: Box, label: '🛢️ Petróleo — Bombeo IA', roles: ['administrador', 'tutor', 'participante'], premium: true, requiredPlan: 'sim_petroleo' },
+    { to: '/simulador/calderas', icon: Thermometer, label: '♨️ Calderas — LIMS 3D', roles: ['administrador', 'tutor', 'participante'], premium: true, requiredPlan: 'sim_calderas' },
+    { to: '/simulador/plc', icon: Cpu, label: '⚡ PLC / SCADA Industrial', roles: ['administrador', 'tutor', 'participante'], premium: true, requiredPlan: 'sim_plc' },
+    { to: '/simulador/soldadura', icon: Flame, label: '👨‍🏭 Soldadura AWS + NDT', roles: ['administrador', 'tutor', 'participante'], premium: true, requiredPlan: 'sim_soldadura' },
     // --- Planes y Certificaciones ---
     { divider: '💳 Membresía & Certificaciones', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/suscripcion', icon: CreditCard, label: isPremium ? '✅ Mi Membresía VIP' : '🔓 Planes & Suscripción VIP', roles: ['administrador', 'tutor', 'participante'] },
@@ -149,8 +151,7 @@ const Layout = ({ children }) => {
                   <span style={{ flex: 1 }}>{item.label}</span>
                   {item.premium && (
                     <span style={{ fontSize: '11px', marginLeft: '4px' }}>
-                      {['vip_diplomado', 'b2b_enterprise', 'sim_petroleo', 'sim_calderas', 'sim_plc', 'sim_soldadura'].includes(user?.plan_suscripcion)
-                        ? '✅' : '🔒'}
+                      {hasPlanAccess(item.requiredPlan) ? '✅' : '🔒'}
                     </span>
                   )}
                 </NavLink>

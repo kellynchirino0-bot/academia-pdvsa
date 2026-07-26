@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 
 const app = express();
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || 'lagochain_secure_key_2026_pdvsa';
 
 // Middleware
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://academia-pdvsa.vercel.app,http://localhost:3000,http://localhost:5173').split(',');
@@ -66,12 +66,25 @@ function saveToDisk() {
       progresos: memoryStorage.progresos,
       auditoria: memoryStorage.auditoria,
       notifications: memoryStorage.notifications,
-      user_badges: memoryStorage.user_badges
+      user_badges: memoryStorage.user_badges,
+      simulaciones: memoryStorage.simulaciones,
+      modulos: memoryStorage.modulos,
+      lecciones: memoryStorage.lecciones,
+      tareas: memoryStorage.tareas,
+      entregas: memoryStorage.entregas,
+      retroalimentacion: memoryStorage.retroalimentacion,
+      contenido_multimedia: memoryStorage.contenido_multimedia,
+      asignaciones_tutores: memoryStorage.asignaciones_tutores
     };
     fs.writeFileSync(DATA_FILE, JSON.stringify(data));
   } catch (e) {
     console.error('Persistence save error:', e.message);
   }
+}
+
+function getNextId(arr, field = 'id') {
+  if (!arr || arr.length === 0) return 1;
+  return Math.max(...arr.map(item => item[field] || 0)) + 1;
 }
 
 function loadFromDisk() {
@@ -221,7 +234,7 @@ const initializeSync = () => {
   // Tutor assignments
   [3, 4, 5, 6, 7].forEach(pid => {
     memoryStorage.asignaciones_tutores.push({
-      id: memoryStorage.asignaciones_tutores.length + 1,
+      id: getNextId(memoryStorage.asignaciones_tutores),
       tutor_id: 2, estudiante_id: pid,
       fecha_asignacion: new Date().toISOString(), activa: true
     });
@@ -353,7 +366,7 @@ const checkTrialStatus = (req, res, next) => {
 
 const logAuditoria = (usuario_id, accion, detalles) => {
   memoryStorage.auditoria.push({
-    id: memoryStorage.auditoria.length + 1,
+    id: getNextId(memoryStorage.auditoria),
     usuario_id, accion, detalles,
     ip: 'vercel-serverless',
     timestamp: new Date().toISOString()
@@ -424,7 +437,7 @@ app.post('/api/auth/register', async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const nuevoUsuario = {
-      id: memoryStorage.usuarios.length + 1, cedula, nombre_completo,
+      id: getNextId(memoryStorage.usuarios), cedula, nombre_completo,
       cargo: cargo || 'Participante PDVSA', correo,
       password_hash: hashedPassword, rol_id: 3, activo: true,
       telefono: '', empresa_filial: 'PDVSA Corp',
@@ -440,7 +453,7 @@ app.post('/api/auth/register', async (req, res) => {
 
     // Auto-register as lead
     memoryStorage.leads.push({
-      id: memoryStorage.leads.length + 1,
+      id: getNextId(memoryStorage.leads),
       nombre_completo, email: correo, telefono: '',
       empresa_filial: 'PDVSA Corp', cargo: cargo || 'Participante PDVSA',
       estado: 'nuevo', origen_registro: 'registro_web',
@@ -653,7 +666,7 @@ app.post('/api/courses/lecciones/completar', verifyToken, (req, res) => {
       existing.fecha_completado = new Date().toISOString();
     } else {
       memoryStorage.progresos.push({
-        id: memoryStorage.progresos.length + 1,
+        id: getNextId(memoryStorage.progresos),
         user_id: req.user.id,
         leccion_id: parseInt(leccion_id),
         modulo_id: leccion.modulo_id,
@@ -691,7 +704,7 @@ app.post('/api/courses/lecciones/completar', verifyToken, (req, res) => {
         const user = memoryStorage.usuarios.find(u => u.id === req.user.id);
         const hash = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
         autoCert = {
-          id: memoryStorage.certificados.length + 1,
+          id: getNextId(memoryStorage.certificados),
           estudiante_id: req.user.id,
           nombre_estudiante: user?.nombre_completo || 'Estudiante',
           curso: 'Inteligencia Artificial e Investigacion de Operaciones para Lideres de Negocio',
@@ -737,7 +750,7 @@ app.get('/api/courses/stats', verifyToken, verifyRole(1, 2), (req, res) => {
 app.post('/api/courses/modulos', verifyToken, verifyRole(1, 2), (req, res) => {
   const { numero_modulo, titulo, descripcion, icono, duracion_horas } = req.body;
   const nuevoModulo = {
-    id: memoryStorage.modulos.length + 1, numero_modulo, titulo,
+    id: getNextId(memoryStorage.modulos), numero_modulo, titulo,
     descripcion: descripcion || '', icono: icono || '📚',
     duracion_horas: duracion_horas || 10, created_at: new Date().toISOString()
   };
@@ -761,7 +774,7 @@ app.post('/api/courses/lecciones', verifyToken, verifyRole(1, 2), (req, res) => 
   const { modulo_id, titulo, contenido_markdown, video_url, orden, recursos_descargables } = req.body;
   if (!modulo_id || !titulo) return res.status(400).json({ error: 'modulo_id y titulo son requeridos' });
   const nuevaLeccion = {
-    id: memoryStorage.lecciones.length + 1, modulo_id: parseInt(modulo_id), titulo,
+    id: getNextId(memoryStorage.lecciones), modulo_id: parseInt(modulo_id), titulo,
     contenido_markdown: contenido_markdown || '', video_url: video_url || '',
     orden: orden || memoryStorage.lecciones.filter(l => l.modulo_id === parseInt(modulo_id)).length + 1,
     recursos_descargables: recursos_descargables || '[]', created_at: new Date().toISOString()
@@ -789,7 +802,7 @@ app.post('/api/courses/lecciones/:id/content', verifyToken, verifyRole(1, 2), (r
   const { tipo, titulo, url, descripcion, orden } = req.body;
   if (!tipo || !url) return res.status(400).json({ error: 'tipo y url son requeridos' });
   const contenido = {
-    id: memoryStorage.contenido_multimedia.length + 1,
+    id: getNextId(memoryStorage.contenido_multimedia),
     leccion_id: leccion.id, tipo, titulo: titulo || '',
     url, descripcion: descripcion || '',
     orden: orden || 0, created_at: new Date().toISOString(),
@@ -820,7 +833,7 @@ app.post('/api/courses/lecciones/:id/tareas', verifyToken, verifyRole(1, 2), (re
   const { titulo, descripcion, puntos_maximos, fecha_limite } = req.body;
   if (!titulo) return res.status(400).json({ error: 'titulo es requerido' });
   const tarea = {
-    id: memoryStorage.tareas.length + 1,
+    id: getNextId(memoryStorage.tareas),
     leccion_id: leccion.id, titulo, descripcion: descripcion || '',
     puntos_maximos: puntos_maximos || 100,
     fecha_limite: fecha_limite || null,
@@ -840,7 +853,7 @@ app.post('/api/tareas/:id/entregar', verifyToken, (req, res) => {
   if (!tarea) return res.status(404).json({ error: 'Tarea no encontrada' });
   const { archivo_url, notas } = req.body;
   const entrega = {
-    id: memoryStorage.entregas.length + 1,
+    id: getNextId(memoryStorage.entregas),
     tarea_id: tarea.id, estudiante_id: req.user.id,
     archivo_url: archivo_url || '', notas: notas || '',
     estado: 'entregado', calificacion: null, retroalimentacion: '',
@@ -1055,7 +1068,7 @@ app.post('/api/evaluations/:id/submit', verifyToken, (req, res) => {
 
     // Save grade
     memoryStorage.notas.push({
-      id: memoryStorage.notas.length + 1,
+      id: getNextId(memoryStorage.notas),
       estudiante_id: req.user.id, evaluacion_id: ev.id,
       calificacion, estatus_aprobacion,
       fecha_evaluacion: new Date().toISOString()
@@ -1157,7 +1170,7 @@ app.post('/api/progress/update', verifyToken, (req, res) => {
     } else {
       const leccion = memoryStorage.lecciones.find(l => l.id === parseInt(lessonId));
       memoryStorage.progresos.push({
-        id: memoryStorage.progresos.length + 1,
+        id: getNextId(memoryStorage.progresos),
         user_id: req.user.id,
         leccion_id: parseInt(lessonId),
         modulo_id: moduleId || leccion?.modulo_id || null,
@@ -1200,7 +1213,7 @@ app.post('/api/demo/complete-all', verifyToken, verifyRole(1), (req, res) => {
         existing.fecha_completado = new Date().toISOString();
       } else {
         memoryStorage.progresos.push({
-          id: memoryStorage.progresos.length + 1,
+          id: getNextId(memoryStorage.progresos),
           user_id: req.user.id,
           leccion_id: l.id,
           modulo_id: l.modulo_id,
@@ -1220,7 +1233,7 @@ app.post('/api/demo/complete-all', verifyToken, verifyRole(1), (req, res) => {
       const existingGrade = memoryStorage.notas.find(n => n.estudiante_id === req.user.id && n.evaluacion_id === ev.id);
       if (!existingGrade) {
         memoryStorage.notas.push({
-          id: memoryStorage.notas.length + 1,
+          id: getNextId(memoryStorage.notas),
           estudiante_id: req.user.id,
           evaluacion_id: ev.id,
           calificacion,
@@ -1237,7 +1250,7 @@ app.post('/api/demo/complete-all', verifyToken, verifyRole(1), (req, res) => {
       const user = memoryStorage.usuarios.find(u => u.id === req.user.id);
       const hash = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
       cert = {
-        id: memoryStorage.certificados.length + 1,
+        id: getNextId(memoryStorage.certificados),
         estudiante_id: req.user.id,
         nombre_estudiante: user?.nombre_completo || 'Estudiante',
         curso: 'Inteligencia Artificial e Investigacion de Operaciones para Lideres de Negocio',
@@ -1404,7 +1417,7 @@ app.post('/api/certificates/generate', verifyToken, (req, res) => {
     const hash = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
 
     const nuevoCertificado = {
-      id: memoryStorage.certificados.length + 1,
+      id: getNextId(memoryStorage.certificados),
       estudiante_id: req.user.id,
       nombre_estudiante: user.nombre_completo,
       curso: 'Curso de Inteligencia Artificial para PDVSA',
@@ -1550,7 +1563,7 @@ app.post('/api/leads', (req, res) => {
   if (!nombre_completo || !email) return res.status(400).json({ error: 'nombre_completo y email son requeridos' });
 
   const nuevoLead = {
-    id: memoryStorage.leads.length + 1, nombre_completo, email, telefono: telefono || '',
+    id: getNextId(memoryStorage.leads), nombre_completo, email, telefono: telefono || '',
     empresa_filial: empresa_filial || '', cargo: cargo || '',
     estado: 'nuevo', origen_registro: origen_registro || 'registro',
     notas_admin: '', usuario_creado_id: null,
@@ -1586,7 +1599,7 @@ app.post('/api/leads/:id/convertir', verifyToken, verifyRole(1, 2), async (req, 
     const password = 'participante' + Math.floor(1000 + Math.random() * 9000);
     const hashedPassword = await bcrypt.hash(password, 10);
     const nuevoUsuario = {
-      id: memoryStorage.usuarios.length + 1,
+      id: getNextId(memoryStorage.usuarios),
       cedula: 'V-' + Math.floor(10000000 + Math.random() * 90000000),
       nombre_completo: lead.nombre_completo, cargo: lead.cargo,
       correo: lead.email, password_hash: hashedPassword,
@@ -1619,7 +1632,7 @@ app.post('/api/simulators/text-prompt', verifyToken, (req, res) => {
   };
 
   memoryStorage.simulaciones.push({
-    id: memoryStorage.simulaciones.length + 1,
+    id: getNextId(memoryStorage.simulaciones),
     usuario_id: req.user?.id || 0, tipo: 'texto', ...respuesta,
     created_at: new Date().toISOString()
   });
@@ -1650,7 +1663,7 @@ app.post('/api/simulators/image-prompt', verifyToken, (req, res) => {
   };
 
   memoryStorage.simulaciones.push({
-    id: memoryStorage.simulaciones.length + 1,
+    id: getNextId(memoryStorage.simulaciones),
     usuario_id: req.user?.id || 0, tipo: 'imagen', prompt, ...respuesta,
     created_at: new Date().toISOString()
   });
@@ -1696,7 +1709,7 @@ app.post('/api/simulators/video-audio-prompt', verifyToken, (req, res) => {
   }
 
   memoryStorage.simulaciones.push({
-    id: memoryStorage.simulaciones.length + 1,
+    id: getNextId(memoryStorage.simulaciones),
     usuario_id: req.user?.id || 0, tipo: tipo_operacion, prompt, ...respuesta,
     created_at: new Date().toISOString()
   });
@@ -1728,7 +1741,7 @@ app.post('/api/tutors/asignar', verifyToken, verifyRole(1, 2), (req, res) => {
   if (exists) return res.status(400).json({ error: 'Estudiante ya asignado' });
 
   memoryStorage.asignaciones_tutores.push({
-    id: memoryStorage.asignaciones_tutores.length + 1,
+    id: getNextId(memoryStorage.asignaciones_tutores),
     tutor_id: req.user.id, estudiante_id,
     fecha_asignacion: new Date().toISOString(), activa: true
   });
@@ -1740,7 +1753,7 @@ app.post('/api/tutors/retroalimentacion', verifyToken, verifyRole(1, 2), (req, r
   if (!estudiante_id || !mensaje) return res.status(400).json({ error: 'estudiante_id y mensaje son requeridos' });
 
   memoryStorage.retroalimentacion.push({
-    id: memoryStorage.retroalimentacion.length + 1,
+    id: getNextId(memoryStorage.retroalimentacion),
     tutor_id: req.user.id, estudiante_id,
     mensaje, tipo: tipo || 'general',
     created_at: new Date().toISOString()
@@ -1750,7 +1763,7 @@ app.post('/api/tutors/retroalimentacion', verifyToken, verifyRole(1, 2), (req, r
 
 // ===================== NOTIFICATIONS =====================
 if (!memoryStorage.notifications) memoryStorage.notifications = [];
-let nextNotifId = 1;
+let nextNotifId = (memoryStorage.notifications.length > 0 ? Math.max(...memoryStorage.notifications.map(n => n.id)) : 0) + 1;
 
 function createNotification(userId, tipo, titulo, mensaje) {
   memoryStorage.notifications.push({
@@ -2015,7 +2028,7 @@ app.post('/api/payments/reportar', verifyToken, (req, res) => {
     if (!metodo || !referencia) return res.status(400).json({ error: 'Método y referencia requeridos' });
 
     const pago = {
-      id: memoryStorage.pagos.length + 1,
+      id: getNextId(memoryStorage.pagos),
       usuario_id: req.user.id,
       usuario_nombre: req.user.nombre_completo,
       metodo,

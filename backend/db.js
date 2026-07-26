@@ -1,28 +1,4 @@
-import pg from 'pg';
-
-const { Pool } = pg;
-
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/nasser_academy',
-});
-
-pool.on('error', (err) => {
-  console.error('Error inesperado en el pool de PostgreSQL:', err);
-  process.exit(-1);
-});
-
-export async function query(text, params) {
-  const client = await pool.connect();
-  try {
-    const result = await client.query(text, params);
-    return result;
-  } finally {
-    client.release();
-  }
-}
-
-export async function getClient() {
-  return pool.connect();
-}
-
-export default pool;
+// LEGACY: This file is NOT used in production.
+// The Vercel serverless runtime uses api/index.js with in-memory storage.
+// PostgreSQL backend replaced by in-memory storage with JSON persistence.
+console.warn('⚠️ Legacy backend/db.js loaded — use api/index.js instead.');
