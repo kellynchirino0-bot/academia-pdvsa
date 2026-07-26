@@ -29,7 +29,9 @@ import {
   Box,
   Thermometer,
   Cpu,
-  Flame
+  Flame,
+  CreditCard,
+  TrendingUp
 } from 'lucide-react';
 
 const Layout = ({ children }) => {
@@ -41,32 +43,43 @@ const Layout = ({ children }) => {
     navigate('/login');
   };
 
+  const plan = user?.plan_suscripcion || 'gratuito';
+  const isPremium = ['vip_diplomado', 'b2b_enterprise', 'sim_petroleo', 'sim_calderas', 'sim_plc', 'sim_soldadura'].includes(plan);
+
   const navItems = [
-    { to: '/dashboard', icon: LayoutDashboard, label: 'Consola de Inteligencia', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/cursos', icon: BookOpen, label: 'Módulos del Curso', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/texto', icon: MessageSquare, label: 'Asistente Ejecutivo IA', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/imagenes', icon: Image, label: 'Análisis de Imágenes', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/video-audio', icon: Video, label: 'Síntesis Multimedia', roles: ['administrador', 'tutor', 'participante'] },
-    { divider: true, roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/petroleo', icon: Box, label: 'Petróleo — Bombeo IA', roles: ['administrador', 'tutor', 'participante'], premium: true },
-    { to: '/simulador/calderas', icon: Thermometer, label: 'Calderas — LIMS 3D', roles: ['administrador', 'tutor', 'participante'], premium: true },
-    { to: '/simulador/plc', icon: Cpu, label: 'PLC / SCADA Industrial', roles: ['administrador', 'tutor', 'participante'], premium: true },
-    { to: '/simulador/soldadura', icon: Flame, label: 'Soldadura AWS + NDT', roles: ['administrador', 'tutor', 'participante'], premium: true },
-    { to: '/evaluaciones', icon: ClipboardList, label: 'Evaluaciones', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/notas', icon: Target, label: 'Mi Progreso', roles: ['participante'] },
-    { to: '/certificados', icon: Award, label: 'Mis Certificaciones', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/verificar-certificado', icon: FileText, label: 'Auditoría / Verificar Certificado', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/mi-reporte', icon: FileBarChart, label: 'Mi Reporte', roles: ['participante'] },
-    { to: '/ayuda', icon: HelpCircle, label: 'Centro de Ayuda', roles: ['administrador', 'tutor', 'participante'] },
-    { divider: true, roles: ['administrador', 'tutor'] },
+    { to: '/dashboard', icon: LayoutDashboard, label: '📊 Consola de Inteligencia', roles: ['administrador', 'tutor', 'participante'] },
+    // --- Cursos Gratuitos ---
+    { divider: '📚 Cursos Gratuitos', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/cursos', icon: BookOpen, label: 'Módulos del Curso IA', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/texto', icon: MessageSquare, label: '🤖 Asistente Ejecutivo IA', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/imagenes', icon: Image, label: '🖼️ Análisis de Imágenes', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/video-audio', icon: Video, label: '🎬 Síntesis Multimedia', roles: ['administrador', 'tutor', 'participante'] },
+    // --- Simuladores 3D VIP ---
+    { divider: '🎮 Simuladores 3D Especializados (VIP)', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/petroleo', icon: Box, label: '🛢️ Petróleo — Bombeo IA', roles: ['administrador', 'tutor', 'participante'], premium: true },
+    { to: '/simulador/calderas', icon: Thermometer, label: '♨️ Calderas — LIMS 3D', roles: ['administrador', 'tutor', 'participante'], premium: true },
+    { to: '/simulador/plc', icon: Cpu, label: '⚡ PLC / SCADA Industrial', roles: ['administrador', 'tutor', 'participante'], premium: true },
+    { to: '/simulador/soldadura', icon: Flame, label: '👨‍🏭 Soldadura AWS + NDT', roles: ['administrador', 'tutor', 'participante'], premium: true },
+    // --- Planes y Certificaciones ---
+    { divider: '💳 Membresía & Certificaciones', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/suscripcion', icon: CreditCard, label: isPremium ? '✅ Mi Membresía VIP' : '🔓 Planes & Suscripción VIP', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/certificados', icon: Award, label: '🎓 Mis Certificados y ML-DSA', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/verificar-certificado', icon: FileText, label: '🔍 Auditoría / Verificar Certificado', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/evaluaciones', icon: ClipboardList, label: '📝 Evaluaciones', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/notas', icon: Target, label: '📈 Mi Progreso', roles: ['participante'] },
+    { to: '/mi-reporte', icon: FileBarChart, label: '📋 Mi Reporte', roles: ['participante'] },
+    { to: '/ayuda', icon: HelpCircle, label: '❓ Centro de Ayuda', roles: ['administrador', 'tutor', 'participante'] },
+    // --- Tutor ---
+    { divider: '📘 Gestión Tutor', roles: ['administrador', 'tutor'] },
     { to: '/tutor', icon: Users, label: 'Panel Tutor', roles: ['administrador', 'tutor'] },
     { to: '/tutor/editor-cursos', icon: Edit3, label: 'Editor Cursos', roles: ['administrador', 'tutor'] },
-    { divider: true, roles: ['administrador'] },
+    // --- Admin ---
+    { divider: '👑 Gestión Ejecutiva', roles: ['administrador'] },
     { to: '/admin/dashboard', icon: BarChart3, label: 'Consola Ejecutiva', roles: ['administrador'] },
     { to: '/admin/panel', icon: Shield, label: 'Panel Corporativo', roles: ['administrador'] },
-    { to: '/leads', icon: UserPlus, label: 'Gestión de Proyectos', roles: ['administrador'] },
+    { to: '/b2b-dashboard', icon: TrendingUp, label: '💼 Panel B2B / ROI Empresa', roles: ['administrador'] },
+    { to: '/leads', icon: UserPlus, label: 'Gestión de Proyectos (Leads)', roles: ['administrador'] },
     { to: '/admin/usuarios', icon: UserCog, label: 'Gestión de Usuarios', roles: ['administrador'] },
-    { to: '/usuarios', icon: Briefcase, label: 'Usuarios Básico', roles: ['administrador'] },
     { to: '/admin/curso', icon: Settings, label: 'Admin Curso', roles: ['administrador'] },
     { to: '/admin/certificados', icon: Award, label: 'Aprobar Certificaciones', roles: ['administrador'] },
     { to: '/admin/reportes', icon: FileBarChart, label: 'Reportes Gerencia', roles: ['administrador'] },
@@ -115,12 +128,12 @@ const Layout = ({ children }) => {
                   borderTop: '1px solid rgba(255,255,255,0.1)'
                 }}>
                   <span style={{ 
-                    fontSize: '0.65rem', 
-                    textTransform: 'uppercase', 
-                    letterSpacing: '1px',
-                    opacity: 0.5
+                    fontSize: '0.7rem', 
+                    letterSpacing: '0.5px',
+                    opacity: 0.6,
+                    color: '#94A3B8'
                   }}>
-                    {user?.rol === 'administrador' ? 'Gestión Ejecutiva' : 'Gestión'}
+                    {item.divider}
                   </span>
                 </li>
               );
