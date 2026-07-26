@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 
 const app = express();
-const JWT_SECRET = process.env.JWT_SECRET || 'pdvsa-iutpal-enterprise-secret-key-2026';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Middleware
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://academia-pdvsa.vercel.app,http://localhost:3000').split(',');
@@ -339,7 +339,7 @@ app.post('/api/auth/login', async (req, res) => {
 
     const rol = memoryStorage.roles.find(r => r.id === usuario.rol_id);
     const token = jwt.sign(
-      { id: usuario.id, cedula: usuario.cedula, correo: usuario.correo, rol_id: usuario.rol_id, nombre_rol: rol?.nombre_rol },
+      { id: usuario.id, cedula: usuario.correo, correo: usuario.correo, rol_id: usuario.rol_id, nombre_rol: rol?.nombre_rol, plan_suscripcion: usuario.plan_suscripcion },
       JWT_SECRET, { expiresIn: '24h' }
     );
 
@@ -357,7 +357,7 @@ app.post('/api/auth/login', async (req, res) => {
     res.json({
       message: 'Inicio de sesión exitoso',
       token,
-      user: { id: usuario.id, cedula: usuario.cedula, nombre_completo: usuario.nombre_completo, cargo: usuario.cargo, correo: usuario.correo, rol: rol?.nombre_rol },
+      user: { id: usuario.id, cedula: usuario.cedula, nombre_completo: usuario.nombre_completo, cargo: usuario.cargo, correo: usuario.correo, rol: rol?.nombre_rol, plan_suscripcion: usuario.plan_suscripcion },
       trial: trialInfo
     });
   } catch (error) {
@@ -381,18 +381,33 @@ app.post('/api/auth/register', async (req, res) => {
       cargo: cargo || 'Participante PDVSA', correo,
       password_hash: hashedPassword, rol_id: 3, activo: true,
       telefono: '', empresa_filial: 'PDVSA Corp',
-      creado_en: new Date().toISOString()
+      creado_en: new Date().toISOString(),
+      plan_suscripcion: 'gratuito',
+      estado: 'ACTIVE',
+      progreso: {},
+      modulos_completados: [],
+      ultimo_acceso: null
     };
     memoryStorage.usuarios.push(nuevoUsuario);
 
+    // Auto-register as lead
+    memoryStorage.leads.push({
+      id: memoryStorage.leads.length + 1,
+      nombre_completo, email: correo, telefono: '',
+      empresa_filial: 'PDVSA Corp', cargo: cargo || 'Participante PDVSA',
+      estado: 'nuevo', origen_registro: 'registro_web',
+      notas_admin: '', usuario_creado_id: nuevoUsuario.id,
+      created_at: new Date().toISOString()
+    });
+
     const token = jwt.sign(
-      { id: nuevoUsuario.id, cedula, correo, rol_id: 3, nombre_rol: 'participante' },
+      { id: nuevoUsuario.id, cedula, correo, rol_id: 3, nombre_rol: 'participante', plan_suscripcion: 'gratuito' },
       JWT_SECRET, { expiresIn: '24h' }
     );
 
     res.status(201).json({
       message: 'Usuario registrado exitosamente', token,
-      user: { id: nuevoUsuario.id, cedula, nombre_completo, correo, rol: 'participante' }
+      user: { id: nuevoUsuario.id, cedula, nombre_completo, correo, rol: 'participante', plan_suscripcion: 'gratuito' }
     });
   } catch (error) {
     res.status(500).json({ error: 'Error interno del servidor' });
@@ -400,7 +415,9 @@ app.post('/api/auth/register', async (req, res) => {
 });
 
 app.get('/api/auth/verify', verifyToken, (req, res) => {
-  res.json({ valid: true, user: req.user });
+  const usuario = memoryStorage.usuarios.find(u => u.id === req.user.id);
+  const userData = { ...req.user, plan_suscripcion: usuario?.plan_suscripcion || 'gratuito' };
+  res.json({ valid: true, user: userData });
 });
 
 app.post('/api/auth/change-password', verifyToken, async (req, res) => {

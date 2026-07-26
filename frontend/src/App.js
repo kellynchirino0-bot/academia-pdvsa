@@ -27,7 +27,6 @@ import AdminConsolidatedReport from './pages/AdminConsolidatedReport';
 import TutorDashboard from './pages/TutorDashboard';
 import TutorCourseEditor from './pages/TutorCourseEditor';
 import StudentReport from './pages/StudentReport';
-import CertificateVerify from './pages/CertificateVerify';
 import FaqPage from './pages/FaqPage';
 import GuionEstrategicoPDF from './components/GuionEstrategicoPDF';
 import IOLeccionView from './pages/IOLeccionView';
@@ -51,6 +50,27 @@ function ProtectedRoute({ children, allowedRoles }) {
     return <Navigate to="/dashboard" replace />;
   }
   
+  return <Layout>{children}</Layout>;
+}
+
+function PremiumRoute({ children, allowedRoles }) {
+  const { user, isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (allowedRoles && !allowedRoles.includes(user?.rol)) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  const plan = user?.plan_suscripcion || 'gratuito';
+  const planesPago = ['vip_diplomado', 'b2b_enterprise', 'sim_petroleo', 'sim_calderas', 'sim_plc', 'sim_soldadura'];
+
+  if (!planesPago.includes(plan)) {
+    return <Navigate to="/suscripcion" replace />;
+  }
+
   return <Layout>{children}</Layout>;
 }
 
@@ -110,24 +130,24 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/simulador/petroleo" element={
-            <ProtectedRoute>
+            <PremiumRoute>
               <SimuladorPetroleo />
-            </ProtectedRoute>
+            </PremiumRoute>
           } />
           <Route path="/simulador/calderas" element={
-            <ProtectedRoute>
+            <PremiumRoute>
               <SimuladorCalderas />
-            </ProtectedRoute>
+            </PremiumRoute>
           } />
           <Route path="/simulador/plc" element={
-            <ProtectedRoute>
+            <PremiumRoute>
               <SimuladorPLC />
-            </ProtectedRoute>
+            </PremiumRoute>
           } />
           <Route path="/simulador/soldadura" element={
-            <ProtectedRoute>
+            <PremiumRoute>
               <SimuladorSoldadura />
-            </ProtectedRoute>
+            </PremiumRoute>
           } />
           
           {/* Evaluaciones y Notas */}
@@ -166,14 +186,14 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/diplomados-avanzados" element={
-            <ProtectedRoute>
+            <PremiumRoute>
               <CheckoutPagos />
-            </ProtectedRoute>
+            </PremiumRoute>
           } />
           <Route path="/b2b-dashboard" element={
-            <ProtectedRoute allowedRoles={['administrador']}>
+            <PremiumRoute allowedRoles={['administrador']}>
               <CheckoutPagos />
-            </ProtectedRoute>
+            </PremiumRoute>
           } />
           
           {/* Rutas Admin */}
