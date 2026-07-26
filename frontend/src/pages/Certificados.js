@@ -1,8 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Award, Download, CheckCircle, Search, Clock, XCircle, ExternalLink, Zap, RotateCcw } from 'lucide-react';
+import { Award, Download, CheckCircle, Search, Clock, XCircle, ExternalLink, Zap, RotateCcw, Printer } from 'lucide-react';
 import axios from 'axios';
 import DigitalBadgeGSS from '../components/DigitalBadgeGSS';
+
+const printStyles = `
+@media print {
+  body { background: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .no-print { display: none !important; }
+  .sidebar, .navbar, .sidebar-footer, .logout-btn { display: none !important; }
+  .main-content { margin: 0 !important; padding: 0 !important; width: 100% !important; }
+  .cert-badge-print {
+    page-break-after: avoid;
+    margin: 0 auto !important;
+    max-width: 100% !important;
+  }
+}
+`;
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 
@@ -112,6 +126,8 @@ const Certificados = () => {
   if (loading) return <div className="spinner"></div>;
 
   return (
+    <>
+      <style>{printStyles}</style>
     <div>
       <div className="page-header">
         <h1>Mis Certificados</h1>
@@ -239,7 +255,7 @@ const Certificados = () => {
             return (
               <div key={cert.id} style={{ marginBottom: '32px' }}>
                 {isAprobado ? (
-                  <div>
+                  <div className="cert-badge-print">
                     <DigitalBadgeGSS certificado={{
                       id: cert.codigo_verificacion,
                       estudiante: cert.nombre_estudiante,
@@ -248,13 +264,19 @@ const Certificados = () => {
                       idioma: 'ES',
                       calificacion: cert.calificacion_final
                     }} />
-                    <div style={{ marginTop: '16px', display: 'flex', gap: '12px', justifyContent: 'center' }}>
+                    <div className="no-print" style={{ marginTop: '16px', display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
                       <button 
                         className="btn-primary"
                         onClick={() => downloadBadge(cert)}
                         style={{ width: 'auto', display: 'flex', alignItems: 'center', gap: '6px' }}
                       >
                         <Download size={18} /> Descargar Badge
+                      </button>
+                      <button
+                        onClick={() => window.print()}
+                        style={{ width: 'auto', display: 'flex', alignItems: 'center', gap: '6px', padding: '10px 20px', background: 'rgba(16, 185, 129, 0.15)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.3)', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontSize: '0.9rem' }}
+                      >
+                        <Printer size={18} /> Imprimir / PDF
                       </button>
                       <a 
                         href={`${window.location.origin}/verificar-certificado?id=${cert.codigo_verificacion}`}
@@ -346,6 +368,7 @@ const Certificados = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 
