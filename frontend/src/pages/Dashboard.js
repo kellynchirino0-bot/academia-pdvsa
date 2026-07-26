@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import MatrizEnfoqueEjecutivo from '../components/MatrizEnfoqueEjecutivo';
+import PanelCalculadora from '../components/PanelCalculadora';
+import Simulador3D from '../components/Simulador3D';
 import {
   MessageSquare, Image, Video, FileText, Award, Users,
   TrendingUp, Clock, CheckCircle, BookOpen,
   Box, Thermometer, Cpu, Flame,
   CreditCard, Shield, GraduationCap, BarChart3, Target,
   Lock, Unlock, Zap, ExternalLink, ChevronRight,
-  Search, Activity, Circle
+  Search, Activity, Circle, Calculator, GitBranch, Package, Cube
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -67,11 +69,13 @@ const Dashboard = () => {
   };
 
   const modulos = [
-    { id: 1, title: 'Fundamentos de IA', desc: 'Conceptos básicos, ML, DL y aplicaciones en Oil & Gas', icon: '🤖', color: '#3B82F6', lecciones: 4 },
-    { id: 2, title: 'Prompt Engineering', desc: 'Diseño de prompts efectivos para modelos de lenguaje', icon: '💬', color: '#F59E0B', lecciones: 4 },
-    { id: 3, title: 'Gemelos Digitales', desc: 'Réplicas virtuales de activos y procesos industriales', icon: '🏭', color: '#14B8A6', lecciones: 4 },
-    { id: 4, title: 'IA Generativa', desc: 'GPT, DALL-E, Stable Diffusion y modelos de código', icon: '🎨', color: '#8B5CF6', lecciones: 4 }
+    { id: 1, title: 'Fundamentos de IA en Oil & Gas', desc: 'ML supervisado, Deep Learning, mantenimiento predictivo en hidrocarburos', icon: '🤖', color: '#3B82F6', lecciones: 3 },
+    { id: 2, title: 'Prompt Engineering Petrolero', desc: 'Marco RICE, técnicas avanzadas, mitigación de alucinaciones', icon: '💬', color: '#F59E0B', lecciones: 3 },
+    { id: 3, title: 'Gemelos Digitales', desc: 'Réplicas virtuales de activos, integración SCADA/IoT, simulación', icon: '🏭', color: '#14B8A6', lecciones: 3 },
+    { id: 4, title: 'IA Generativa en Petrofísica', desc: 'LLMs, procesamiento LAS, automatización de reportes', icon: '🎨', color: '#8B5CF6', lecciones: 3 }
   ];
+
+  const [assetType3d, setAssetType3d] = useState('bomba');
 
   const herramientasGratis = [
     { icon: <MessageSquare size={22} />, title: 'Asistente Ejecutivo IA', desc: 'Simulador GPT con prompts para reportes y análisis petroleros', path: '/simulador/texto', color: '#3B82F6' },
@@ -346,7 +350,47 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* ===== SECCIÓN 4: CERTIFICACIÓN CRIPTOGRÁFICA ML-DSA & LAGOCHAIN ===== */}
+      {/* ===== SECCIÓN 4: INVESTIGACIÓN DE OPERACIONES — CALCULADORAS IO ===== */}
+      <div style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1A2440 100%)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: '14px', padding: '24px', marginBottom: '24px' }}>
+        <SectionHeader
+          icon="🧮"
+          title="Investigación de Operaciones — Calculadoras IO"
+          subtitle="Simplex (Mezcla de Crudos), CPM/PERT (Ruta Crítica) y EOQ (Inventarios) — Datos pre-cargados para PDVSA"
+        />
+        <PanelCalculadora />
+      </div>
+
+      {/* ===== SECCIÓN 5: VISOR INDUSTRIAL 3D ===== */}
+      <div style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: '14px', padding: '24px', marginBottom: '24px' }}>
+        <SectionHeader
+          icon="🏗️"
+          title="Visor Industrial 3D — Equipos de Proceso"
+          subtitle="COVENIN 3049-93 — Seleccione un equipo para inspeccionar sus componentes"
+          action={
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              {[
+                { id: 'bomba', label: 'Bomba', color: '#2563EB' },
+                { id: 'valvula', label: 'Válvula', color: '#F59E0B' },
+                { id: 'tanque', label: 'Tanque', color: '#10B981' },
+                { id: 'balancin', label: 'Balancín', color: '#F97316' }
+              ].map(a => (
+                <button key={a.id} onClick={() => setAssetType3d(a.id)}
+                  style={{
+                    padding: '6px 12px', borderRadius: '6px', border: `1px solid ${assetType3d === a.id ? a.color : 'transparent'}`,
+                    background: assetType3d === a.id ? `${a.color}20` : '#1E293B',
+                    color: assetType3d === a.id ? a.color : '#94A3B8', cursor: 'pointer',
+                    fontSize: '10px', fontWeight: '600', transition: 'all 0.2s'
+                  }}>
+                  {a.label}
+                </button>
+              ))}
+            </div>
+          }
+        />
+        <Simulador3D assetType={assetType3d} width="100%" height="420px" />
+      </div>
+
+      {/* ===== SECCIÓN 6: CERTIFICACIÓN CRIPTOGRÁFICA ML-DSA & LAGOCHAIN ===== */}
       <div style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: '14px', padding: '24px', marginBottom: '24px' }}>
         <SectionHeader
           icon="🎓"

@@ -2101,6 +2101,39 @@ app.post('/api/admin/payments/rechazar', verifyToken, verifyRole(1), (req, res) 
   }
 });
 
+// ===================== MATH SOLVERS — IO (Investigación de Operaciones) =====================
+const { resolverSimplexBlend, resolverCPM, resolverEOQ } = require('./math-solvers');
+
+app.post('/api/math/simplex-blend', (req, res) => {
+  try {
+    const { crudoA, crudoB, target } = req.body;
+    const resultado = resolverSimplexBlend(crudoA, crudoB, target);
+    res.json({ exito: true, ...resultado });
+  } catch (err) {
+    res.status(400).json({ exito: false, error: err.message });
+  }
+});
+
+app.post('/api/math/cpm-pert', (req, res) => {
+  try {
+    const { actividades } = req.body;
+    const resultado = resolverCPM(actividades);
+    res.json({ exito: true, ...resultado });
+  } catch (err) {
+    res.status(400).json({ exito: false, error: err.message });
+  }
+});
+
+app.post('/api/math/eoq', (req, res) => {
+  try {
+    const params = req.body;
+    const resultado = resolverEOQ(params);
+    res.json({ exito: true, ...resultado });
+  } catch (err) {
+    res.status(400).json({ exito: false, error: err.message });
+  }
+});
+
 // ===================== HEALTH CHECK =====================
 app.get('/api/health', (req, res) => {
   res.json({
