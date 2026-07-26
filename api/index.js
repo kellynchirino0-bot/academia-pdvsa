@@ -49,10 +49,57 @@ const memoryStorage = {
   pagos: []
 };
 
+// ===================== PERSISTENCE LAYER (JSON /tmp fallback) =====================
+const fs = require('fs');
+const PERSISTENCE_KEY = 'academia_pdvsa_data';
+const DATA_FILE = process.env.VERCEL ? '/tmp/academia_data.json' : './.academia_data.json';
+
+function saveToDisk() {
+  try {
+    const data = {
+      usuarios: memoryStorage.usuarios,
+      leads: memoryStorage.leads,
+      pagos: memoryStorage.pagos,
+      evaluaciones: memoryStorage.evaluaciones,
+      notas: memoryStorage.notas,
+      certificados: memoryStorage.certificados,
+      progresos: memoryStorage.progresos,
+      auditoria: memoryStorage.auditoria,
+      notifications: memoryStorage.notifications,
+      user_badges: memoryStorage.user_badges
+    };
+    fs.writeFileSync(DATA_FILE, JSON.stringify(data));
+  } catch (e) {
+    console.error('Persistence save error:', e.message);
+  }
+}
+
+function loadFromDisk() {
+  try {
+    if (fs.existsSync(DATA_FILE)) {
+      const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+      if (data && data.usuarios && data.usuarios.length > 0) {
+        Object.assign(memoryStorage, data);
+        return true;
+      }
+    }
+  } catch (e) {
+    console.error('Persistence load error:', e.message);
+  }
+  return false;
+}
+
+// Auto-save after mutations: wrap critical push/splice operations
+function persistAfterMutation() {
+  if (typeof setImmediate !== 'undefined') setImmediate(saveToDisk);
+  else setTimeout(saveToDisk, 0);
+}
+
 // ===================== SEED DATA (Synchronous for serverless) =====================
 let dataReady = false;
 const initializeSync = () => {
   if (memoryStorage.usuarios.length > 0) return;
+  if (loadFromDisk() && memoryStorage.usuarios.length > 0) return;
 
   // Users (passwords hashed on first login attempt)
   const users = [
@@ -389,6 +436,7 @@ app.post('/api/auth/register', async (req, res) => {
       ultimo_acceso: null
     };
     memoryStorage.usuarios.push(nuevoUsuario);
+    persistAfterMutation();
 
     // Auto-register as lead
     memoryStorage.leads.push({
@@ -399,6 +447,7 @@ app.post('/api/auth/register', async (req, res) => {
       notas_admin: '', usuario_creado_id: nuevoUsuario.id,
       created_at: new Date().toISOString()
     });
+    persistAfterMutation();
 
     const token = jwt.sign(
       { id: nuevoUsuario.id, cedula, correo, rol_id: 3, nombre_rol: 'participante', plan_suscripcion: 'gratuito' },
@@ -1117,6 +1166,7 @@ app.post('/api/progress/update', verifyToken, (req, res) => {
         fecha_completado: new Date().toISOString()
       });
     }
+    persistAfterMutation();
 
     // Update user's progress map
     const userProg = memoryStorage.usuarios.find(u => u.id === req.user.id);
@@ -1202,7 +1252,8 @@ app.post('/api/demo/complete-all', verifyToken, verifyRole(1), (req, res) => {
         activo: true
       };
       memoryStorage.certificados.push(cert);
-      createNotification(req.user.id, 'alerta', 'Certificacion Automatica', 'Certificado generado via Modo Demo. Pendiente de aprobacion administrativa.');
+      persistAfterMutation();
+      createNotification(req.user.id, 'alerta', 'Certificación Automática', 'Certificado generado vía Modo Demo. Pendiente de aprobación administrativa.');
       checkAndAwardBadges(req.user.id);
     }
 
@@ -1368,6 +1419,7 @@ app.post('/api/certificates/generate', verifyToken, (req, res) => {
       activo: true
     };
     memoryStorage.certificados.push(nuevoCertificado);
+    persistAfterMutation();
     res.json({ message: 'Solicitud de certificado enviada. Pendiente de aprobación por administración.', certificado: nuevoCertificado });
   } catch (error) {
     res.status(500).json({ error: 'Error interno del servidor' });
@@ -1720,16 +1772,16 @@ app.get('/api/notifications', verifyToken, (req, res) => {
 
 app.put('/api/notifications/:id/read', verifyToken, (req, res) => {
   const notif = memoryStorage.notifications.find(n => n.id === parseInt(req.params.id) && n.user_id === req.user.id);
-  if (!notif) return res.status(404).json({ error: 'Notificacion no encontrada' });
+  if (!notif) return res.status(404).json({ error: 'Notificación no encontrada' });
   notif.leida = true;
-  res.json({ message: 'Marcada como leida' });
+  res.json({ message: 'Marcada como leída' });
 });
 
 app.put('/api/notifications/read-all', verifyToken, (req, res) => {
   memoryStorage.notifications.forEach(n => {
     if (n.user_id === req.user.id) n.leida = true;
   });
-  res.json({ message: 'Todas marcadas como leidas' });
+  res.json({ message: 'Todas marcadas como leídas' });
 });
 
 // ===================== BADGES / GAMIFICATION =====================

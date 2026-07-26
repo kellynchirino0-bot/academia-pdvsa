@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
       if (userData?.id) loadProgress(userData.id);
       return { success: true, user: userData, trial: trialData };
     } catch (error) {
-      return { success: false, error: error.response?.data?.error || 'Error de autenticacion' };
+      return { success: false, error: error.response?.data?.error || 'Error de autenticación' };
     }
   };
 

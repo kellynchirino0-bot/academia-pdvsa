@@ -153,7 +153,7 @@ const Layout = ({ children }) => {
           </div>
           <button className="logout-btn" onClick={handleLogout}>
             <LogOut size={16} />
-            <span>Cerrar Sesion</span>
+            <span>Cerrar Sesión</span>
           </button>
         </div>
       </aside>
