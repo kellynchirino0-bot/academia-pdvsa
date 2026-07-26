@@ -45,7 +45,8 @@ const memoryStorage = {
   contenido_multimedia: [],
   tareas: [],
   entregas: [],
-  auditoria: []
+  auditoria: [],
+  pagos: []
 };
 
 // ===================== SEED DATA (Synchronous for serverless) =====================
@@ -79,7 +80,8 @@ const initializeSync = () => {
       membresia_extendida: false,
       progreso: {},
       modulos_completados: [],
-      ultimo_acceso: null
+      ultimo_acceso: null,
+      plan_suscripcion: u.rol_id === 1 ? 'b2b_enterprise' : u.rol_id === 2 ? 'vip_diplomado' : 'gratuito'
     });
   });
 
@@ -1933,6 +1935,71 @@ app.get('/api/admin/business-metrics', verifyToken, verifyRole(1), (req, res) =>
     contratos_b2b_activos: licenciasB2BActivas,
     crm_conectado: !!(process.env.CRM_WEBHOOK_URL || process.env.HUBSPOT_ACCESS_TOKEN)
   });
+});
+
+// ===================== PAYMENTS =====================
+app.post('/api/payments/reportar', verifyToken, (req, res) => {
+  try {
+    const { metodo, referencia, monto, plan_solicitado, comprobante_url } = req.body;
+    if (!metodo || !referencia) return res.status(400).json({ error: 'Método y referencia requeridos' });
+
+    const pago = {
+      id: memoryStorage.pagos.length + 1,
+      usuario_id: req.user.id,
+      usuario_nombre: req.user.nombre_completo,
+      metodo,
+      referencia,
+      monto: monto || (plan_solicitado === 'b2b_enterprise' ? 2500 : 450),
+      moneda: metodo === 'binance' ? 'USDT' : 'USD',
+      plan_solicitado: plan_solicitado || 'vip_diplomado',
+      comprobante_url: comprobante_url || '',
+      estado: 'pendiente_verificacion',
+      creado_en: new Date().toISOString()
+    };
+    memoryStorage.pagos.push(pago);
+    res.status(201).json({ exito: true, pago, mensaje: 'Pago reportado. Pendiente de verificación por administración.' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/admin/payments', verifyToken, verifyRole(1), (req, res) => {
+  res.json(memoryStorage.pagos.sort((a, b) => new Date(b.creado_en) - new Date(a.creado_en)));
+});
+
+app.post('/api/admin/payments/aprobar', verifyToken, verifyRole(1), (req, res) => {
+  try {
+    const { pago_id, plan_asignado } = req.body;
+    const pago = memoryStorage.pagos.find(p => p.id === pago_id);
+    if (!pago) return res.status(404).json({ error: 'Pago no encontrado' });
+
+    pago.estado = 'aprobado';
+    pago.aprobado_por = req.user.id;
+    pago.aprobado_en = new Date().toISOString();
+
+    const usuario = memoryStorage.usuarios.find(u => u.id === pago.usuario_id);
+    if (usuario) {
+      usuario.plan_suscripcion = plan_asignado || pago.plan_solicitado || 'vip_diplomado';
+    }
+
+    res.json({ exito: true, pago, usuario_actualizado: usuario?.nombre_completo, nuevo_plan: usuario?.plan_suscripcion });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/admin/payments/rechazar', verifyToken, verifyRole(1), (req, res) => {
+  try {
+    const { pago_id } = req.body;
+    const pago = memoryStorage.pagos.find(p => p.id === pago_id);
+    if (!pago) return res.status(404).json({ error: 'Pago no encontrado' });
+    pago.estado = 'rechazado';
+    pago.rechazado_por = req.user.id;
+    pago.rechazado_en = new Date().toISOString();
+    res.json({ exito: true, pago });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ===================== HEALTH CHECK =====================

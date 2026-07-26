@@ -30,6 +30,7 @@ import IOLeccionView from './pages/IOLeccionView';
 import PromptsPDVSA from './pages/PromptsPDVSA';
 import RecursosEnterprise from './pages/RecursosEnterprise';
 import VerificarCertificado from './pages/VerificarCertificado';
+import CheckoutPagos from './pages/CheckoutPagos';
 import Layout from './components/Layout';
 import TrialCountdownBanner from './components/TrialCountdownBanner';
 import './styles/index.css';
@@ -135,6 +136,21 @@ function App() {
           <Route path="/prompts-pdvsa" element={<PromptsPDVSA />} />
           <Route path="/recursos-enterprise" element={<RecursosEnterprise />} />
           <Route path="/verificar-certificado" element={<VerificarCertificado />} />
+          <Route path="/suscripcion" element={
+            <ProtectedRoute>
+              <CheckoutPagos />
+            </ProtectedRoute>
+          } />
+          <Route path="/diplomados-avanzados" element={
+            <ProtectedRoute>
+              <CheckoutPagos />
+            </ProtectedRoute>
+          } />
+          <Route path="/b2b-dashboard" element={
+            <ProtectedRoute allowedRoles={['administrador']}>
+              <CheckoutPagos />
+            </ProtectedRoute>
+          } />
           
           {/* Rutas Admin */}
           <Route path="/usuarios" element={

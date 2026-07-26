@@ -4,7 +4,8 @@ import {
   Users, UserPlus, Award, Activity, Search, Download,
   CheckCircle, XCircle, Clock, Shield, Zap, RefreshCw,
   FileText, Mail, Phone, Calendar, TrendingUp, Server,
-  DollarSign, PieChart, Calculator, Webhook, Globe
+  DollarSign, PieChart, Calculator, Webhook, Globe,
+  CreditCard, ThumbsUp, ThumbsDown
 } from 'lucide-react';
 import axios from 'axios';
 
@@ -62,6 +63,9 @@ const AdminDashboard = () => {
   const [bizLoading, setBizLoading] = useState(true);
   const [syncStatus, setSyncStatus] = useState(null);
   const [syncing, setSyncing] = useState(false);
+  const [pagos, setPagos] = useState([]);
+  const [pagosLoading, setPagosLoading] = useState(false);
+  const [aprobando, setAprobando] = useState(null);
 
   const [roiIngenieros, setRoiIngenieros] = useState(50);
   const [roiPozos, setRoiPozos] = useState(10);
@@ -92,7 +96,33 @@ const AdminDashboard = () => {
   }, [search, filterEstado]);
 
   useEffect(() => { loadMetrics(); loadBizMetrics(); }, [loadMetrics, loadBizMetrics]);
+  const loadPagos = useCallback(async () => {
+    setPagosLoading(true);
+    try { const res = await axios.get(`${API_URL}/admin/payments`); setPagos(res.data); }
+    catch (err) { console.error('Error loading pagos:', err); }
+    finally { setPagosLoading(false); }
+  }, []);
+
+  const handleAprobarPago = async (pagoId, plan) => {
+    setAprobando(pagoId);
+    try {
+      await axios.post(`${API_URL}/admin/payments/aprobar`, { pago_id: pagoId, plan_asignado: plan });
+      loadPagos();
+    } catch (err) { console.error('Error approving payment:', err); }
+    finally { setAprobando(null); }
+  };
+
+  const handleRechazarPago = async (pagoId) => {
+    setAprobando(pagoId);
+    try {
+      await axios.post(`${API_URL}/admin/payments/rechazar`, { pago_id: pagoId });
+      loadPagos();
+    } catch (err) { console.error('Error rejecting payment:', err); }
+    finally { setAprobando(null); }
+  };
+
   useEffect(() => { if (activeTab === 'leads' || activeTab === 'crm') loadLeads(1); }, [activeTab, loadLeads]);
+  useEffect(() => { if (activeTab === 'pagos') loadPagos(); }, [activeTab, loadPagos]);
 
   const handleExport = async () => {
     setExporting(true);
@@ -131,6 +161,7 @@ const AdminDashboard = () => {
     { id: 'b2b', label: 'B2B / Financiero', icon: DollarSign },
     { id: 'roi', label: 'Calculadora ROI', icon: Calculator },
     { id: 'crm', label: 'CRM / Leads', icon: Webhook },
+    { id: 'pagos', label: 'Pagos', icon: CreditCard },
     { id: 'audit', label: 'Auditoría', icon: Shield }
   ];
 
@@ -393,6 +424,80 @@ const AdminDashboard = () => {
               </button>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Payments Tab */}
+      {activeTab === 'pagos' && (
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+            <h3 style={{ color: '#F8FAFC', fontSize: '14px', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <CreditCard size={16} color="#22C55E" /> Verificación de Pagos
+            </h3>
+            <button onClick={loadPagos} style={{ background: '#1E293B', color: '#38BDF8', border: '1px solid #334155', padding: '6px 12px', borderRadius: '6px', cursor: 'pointer', fontSize: '11px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <RefreshCw size={12} /> Recargar
+            </button>
+          </div>
+
+          <div style={{ overflowX: 'auto', background: '#0F172A', border: '1px solid #1E293B', borderRadius: '10px' }}>
+            <table style={{ width: '100%', fontSize: '11px', borderCollapse: 'collapse', minWidth: '700px' }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid #1E293B', background: '#090D16' }}>
+                  {['ID', 'Usuario', 'Método', 'Plan', 'Monto', 'Referencia', 'Fecha', 'Estado', 'Acción'].map(h => (
+                    <th key={h} style={{ padding: '12px 10px', textAlign: 'left', color: '#64748B', fontWeight: '600', fontSize: '10px', letterSpacing: '1px', textTransform: 'uppercase' }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {pagosLoading ? (
+                  <tr><td colSpan={9} style={{ padding: '30px', textAlign: 'center', color: '#38BDF8' }}>Cargando pagos...</td></tr>
+                ) : pagos.length === 0 ? (
+                  <tr><td colSpan={9} style={{ padding: '30px', textAlign: 'center', color: '#64748B' }}>No hay pagos reportados</td></tr>
+                ) : pagos.map(p => (
+                  <tr key={p.id} style={{ borderBottom: '1px solid #1E293B' }}>
+                    <td style={{ padding: '10px', color: '#64748B', fontFamily: 'monospace' }}>{p.id}</td>
+                    <td style={{ padding: '10px', color: '#F8FAFC', fontWeight: '500' }}>{p.usuario_nombre}</td>
+                    <td style={{ padding: '10px' }}>
+                      <span style={{ background: p.metodo === 'binance' ? 'rgba(251,191,36,0.15)' : p.metodo === 'zelle' ? 'rgba(34,197,94,0.15)' : 'rgba(56,189,248,0.15)', color: p.metodo === 'binance' ? '#FBBF24' : p.metodo === 'zelle' ? '#22C55E' : '#38BDF8', padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: 'bold', textTransform: 'capitalize' }}>
+                        {p.metodo?.replace(/_/g, ' ')}
+                      </span>
+                    </td>
+                    <td style={{ padding: '10px', color: '#94A3B8', fontFamily: 'monospace' }}>{p.plan_solicitado}</td>
+                    <td style={{ padding: '10px', color: '#22C55E', fontWeight: 'bold' }}>${p.monto} {p.moneda}</td>
+                    <td style={{ padding: '10px', color: '#94A3B8', fontFamily: 'monospace', fontSize: '10px', wordBreak: 'break-all', maxWidth: '120px' }}>{p.referencia}</td>
+                    <td style={{ padding: '10px', color: '#64748B', fontSize: '10px', fontFamily: 'monospace' }}>
+                      {p.creado_en ? new Date(p.creado_en).toLocaleDateString('es-VE') : '-'}
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <span style={{
+                        background: p.estado === 'aprobado' ? 'rgba(34,197,94,0.15)' : p.estado === 'rechazado' ? 'rgba(239,68,68,0.15)' : 'rgba(245,158,11,0.15)',
+                        color: p.estado === 'aprobado' ? '#22C55E' : p.estado === 'rechazado' ? '#EF4444' : '#F59E0B',
+                        padding: '2px 8px', borderRadius: '9999px', fontSize: '10px', fontWeight: 'bold', whiteSpace: 'nowrap'
+                      }}>
+                        {p.estado === 'pendiente_verificacion' ? 'Pendiente' : p.estado}
+                      </span>
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      {p.estado === 'pendiente_verificacion' ? (
+                        <div style={{ display: 'flex', gap: '6px' }}>
+                          <button onClick={() => handleAprobarPago(p.id, p.plan_solicitado)} disabled={aprobando === p.id}
+                            style={{ background: 'rgba(34,197,94,0.15)', color: '#22C55E', border: '1px solid #22C55E', padding: '4px 10px', borderRadius: '4px', cursor: 'pointer', fontSize: '10px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <ThumbsUp size={12} /> Aprobar
+                          </button>
+                          <button onClick={() => handleRechazarPago(p.id)} disabled={aprobando === p.id}
+                            style={{ background: 'rgba(239,68,68,0.15)', color: '#EF4444', border: '1px solid #EF4444', padding: '4px 10px', borderRadius: '4px', cursor: 'pointer', fontSize: '10px', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <ThumbsDown size={12} /> Rechazar
+                          </button>
+                        </div>
+                      ) : (
+                        <span style={{ color: '#64748B', fontSize: '10px' }}>—</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
