@@ -18,6 +18,7 @@ import AdminCurso from './pages/AdminCurso';
 import AdminCertificados from './pages/AdminCertificados';
 import AdminUsersManager from './pages/AdminUsersManager';
 import AdminExecutiveDashboard from './pages/AdminExecutiveDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import AdminConsolidatedReport from './pages/AdminConsolidatedReport';
 import TutorDashboard from './pages/TutorDashboard';
 import TutorCourseEditor from './pages/TutorCourseEditor';
@@ -169,6 +170,11 @@ function App() {
           <Route path="/admin/reportes" element={
             <ProtectedRoute allowedRoles={['administrador']}>
               <AdminConsolidatedReport />
+            </ProtectedRoute>
+          } />
+          <Route path="/admin/panel" element={
+            <ProtectedRoute allowedRoles={['administrador']}>
+              <AdminDashboard />
             </ProtectedRoute>
           } />
           

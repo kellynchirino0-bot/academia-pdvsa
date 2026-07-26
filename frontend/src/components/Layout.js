@@ -24,7 +24,8 @@ import {
   UserCog,
   Edit3,
   FileBarChart,
-  HelpCircle
+  HelpCircle,
+  Shield
 } from 'lucide-react';
 
 const Layout = ({ children }) => {
@@ -53,6 +54,7 @@ const Layout = ({ children }) => {
     { to: '/tutor/editor-cursos', icon: Edit3, label: 'Editor Cursos', roles: ['administrador', 'tutor'] },
     { divider: true, roles: ['administrador'] },
     { to: '/admin/dashboard', icon: BarChart3, label: 'Consola Ejecutiva', roles: ['administrador'] },
+    { to: '/admin/panel', icon: Shield, label: 'Panel Corporativo', roles: ['administrador'] },
     { to: '/leads', icon: UserPlus, label: 'Gestión de Proyectos', roles: ['administrador'] },
     { to: '/admin/usuarios', icon: UserCog, label: 'Gestión de Usuarios', roles: ['administrador'] },
     { to: '/usuarios', icon: Briefcase, label: 'Usuarios Básico', roles: ['administrador'] },
