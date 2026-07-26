@@ -12,7 +12,7 @@ const app = express();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 // Middleware
-const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://academia-pdvsa.vercel.app,http://localhost:3000').split(',');
+const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || 'https://academia-pdvsa.vercel.app,http://localhost:3000,http://localhost:5173').split(',');
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || ALLOWED_ORIGINS.indexOf(origin) !== -1) return callback(null, true);
@@ -1557,6 +1557,7 @@ app.post('/api/leads', (req, res) => {
     created_at: new Date().toISOString()
   };
   memoryStorage.leads.push(nuevoLead);
+  persistAfterMutation();
   res.status(201).json({ message: 'Lead creado exitosamente', lead: nuevoLead });
 });
 
@@ -1573,6 +1574,7 @@ app.delete('/api/leads/:id', verifyToken, verifyRole(1), (req, res) => {
   const idx = memoryStorage.leads.findIndex(l => l.id === parseInt(req.params.id));
   if (idx === -1) return res.status(404).json({ error: 'Lead no encontrado' });
   memoryStorage.leads.splice(idx, 1);
+  persistAfterMutation();
   res.json({ message: 'Lead eliminado exitosamente' });
 });
 
@@ -2026,6 +2028,12 @@ app.post('/api/payments/reportar', verifyToken, (req, res) => {
       creado_en: new Date().toISOString()
     };
     memoryStorage.pagos.push(pago);
+    persistAfterMutation();
+    // Notify admins about new payment
+    const admins = memoryStorage.usuarios.filter(u => u.rol_id === 1);
+    const planNombre = plan_solicitado?.replace(/_/g, ' ') || 'VIP';
+    admins.forEach(a => createNotification(a.id, 'pago', 'Nuevo Pago Pendiente',
+      `${req.user.nombre_completo} reportó pago para plan ${planNombre} (${metodo}). Referencia: ${referencia}.`));
     res.status(201).json({ exito: true, pago, mensaje: 'Pago reportado. Pendiente de verificación por administración.' });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -2050,6 +2058,12 @@ app.post('/api/admin/payments/aprobar', verifyToken, verifyRole(1), (req, res) =
     if (usuario) {
       usuario.plan_suscripcion = plan_asignado || pago.plan_solicitado || 'vip_diplomado';
     }
+    persistAfterMutation();
+    createNotification(pago.usuario_id, 'exito', '🎉 Acceso VIP Activado',
+      `Tu plan ${plan_asignado || pago.plan_solicitado || 'VIP'} ha sido activado. Ya puedes acceder a todo el contenido premium.`);
+    // Also notify admin who approved
+    createNotification(req.user.id, 'sistema', 'Pago Aprobado',
+      `Aprobaste el pago de ${usuario?.nombre_completo} para plan ${plan_asignado || pago.plan_solicitado || 'VIP'}.`);
 
     res.json({ exito: true, pago, usuario_actualizado: usuario?.nombre_completo, nuevo_plan: usuario?.plan_suscripcion });
   } catch (err) {
@@ -2065,6 +2079,9 @@ app.post('/api/admin/payments/rechazar', verifyToken, verifyRole(1), (req, res) 
     pago.estado = 'rechazado';
     pago.rechazado_por = req.user.id;
     pago.rechazado_en = new Date().toISOString();
+    persistAfterMutation();
+    createNotification(pago.usuario_id, 'error', 'Pago Rechazado',
+      `Tu pago (ref: ${pago.referencia}) ha sido rechazado. Contacta a administración para más detalles.`);
     res.json({ exito: true, pago });
   } catch (err) {
     res.status(500).json({ error: err.message });

@@ -48,10 +48,10 @@ const Layout = ({ children }) => {
     { to: '/simulador/imagenes', icon: Image, label: 'Análisis de Imágenes', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/simulador/video-audio', icon: Video, label: 'Síntesis Multimedia', roles: ['administrador', 'tutor', 'participante'] },
     { divider: true, roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/petroleo', icon: Box, label: 'Petróleo — Bombeo IA', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/calderas', icon: Thermometer, label: 'Calderas — LIMS 3D', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/plc', icon: Cpu, label: 'PLC / SCADA Industrial', roles: ['administrador', 'tutor', 'participante'] },
-    { to: '/simulador/soldadura', icon: Flame, label: 'Soldadura AWS + NDT', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/petroleo', icon: Box, label: 'Petróleo — Bombeo IA', roles: ['administrador', 'tutor', 'participante'], premium: true },
+    { to: '/simulador/calderas', icon: Thermometer, label: 'Calderas — LIMS 3D', roles: ['administrador', 'tutor', 'participante'], premium: true },
+    { to: '/simulador/plc', icon: Cpu, label: 'PLC / SCADA Industrial', roles: ['administrador', 'tutor', 'participante'], premium: true },
+    { to: '/simulador/soldadura', icon: Flame, label: 'Soldadura AWS + NDT', roles: ['administrador', 'tutor', 'participante'], premium: true },
     { to: '/evaluaciones', icon: ClipboardList, label: 'Evaluaciones', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/notas', icon: Target, label: 'Mi Progreso', roles: ['participante'] },
     { to: '/certificados', icon: Award, label: 'Mis Certificaciones', roles: ['administrador', 'tutor', 'participante'] },
@@ -133,7 +133,13 @@ const Layout = ({ children }) => {
                   className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
                 >
                   <item.icon size={18} />
-                  <span>{item.label}</span>
+                  <span style={{ flex: 1 }}>{item.label}</span>
+                  {item.premium && (
+                    <span style={{ fontSize: '11px', marginLeft: '4px' }}>
+                      {['vip_diplomado', 'b2b_enterprise', 'sim_petroleo', 'sim_calderas', 'sim_plc', 'sim_soldadura'].includes(user?.plan_suscripcion)
+                        ? '✅' : '🔒'}
+                    </span>
+                  )}
                 </NavLink>
               </li>
             );

@@ -155,7 +155,7 @@ const DossierModuloPDF = () => {
             </div>
             <div style={{ fontSize: '10px', color: '#64748B', textAlign: 'right' }}>
               <div>Verifique en:</div>
-              <div style={{ color: '#38BDF8' }}>academia-pdvsa.vercel.app/verificar-certificado</div>
+              <div style={{ color: '#38BDF8' }}>{window.location.origin}/verificar-certificado</div>
             </div>
           </div>
         </div>

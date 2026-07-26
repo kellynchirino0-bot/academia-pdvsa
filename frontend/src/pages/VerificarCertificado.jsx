@@ -93,7 +93,8 @@ export const VerificarCertificado = () => {
   const copiarEnlace = () => {
     if (!certificado) return;
     const codigo = certificado.codigo || certificado.certificado?.codigo_verificacion || certificado.certificado?.id;
-    const url = `https://academia-pdvsa.vercel.app/verificar-certificado?id=${encodeURIComponent(codigo)}`;
+    const baseUrl = window.location.origin;
+    const url = `${baseUrl}/verificar-certificado?id=${encodeURIComponent(codigo)}`;
     navigator.clipboard.writeText(url).then(() => {
       setCopiado(true);
       setTimeout(() => setCopiado(false), 2000);
@@ -234,7 +235,7 @@ export const VerificarCertificado = () => {
                 <div style={{ marginTop: '16px', display: 'flex', justifyContent: 'center' }}>
                   <div style={{ background: '#FFF', padding: '8px', borderRadius: '8px', display: 'inline-block' }}>
                     <QRCodeSVG
-                      value={`https://academia-pdvsa.vercel.app/verificar-certificado?id=${encodeURIComponent(codigoActual)}`}
+                      value={`${window.location.origin}/verificar-certificado?id=${encodeURIComponent(codigoActual)}`}
                       size={120}
                       level="H"
                     />
@@ -243,7 +244,7 @@ export const VerificarCertificado = () => {
               )}
 
               <div className="print-footer" style={{ marginTop: '16px', paddingTop: '12px', borderTop: '1px solid #334155', textAlign: 'center', fontSize: '10px', color: '#64748B' }}>
-                <div>Verificado en academia-pdvsa.vercel.app — Global Safety Solutions™ — ML-DSA FIPS 204</div>
+                <div>Verificado en {window.location.origin} — Global Safety Solutions™ — ML-DSA FIPS 204</div>
                 <div style={{ marginTop: '2px' }}>{new Date().toISOString().split('T')[0]}</div>
               </div>
             </div>

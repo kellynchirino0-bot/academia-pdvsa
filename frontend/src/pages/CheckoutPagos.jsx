@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { CreditCard, QrCode, DollarSign, CheckCircle, Copy, ArrowLeft } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { CreditCard, QrCode, DollarSign, CheckCircle, Copy, ArrowLeft, Lock } from 'lucide-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
@@ -37,6 +37,8 @@ const CheckoutPagos = () => {
   const [plan, setPlan] = useState('vip_diplomado');
   const [metodo, setMetodo] = useState('');
   const [referencia, setReferencia] = useState('');
+  const [searchParams] = useSearchParams();
+  const recursoBloqueado = searchParams.get('recurso');
   const [loading, setLoading] = useState(false);
   const [resultado, setResultado] = useState(null);
   const [copiado, setCopiado] = useState('');
@@ -73,6 +75,13 @@ const CheckoutPagos = () => {
 
       <h1 style={{ color: '#F8FAFC', fontSize: '24px', marginBottom: '4px' }}>Suscripción y Pagos</h1>
       <p style={{ color: '#64748B', fontSize: '12px', marginBottom: '24px' }}>Seleccione su plan y método de pago — Binance Pay, Zelle o Pago Móvil</p>
+
+      {recursoBloqueado && (
+        <div style={{ marginBottom: '20px', padding: '16px', background: 'rgba(251,191,36,0.1)', border: '1px solid #FBBF24', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '10px', fontSize: '13px', color: '#FBBF24' }}>
+          <Lock size={20} />
+          <div><strong>🔒 Contenido Bloqueado</strong><br /><span style={{ color: '#E2E8F0' }}>Desbloquea <strong>{recursoBloqueado}</strong> adquiriendo tu plan individual ($75–$95 USD) o la Membresía VIP para acceso completo.</span></div>
+        </div>
+      )}
 
       {user?.plan_suscripcion && user.plan_suscripcion !== 'gratuito' && (
         <div style={{ marginBottom: '20px', padding: '12px', background: 'rgba(34,197,94,0.1)', border: '1px solid #22C55E', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#22C55E' }}>

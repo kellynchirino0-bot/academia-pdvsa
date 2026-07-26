@@ -53,7 +53,7 @@ function ProtectedRoute({ children, allowedRoles }) {
   return <Layout>{children}</Layout>;
 }
 
-function PremiumRoute({ children, allowedRoles }) {
+function PremiumRoute({ children, allowedRoles, planName }) {
   const { user, isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
@@ -68,7 +68,7 @@ function PremiumRoute({ children, allowedRoles }) {
   const planesPago = ['vip_diplomado', 'b2b_enterprise', 'sim_petroleo', 'sim_calderas', 'sim_plc', 'sim_soldadura'];
 
   if (!planesPago.includes(plan)) {
-    return <Navigate to="/suscripcion" replace />;
+    return <Navigate to={`/suscripcion?recurso=${encodeURIComponent(planName || 'contenido premium')}`} replace />;
   }
 
   return <Layout>{children}</Layout>;
@@ -130,22 +130,22 @@ function App() {
             </ProtectedRoute>
           } />
           <Route path="/simulador/petroleo" element={
-            <PremiumRoute>
+            <PremiumRoute planName="Simulador 3D de Petróleo — Bombeo IA">
               <SimuladorPetroleo />
             </PremiumRoute>
           } />
           <Route path="/simulador/calderas" element={
-            <PremiumRoute>
+            <PremiumRoute planName="Simulador 3D de Calderas — LIMS">
               <SimuladorCalderas />
             </PremiumRoute>
           } />
           <Route path="/simulador/plc" element={
-            <PremiumRoute>
+            <PremiumRoute planName="Simulador 3D de PLC / SCADA">
               <SimuladorPLC />
             </PremiumRoute>
           } />
           <Route path="/simulador/soldadura" element={
-            <PremiumRoute>
+            <PremiumRoute planName="Simulador 3D de Soldadura AWS + NDT">
               <SimuladorSoldadura />
             </PremiumRoute>
           } />
