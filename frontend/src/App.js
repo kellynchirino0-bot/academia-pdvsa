@@ -9,6 +9,10 @@ import LeccionDetalle from './pages/LeccionDetalle';
 import SimuladorTexto from './simulators/SimuladorTexto';
 import SimuladorImagenes from './simulators/SimuladorImagenes';
 import SimuladorVideoAudio from './simulators/SimuladorVideoAudio';
+import SimuladorPetroleo from './simulators/SimuladorPetroleo';
+import SimuladorCalderas from './simulators/SimuladorCalderas';
+import SimuladorPLC from './simulators/SimuladorPLC';
+import SimuladorSoldadura from './simulators/SimuladorSoldadura';
 import Evaluaciones from './pages/Evaluaciones';
 import Notas from './pages/Notas';
 import Certificados from './pages/Certificados';
@@ -103,6 +107,26 @@ function App() {
           <Route path="/simulador/video-audio" element={
             <ProtectedRoute>
               <SimuladorVideoAudio />
+            </ProtectedRoute>
+          } />
+          <Route path="/simulador/petroleo" element={
+            <ProtectedRoute>
+              <SimuladorPetroleo />
+            </ProtectedRoute>
+          } />
+          <Route path="/simulador/calderas" element={
+            <ProtectedRoute>
+              <SimuladorCalderas />
+            </ProtectedRoute>
+          } />
+          <Route path="/simulador/plc" element={
+            <ProtectedRoute>
+              <SimuladorPLC />
+            </ProtectedRoute>
+          } />
+          <Route path="/simulador/soldadura" element={
+            <ProtectedRoute>
+              <SimuladorSoldadura />
             </ProtectedRoute>
           } />
           

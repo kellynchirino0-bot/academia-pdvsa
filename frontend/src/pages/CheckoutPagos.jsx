@@ -45,7 +45,11 @@ const CheckoutPagos = () => {
 
   const planes = [
     { id: 'vip_diplomado', titulo: 'Diplomado VIP', precio: 450, descripcion: 'Acceso completo a diplomados avanzados, simuladores IA y certificación ML-DSA', features: ['Diplomados avanzados IA/IO', 'Simulador texto, imágenes, video', 'Certificación ML-DSA LagoChain', 'Soporte prioritario 24/7'] },
-    { id: 'b2b_enterprise', titulo: 'Plan B2B Enterprise', precio: 2500, descripcion: 'Consultoría empresarial, métricas B2B, integración CRM, dashboard ejecutivo', features: ['Todo lo del Plan VIP', 'Dashboard B2B & ROI', 'Integración CRM (HubSpot)', 'Calculadora de impacto financiero', 'Consultoría personalizada', 'Exportación de leads CSV'] }
+    { id: 'b2b_enterprise', titulo: 'Plan B2B Enterprise', precio: 2500, descripcion: 'Consultoría empresarial, métricas B2B, integración CRM, dashboard ejecutivo', features: ['Todo lo del Plan VIP', 'Dashboard B2B & ROI', 'Integración CRM (HubSpot)', 'Calculadora de impacto financiero', 'Consultoría personalizada', 'Exportación de leads CSV'] },
+    { id: 'sim_petroleo', titulo: 'Petróleo — Bombeo IA', precio: 85, descripcion: 'Simulador 3D de elevación artificial con optimización Simplex', features: ['Escena 3D pozo + balancín', 'Control frecuencia variador', 'Cálculo producción y ahorro', 'Manómetro y flujo multifásico'] },
+    { id: 'sim_calderas', titulo: 'Calderas — LIMS 3D', precio: 75, descripcion: 'Simulador 3D de caldera industrial con protocolo LIMS', features: ['Vista corte 3D caldera', 'Control nivel agua y presión', 'Alertas de seguridad críticas', 'Protocolo LIMS interactivo'] },
+    { id: 'sim_plc', titulo: 'PLC / SCADA Industrial', precio: 95, descripcion: 'Simulador 3D de PLC Siemens S7-1200 con HMI virtual', features: ['Panel PLC 3D con gabinete', 'HMI virtual en tiempo real', 'Señal 4-20mA y setpoints', 'Multímetro y terminales'] },
+    { id: 'sim_soldadura', titulo: 'Soldadura AWS + NDT', precio: 90, descripcion: 'Simulador 3D de soldadura AWS D1.1 con inspección NDT', features: ['Junta tubería 3D biselada', 'Control ángulo, arco, velocidad', 'Calidad de cordón en tiempo real', 'NDT: ultrasonido + partículas'] }
   ];
 
   const handleSubmit = async () => {

@@ -25,7 +25,11 @@ import {
   Edit3,
   FileBarChart,
   HelpCircle,
-  Shield
+  Shield,
+  Box,
+  Thermometer,
+  Cpu,
+  Flame
 } from 'lucide-react';
 
 const Layout = ({ children }) => {
@@ -43,6 +47,11 @@ const Layout = ({ children }) => {
     { to: '/simulador/texto', icon: MessageSquare, label: 'Asistente Ejecutivo IA', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/simulador/imagenes', icon: Image, label: 'Análisis de Imágenes', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/simulador/video-audio', icon: Video, label: 'Síntesis Multimedia', roles: ['administrador', 'tutor', 'participante'] },
+    { divider: true, roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/petroleo', icon: Box, label: 'Petróleo — Bombeo IA', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/calderas', icon: Thermometer, label: 'Calderas — LIMS 3D', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/plc', icon: Cpu, label: 'PLC / SCADA Industrial', roles: ['administrador', 'tutor', 'participante'] },
+    { to: '/simulador/soldadura', icon: Flame, label: 'Soldadura AWS + NDT', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/evaluaciones', icon: ClipboardList, label: 'Evaluaciones', roles: ['administrador', 'tutor', 'participante'] },
     { to: '/notas', icon: Target, label: 'Mi Progreso', roles: ['participante'] },
     { to: '/certificados', icon: Award, label: 'Mis Certificaciones', roles: ['administrador', 'tutor', 'participante'] },
