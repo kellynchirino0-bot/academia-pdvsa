@@ -139,10 +139,12 @@ function persistAfterMutation() {
 // ===================== SEED DATA (Synchronous for serverless) =====================
 let dataReady = false;
 const initializeSync = () => {
-  if (memoryStorage.usuarios.length > 0) return;
-  if (loadFromDisk() && memoryStorage.usuarios.length > 0) return;
+  // Try loading persisted data first
+  if (loadFromDisk() && memoryStorage.modulos.length > 0 && memoryStorage.lecciones.length > 0) return;
+  // Seed only if modules are empty (NOT based on usuarios)
+  if (memoryStorage.modulos.length > 0 && memoryStorage.lecciones.length > 0) return;
 
-  // Users (passwords hashed on first login attempt)
+  // Users (passwords hashed on first login attempt) — merge with existing
   const users = [
     { id: 1, cedula: 'V-00000000', nombre_completo: 'Administrador PDVSA', cargo: 'Coordinador Académico', correo: 'admin@nassergroup.com', password: 'admin123', rol_id: 1 },
     { id: 2, cedula: 'V-12345678', nombre_completo: 'Carlos Mendoza', cargo: 'Instructor Senior de IA', correo: 'tutor@nassergroup.com', password: 'tutor123', rol_id: 2 },
@@ -156,8 +158,13 @@ const initializeSync = () => {
     { id: 10, cedula: 'V-44444444', nombre_completo: 'Tutor PDVSA', cargo: 'Instructor Senior', correo: 'tutor@pdvsa.com', password: 'tutor123', rol_id: 2 }
   ];
 
-  // Store plain passwords for lazy hashing
+  // Track existing users to prevent duplicates (from lines 29-57 hardcoded or disk)
+  const existingEmails = new Set(memoryStorage.usuarios.map(u => u.correo?.toLowerCase().trim()));
+  const existingIds = new Set(memoryStorage.usuarios.map(u => u.id));
+
+  // Store plain passwords for lazy hashing — only add missing users
   users.forEach(u => {
+    if (existingIds.has(u.id) || existingEmails.has(u.correo.toLowerCase().trim())) return;
     const now = new Date();
     const trialEnd = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
     const isStudent = u.rol_id === 3;
