@@ -26,7 +26,35 @@ app.use(express.urlencoded({ extended: true }));
 
 // ===================== IN-MEMORY STORAGE =====================
 const memoryStorage = {
-  usuarios: [],
+  usuarios: [
+    {
+      id: 1, cedula: 'V-12345678', nombre_completo: 'Administrador Nasser Group',
+      cargo: 'Administrador del Sistema', correo: 'admin@nassergroup.com',
+      _plainPassword: 'Admin2026!', rol_id: 1, activo: true,
+      telefono: '+58-412-0000001', empresa_filial: 'Nasser Group',
+      creado_en: '2026-01-01T00:00:00.000Z', plan_suscripcion: 'b2b_enterprise',
+      estado: 'ACTIVE', progreso: {}, modulos_completados: [],
+      ultimo_acceso: null
+    },
+    {
+      id: 2, cedula: 'V-87654321', nombre_completo: 'Tutor PDVSA',
+      cargo: 'Instructor Senior', correo: 'tutor@nassergroup.com',
+      _plainPassword: 'Tutor2026!', rol_id: 2, activo: true,
+      telefono: '+58-412-0000002', empresa_filial: 'PDVSA Corp',
+      creado_en: '2026-01-01T00:00:00.000Z', plan_suscripcion: 'vip_diplomado',
+      estado: 'ACTIVE', progreso: {}, modulos_completados: [],
+      ultimo_acceso: null
+    },
+    {
+      id: 3, cedula: 'V-11223344', nombre_completo: 'Estudiante PDVSA',
+      cargo: 'Participante', correo: 'estudiante@nassergroup.com',
+      _plainPassword: 'Estudiante2026!', rol_id: 3, activo: true,
+      telefono: '+58-412-0000003', empresa_filial: 'PDVSA Corp',
+      creado_en: '2026-01-01T00:00:00.000Z', plan_suscripcion: 'gratuito',
+      estado: 'ACTIVE', progreso: {}, modulos_completados: [],
+      ultimo_acceso: null
+    }
+  ],
   roles: [
     { id: 1, nombre_rol: 'administrador', descripcion: 'Acceso total al sistema' },
     { id: 2, nombre_rol: 'tutor', descripcion: 'Gestión de cursos y seguimiento de estudiantes' },
