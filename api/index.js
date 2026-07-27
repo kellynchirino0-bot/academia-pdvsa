@@ -153,8 +153,7 @@ const initializeSync = () => {
     { id: 7, cedula: 'V-22345678', nombre_completo: 'Estudiante PDVSA', cargo: 'Participante', correo: 'estudiante@pdvsa.com', password: 'user123', rol_id: 3 },
     { id: 8, cedula: 'V-00000001', nombre_completo: 'Administrador PDVSA VIP', cargo: 'Coordinador Académico VIP', correo: 'admin@pdvsa.com', password: 'admin123', rol_id: 1 },
     { id: 9, cedula: 'V-33333333', nombre_completo: 'Usuario Estándar PDVSA', cargo: 'Participante', correo: 'usuario@pdvsa.com', password: 'user123', rol_id: 3 },
-    { id: 10, cedula: 'V-44444444', nombre_completo: 'Tutor PDVSA', cargo: 'Instructor Senior', correo: 'tutor@pdvsa.com', password: 'tutor123', rol_id: 2 },
-    { id: 11, cedula: 'V-55555555', nombre_completo: 'Estudiante PDVSA', cargo: 'Participante', correo: 'estudiante@pdvsa.com', password: 'user123', rol_id: 3 }
+    { id: 10, cedula: 'V-44444444', nombre_completo: 'Tutor PDVSA', cargo: 'Instructor Senior', correo: 'tutor@pdvsa.com', password: 'tutor123', rol_id: 2 }
   ];
 
   // Store plain passwords for lazy hashing
