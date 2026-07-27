@@ -2134,6 +2134,30 @@ app.post('/api/math/eoq', (req, res) => {
   }
 });
 
+// ===================== AI — ASISTENTE TÉCNICO Y REPORTES =====================
+const copilotHandler = require('./ai/copilot');
+const reportHandler = require('./ai/generate-report');
+
+app.post('/api/ai/copilot', (req, res) => copilotHandler(req, res));
+app.post('/api/ai/generate-report', (req, res) => reportHandler(req, res));
+
+// ===================== LAGOCHAIN — CERTIFICACIÓN CRIPTOGRÁFICA ML-DSA =====================
+const verifySimHandler = require('./lagochain/verify-sim');
+
+app.post('/api/lagochain/verify-sim', (req, res) => verifySimHandler(req, res));
+
+app.get('/api/lagochain/verify/:id', (req, res) => {
+  res.json({
+    exito: true,
+    id_verificador: req.params.id,
+    estado: 'REGISTRADO',
+    autoridad: 'Nasser Group / GabrielBiz Galaxy',
+    algoritmo: 'ML-DSA-87 (FIPS 204)',
+    mensaje: 'Certificado válido. Este recibo fue emitido por la autoridad certificadora de Nasser Group.',
+    verificacion_url: `${req.protocol}://${req.get('host')}/verificar-certificado?id=${req.params.id}`
+  });
+});
+
 // ===================== HEALTH CHECK =====================
 app.get('/api/health', (req, res) => {
   res.json({

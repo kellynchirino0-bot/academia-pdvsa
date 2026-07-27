@@ -1,6 +1,9 @@
 import React, { useRef, useEffect, useState } from 'react';
+import axios from 'axios';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
+const API_URL = process.env.REACT_APP_API_URL || '/api';
 
 const industrialAssets = {
   bomba: (scene) => {
@@ -122,6 +125,48 @@ const Simulador3D = ({ assetType = 'bomba', width = '100%', height = '400px', on
   const mountRef = useRef(null);
   const [selectedPiece, setSelectedPiece] = useState(null);
   const [pieces, setPieces] = useState([]);
+  const [generatingReport, setGeneratingReport] = useState(false);
+  const [generatedReport, setGeneratedReport] = useState(null);
+  const [lagochainReceipt, setLagochainReceipt] = useState(null);
+  const [registeringLago, setRegisteringLago] = useState(false);
+
+  const handleGenerateReport = async () => {
+    if (!selectedPiece) return;
+    setGeneratingReport(true);
+    try {
+      const data = {
+        equipo: selectedPiece.nombre,
+        codigo: `${assetType.toUpperCase()}-${Date.now().toString(36).toUpperCase()}`,
+        ubicacion: 'Campo Merey-1 / PDVSA',
+        fecha_inspeccion: new Date().toLocaleDateString('es-VE'),
+        condicion: selectedPiece.estado,
+        hallazgos: `Inspección visual detectó condición "${selectedPiece.estado}" en componente ${selectedPiece.nombre}.`,
+        recomendaciones: 'Realizar mantenimiento preventivo según COVENIN 3049-93. Documentar en SI-1.',
+        nivel_urgencia: selectedPiece.estado === 'OPERATIVO' ? 'BAJO' : selectedPiece.estado === 'ALERTA' ? 'MEDIO' : 'ALTO'
+      };
+      const res = await axios.post(`${API_URL}/ai/generate-report`, { assetType, data });
+      setGeneratedReport(res.data);
+    } catch (err) {
+      console.error('Error generating report:', err);
+    } finally { setGeneratingReport(false); }
+  };
+
+  const handleRegisterLagoChain = async () => {
+    if (!generatedReport) return;
+    setRegisteringLago(true);
+    try {
+      const payload = {
+        tipo: 'inspeccion_3d',
+        origen: `visor-${assetType}`,
+        resultados: generatedReport,
+        metadata: { asset_type: assetType, componente: selectedPiece?.nombre }
+      };
+      const res = await axios.post(`${API_URL}/lagochain/verify-sim`, payload);
+      setLagochainReceipt(res.data.recibo);
+    } catch (err) {
+      console.error('Error registering in LagoChain:', err);
+    } finally { setRegisteringLago(false); }
+  };
 
   useEffect(() => {
     const mount = mountRef.current;
@@ -241,6 +286,55 @@ const Simulador3D = ({ assetType = 'bomba', width = '100%', height = '400px', on
             <span style={{ marginLeft: '8px', color: '#22C55E' }}>COVENIN 3049-93: {selectedPiece.estado}</span>
           </div>
           <button onClick={() => setSelectedPiece(null)} style={{ marginLeft: 'auto', background: 'none', border: 'none', color: '#64748B', cursor: 'pointer', fontSize: '14px' }}>✕</button>
+        </div>
+      )}
+      <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+        <button onClick={handleGenerateReport} disabled={!selectedPiece || generatingReport}
+          style={{
+            flex: 1, padding: '10px', borderRadius: '8px', border: 'none', fontWeight: '700', fontSize: '11px',
+            cursor: (!selectedPiece || generatingReport) ? 'not-allowed' : 'pointer',
+            background: generatingReport ? '#334155' : 'linear-gradient(135deg, #3B82F6, #2563EB)',
+            color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
+          }}>
+          {generatingReport ? 'Generando...' : `Generar Reporte de ${selectedPiece?.nombre || 'Inspección'}`}
+        </button>
+        <button onClick={handleRegisterLagoChain} disabled={!generatedReport || registeringLago}
+          style={{
+            flex: 1, padding: '10px', borderRadius: '8px', border: 'none', fontWeight: '700', fontSize: '11px',
+            cursor: (!generatedReport || registeringLago) ? 'not-allowed' : 'pointer',
+            background: registeringLago ? '#334155' : 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+            color: '#FFF', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px'
+          }}>
+          {registeringLago ? 'Registrando...' : 'Registrar en LagoChain ML-DSA'}
+        </button>
+      </div>
+      {generatedReport && !lagochainReceipt && (
+        <div style={{ marginTop: '10px', background: '#0F172A', border: '1px solid #3B82F6', borderRadius: '8px', padding: '12px', fontSize: '11px' }}>
+          <div style={{ color: '#60A5FA', fontWeight: 'bold', marginBottom: '6px' }}>Reporte Generado</div>
+          {generatedReport.reporte?.campos?.map((c, i) => (
+            <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0', borderBottom: '1px solid rgba(51,65,85,0.3)' }}>
+              <span style={{ color: '#94A3B8' }}>{c.label}</span>
+              <span style={{ color: '#F1F5F9', fontWeight: '500' }}>{c.valor}</span>
+            </div>
+          ))}
+          <button onClick={() => setGeneratedReport(null)} style={{ marginTop: '8px', width: '100%', padding: '6px', background: '#1E293B', border: '1px solid #334155', borderRadius: '6px', color: '#94A3B8', cursor: 'pointer', fontSize: '10px' }}>Cerrar Reporte</button>
+        </div>
+      )}
+      {lagochainReceipt && (
+        <div style={{ marginTop: '10px', background: 'linear-gradient(135deg, #0F172A, #1A1040)', border: '1px solid rgba(139,92,246,0.3)', borderRadius: '8px', padding: '12px', fontSize: '10px' }}>
+          <div style={{ color: '#A78BFA', fontWeight: 'bold', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            Recibo LagoChain — ID: {lagochainReceipt.id_verificador}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0' }}>
+            <span style={{ color: '#94A3B8' }}>Hash SHA-256</span>
+            <span style={{ color: '#F1F5F9' }}>{lagochainReceipt.hash_sha256?.substring(0, 24)}...</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '2px 0' }}>
+            <span style={{ color: '#94A3B8' }}>Firma ML-DSA</span>
+            <span style={{ color: '#22C55E' }}>{lagochainReceipt.firma_ml_dsa?.substring(0, 24)}...</span>
+          </div>
+          <button onClick={() => { setLagochainReceipt(null); setGeneratedReport(null); }}
+            style={{ marginTop: '8px', width: '100%', padding: '6px', background: '#1E293B', border: '1px solid #334155', borderRadius: '6px', color: '#94A3B8', cursor: 'pointer', fontSize: '10px' }}>Cerrar</button>
         </div>
       )}
     </div>

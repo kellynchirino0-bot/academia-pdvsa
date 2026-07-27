@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Calculator, TrendingUp, GitBranch, Package, ChevronRight, RotateCcw } from 'lucide-react';
+import { Calculator, TrendingUp, GitBranch, Package, ChevronRight, RotateCcw, Shield, ExternalLink } from 'lucide-react';
 
 const API_URL = process.env.REACT_APP_API_URL || '/api';
 
@@ -30,6 +30,9 @@ const PanelCalculadora = () => {
   ]);
 
   /* ---- EOQ State ---- */
+  const [lagochainReceipt, setLagochainReceipt] = useState(null);
+  const [registeringLago, setRegisteringLago] = useState(false);
+
   const [eoq, setEoq] = useState({
     demanda_anual: 120,
     costo_pedido: 150,
@@ -65,6 +68,23 @@ const PanelCalculadora = () => {
       setResultado(res.data);
     } catch (err) { setError(err.response?.data?.error || err.message); }
     finally { setLoading(false); }
+  };
+
+  const handleRegisterLagoChain = async () => {
+    if (!resultado) return;
+    setRegisteringLago(true);
+    try {
+      const payload = {
+        tipo: 'simulacion_io',
+        origen: activeTab === 'simplex' ? 'simplex-mezcla' : activeTab === 'cpm' ? 'cpm-pert' : 'eoq-inventario',
+        resultados: resultado,
+        metadata: { tab: activeTab }
+      };
+      const res = await axios.post(`${API_URL}/lagochain/verify-sim`, payload);
+      setLagochainReceipt(res.data.recibo);
+    } catch (err) {
+      setError('Error al registrar en LagoChain: ' + (err.response?.data?.error || err.message));
+    } finally { setRegisteringLago(false); }
   };
 
   const tabs = [
@@ -231,6 +251,51 @@ const PanelCalculadora = () => {
       )}
 
       {renderResultado()}
+
+      {resultado && resultado.exito && !lagochainReceipt && (
+        <button onClick={handleRegisterLagoChain} disabled={registeringLago}
+          style={{
+            marginTop: '12px', width: '100%', padding: '12px',
+            background: registeringLago ? '#334155' : 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+            color: '#FFF', border: 'none', borderRadius: '8px', fontWeight: 'bold', fontSize: '12px',
+            cursor: registeringLago ? 'not-allowed' : 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
+          }}>
+          {registeringLago ? 'Registrando...' : <><Shield size={16} /> Registrar Simulación en LagoChain ML-DSA</>}
+        </button>
+      )}
+
+      {lagochainReceipt && (
+        <div style={{ marginTop: '16px', background: 'linear-gradient(135deg, #0F172A, #1A1040)', border: '1px solid rgba(139,92,246,0.3)', borderRadius: '8px', padding: '16px', fontFamily: 'monospace', fontSize: '11px' }}>
+          <div style={{ color: '#A78BFA', fontWeight: 'bold', marginBottom: '10px', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Shield size={14} /> Recibo LagoChain — Firma ML-DSA (FIPS 204)
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid rgba(139,92,246,0.1)' }}>
+            <span style={{ color: '#94A3B8' }}>ID Verificador</span>
+            <span style={{ color: '#A78BFA', fontWeight: '700' }}>{lagochainReceipt.id_verificador}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid rgba(139,92,246,0.1)' }}>
+            <span style={{ color: '#94A3B8' }}>Hash SHA-256</span>
+            <span style={{ color: '#F1F5F9', fontSize: '10px' }}>{lagochainReceipt.hash_sha256?.substring(0, 32)}...</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid rgba(139,92,246,0.1)' }}>
+            <span style={{ color: '#94A3B8' }}>Firma ML-DSA</span>
+            <span style={{ color: '#22C55E', fontSize: '10px' }}>{lagochainReceipt.firma_ml_dsa?.substring(0, 28)}...</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0', borderBottom: '1px solid rgba(139,92,246,0.1)' }}>
+            <span style={{ color: '#94A3B8' }}>Fecha</span>
+            <span style={{ color: '#F1F5F9' }}>{new Date(lagochainReceipt.fecha_emision).toLocaleString('es-VE')}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '4px 0' }}>
+            <span style={{ color: '#94A3B8' }}>Autoridad</span>
+            <span style={{ color: '#FBBF24' }}>{lagochainReceipt.authority}</span>
+          </div>
+          <button onClick={() => setLagochainReceipt(null)}
+            style={{ marginTop: '10px', width: '100%', padding: '8px', background: '#1E293B', border: '1px solid #334155', borderRadius: '6px', color: '#94A3B8', cursor: 'pointer', fontSize: '11px', fontWeight: '600' }}>
+            Cerrar Recibo
+          </button>
+        </div>
+      )}
     </div>
   );
 };

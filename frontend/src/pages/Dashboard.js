@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import MatrizEnfoqueEjecutivo from '../components/MatrizEnfoqueEjecutivo';
 import PanelCalculadora from '../components/PanelCalculadora';
 import Simulador3D from '../components/Simulador3D';
+import AsistenteTecnico from '../components/AsistenteTecnico';
 import {
   MessageSquare, Image, Video, FileText, Award, Users,
   TrendingUp, Clock, CheckCircle, BookOpen,
@@ -390,7 +391,17 @@ const Dashboard = () => {
         <Simulador3D assetType={assetType3d} width="100%" height="420px" />
       </div>
 
-      {/* ===== SECCIÓN 6: CERTIFICACIÓN CRIPTOGRÁFICA ML-DSA & LAGOCHAIN ===== */}
+      {/* ===== SECCIÓN 6: ASISTENTE TÉCNICO SENIOR — COPILOT NORMATIVO ===== */}
+      <div style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1A2440 100%)', border: '1px solid rgba(56,189,248,0.15)', borderRadius: '14px', padding: '24px', marginBottom: '24px' }}>
+        <SectionHeader
+          icon="🤖"
+          title="Asistente Técnico Senior — Copilot Normativo"
+          subtitle="RAG contextual con COVENIN 3049-93, PDVSA SI-1, API y HSE — Consultas técnicas de ingeniería y mantenimiento"
+        />
+        <AsistenteTecnico />
+      </div>
+
+      {/* ===== SECCIÓN 7: CERTIFICACIÓN CRIPTOGRÁFICA ML-DSA & LAGOCHAIN ===== */}
       <div style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', border: '1px solid rgba(139,92,246,0.2)', borderRadius: '14px', padding: '24px', marginBottom: '24px' }}>
         <SectionHeader
           icon="🎓"
