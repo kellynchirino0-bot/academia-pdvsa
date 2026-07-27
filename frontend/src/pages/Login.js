@@ -187,7 +187,7 @@ const Login = () => {
             color: 'var(--text-secondary)'
           }}>
             <strong>Credenciales de prueba:</strong><br />
-            Admin: admin@nassergroup.com / admin123
+            Admin: admin@pdvsa.com / admin123 &nbsp;|&nbsp; User: usuario@pdvsa.com / user123
           </div>
         )}
       </div>

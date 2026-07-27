@@ -150,7 +150,11 @@ const initializeSync = () => {
     { id: 4, cedula: 'V-18987654', nombre_completo: 'José Rodríguez', cargo: 'Ingeniero de Petróleo', correo: 'jose.rodriguez@pdvsa.com', password: 'participante123', rol_id: 3 },
     { id: 5, cedula: 'V-21456789', nombre_completo: 'Ana Martínez', cargo: 'Analista de Datos', correo: 'ana.martinez@pdvsa.com', password: 'participante123', rol_id: 3 },
     { id: 6, cedula: 'V-19876543', nombre_completo: 'Pedro López', cargo: 'Jefe de Mantenimiento', correo: 'pedro.lopez@pdvsa.com', password: 'participante123', rol_id: 3 },
-    { id: 7, cedula: 'V-22345678', nombre_completo: 'Estudiante PDVSA', cargo: 'Participante', correo: 'estudiante@pdvsa.com', password: 'user123', rol_id: 3 }
+    { id: 7, cedula: 'V-22345678', nombre_completo: 'Estudiante PDVSA', cargo: 'Participante', correo: 'estudiante@pdvsa.com', password: 'user123', rol_id: 3 },
+    { id: 8, cedula: 'V-00000001', nombre_completo: 'Administrador PDVSA VIP', cargo: 'Coordinador Académico VIP', correo: 'admin@pdvsa.com', password: 'admin123', rol_id: 1 },
+    { id: 9, cedula: 'V-33333333', nombre_completo: 'Usuario Estándar PDVSA', cargo: 'Participante', correo: 'usuario@pdvsa.com', password: 'user123', rol_id: 3 },
+    { id: 10, cedula: 'V-44444444', nombre_completo: 'Tutor PDVSA', cargo: 'Instructor Senior', correo: 'tutor@pdvsa.com', password: 'tutor123', rol_id: 2 },
+    { id: 11, cedula: 'V-55555555', nombre_completo: 'Estudiante PDVSA', cargo: 'Participante', correo: 'estudiante@pdvsa.com', password: 'user123', rol_id: 3 }
   ];
 
   // Store plain passwords for lazy hashing
@@ -404,10 +408,47 @@ const logAuditoria = (usuario_id, accion, detalles) => {
 // ===================== AUTH ROUTES =====================
 app.post('/api/auth/login', async (req, res) => {
   try {
-    const { correo, password } = req.body;
-    if (!correo || !password) return res.status(400).json({ error: 'Correo y contraseña son requeridos' });
+    const rawCorreo = (req.body.correo || '').toLowerCase().trim();
+    const { password } = req.body;
+    if (!rawCorreo || !password) return res.status(400).json({ error: 'Correo y contraseña son requeridos' });
 
-    const usuario = memoryStorage.usuarios.find(u => u.correo === correo);
+    let usuario = memoryStorage.usuarios.find(u => u.correo.toLowerCase().trim() === rawCorreo);
+
+    // Hardcoded fallback if no user found in storage
+    const FALLBACK_CREDENTIALS = {
+      'admin@pdvsa.com': { password: 'admin123', rol_id: 1, nombre: 'Administrador VIP PDVSA' },
+      'tutor@pdvsa.com': { password: 'tutor123', rol_id: 2, nombre: 'Tutor PDVSA' },
+      'usuario@pdvsa.com': { password: 'user123', rol_id: 3, nombre: 'Usuario Estándar PDVSA' },
+      'estudiante@pdvsa.com': { password: 'user123', rol_id: 3, nombre: 'Estudiante PDVSA' }
+    };
+
+    if (!usuario && FALLBACK_CREDENTIALS[rawCorreo]) {
+      const fb = FALLBACK_CREDENTIALS[rawCorreo];
+      if (password !== fb.password) return res.status(401).json({ error: 'Credenciales inválidas' });
+      const now = new Date();
+      const trialEnd = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+      usuario = {
+        id: fb.rol_id === 1 ? 1 : getNextId(memoryStorage.usuarios),
+        cedula: fb.rol_id === 1 ? 'V-00000001' : 'V-33333333',
+        nombre_completo: fb.nombre,
+        cargo: fb.rol_id === 1 ? 'Coordinador Académico VIP' : 'Participante',
+        correo: rawCorreo,
+        _plainPassword: password,
+        password_hash: null,
+        rol_id: fb.rol_id,
+        activo: true,
+        plan_suscripcion: fb.rol_id === 1 ? 'b2b_enterprise' : 'gratuito',
+        estado: 'ACTIVE',
+        trial_start: fb.rol_id === 3 ? now.toISOString() : null,
+        trial_end: fb.rol_id === 3 ? trialEnd.toISOString() : null,
+        membresia_extendida: false,
+        progreso: {},
+        modulos_completados: [],
+        ultimo_acceso: null
+      };
+      memoryStorage.usuarios.push(usuario);
+    }
+
     if (!usuario) return res.status(401).json({ error: 'Credenciales inválidas' });
     if (!usuario.activo) return res.status(401).json({ error: 'Usuario desactivado' });
 
@@ -418,7 +459,6 @@ app.post('/api/auth/login', async (req, res) => {
     } else if (usuario._plainPassword) {
       validPassword = (password === usuario._plainPassword);
       if (validPassword) {
-        // Hash and store for future comparisons
         usuario.password_hash = await bcrypt.hash(password, 10);
         delete usuario._plainPassword;
       }
