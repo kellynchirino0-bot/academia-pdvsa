@@ -777,6 +777,10 @@ app.post('/api/courses/lecciones/completar', verifyToken, (req, res) => {
       if (!existingCert) {
         const user = memoryStorage.usuarios.find(u => u.id === req.user.id);
         const hash = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
+        const hashSha256 = require('crypto').createHash('sha256').update(user?.nombre_completo + hash + Date.now()).digest('hex');
+        const firmaMLDSA = generarFirmaMLDSA(hashSha256);
+        const idVerificador = `LC-${hashSha256.substring(0, 12).toUpperCase()}`;
+        const selloQR = generarSelloQR(idVerificador);
         autoCert = {
           id: getNextId(memoryStorage.certificados),
           estudiante_id: req.user.id,
@@ -790,10 +794,15 @@ app.post('/api/courses/lecciones/completar', verifyToken, (req, res) => {
           estado: 'pendiente',
           aprobado_por: null,
           notas_admin: '',
-          activo: true
+          activo: true,
+          firma_mldsa: firmaMLDSA,
+          id_verificador: idVerificador,
+          sello_qr: selloQR
         };
         memoryStorage.certificados.push(autoCert);
-        createNotification(req.user.id, 'alerta', 'Certificacion Automatica', 'Has completado todos los modulos. Tu certificado con aval Global Safety Solutions esta pendiente de aprobacion administrativa.');
+        persistAfterMutation();
+        createNotification(req.user.id, 'alerta', 'Certificacion Automatica (LagoChain)',
+          `Has completado todos los modulos. Tu certificado con aval Global Safety Solutions esta pendiente de aprobacion administrativa.\nFirma ML-DSA: ${firmaMLDSA.substring(0, 30)}...\nVerifica en: ${selloQR}`);
         checkAndAwardBadges(req.user.id);
       }
     }
@@ -1320,29 +1329,36 @@ app.post('/api/demo/complete-all', verifyToken, verifyRole(1), (req, res) => {
     // Auto-generate certificate
     const existingCert = memoryStorage.certificados.find(c => c.estudiante_id === req.user.id && (c.estado === 'aprobado' || c.estado === 'pendiente'));
     let cert = null;
-    if (!existingCert) {
-      const user = memoryStorage.usuarios.find(u => u.id === req.user.id);
-      const hash = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
-      cert = {
-        id: getNextId(memoryStorage.certificados),
-        estudiante_id: req.user.id,
-        nombre_estudiante: user?.nombre_completo || 'Estudiante',
-        curso: 'Inteligencia Artificial e Investigacion de Operaciones para Lideres de Negocio',
-        fecha_solicitud: new Date().toISOString(),
-        fecha_emision: null,
-        fecha_aprobacion: null,
-        codigo_verificacion: 'CERT_' + hash,
-        calificacion_final: '100.0',
-        estado: 'pendiente',
-        aprobado_por: null,
-        notas_admin: '',
-        activo: true
-      };
-      memoryStorage.certificados.push(cert);
-      persistAfterMutation();
-      createNotification(req.user.id, 'alerta', 'Certificación Automática', 'Certificado generado vía Modo Demo. Pendiente de aprobación administrativa.');
-      checkAndAwardBadges(req.user.id);
-    }
+      if (!existingCert) {
+        const user = memoryStorage.usuarios.find(u => u.id === req.user.id);
+        const hash = Date.now().toString(36) + Math.random().toString(36).substr(2, 6);
+        const hashSha256 = require('crypto').createHash('sha256').update(user?.nombre_completo + hash + Date.now()).digest('hex');
+        const firmaMLDSA = generarFirmaMLDSA(hashSha256);
+        const idVerificador = `LC-${hashSha256.substring(0, 12).toUpperCase()}`;
+        const selloQR = generarSelloQR(idVerificador);
+        autoCert = {
+          id: getNextId(memoryStorage.certificados),
+          estudiante_id: req.user.id,
+          nombre_estudiante: user?.nombre_completo || 'Estudiante',
+          curso: 'Inteligencia Artificial e Investigacion de Operaciones para Lideres de Negocio',
+          fecha_solicitud: new Date().toISOString(),
+          fecha_emision: null,
+          fecha_aprobacion: null,
+          codigo_verificacion: 'CERT_' + hash,
+          calificacion_final: calificacionPct,
+          estado: 'pendiente',
+          aprobado_por: null,
+          notas_admin: '',
+          activo: true,
+          firma_mldsa: firmaMLDSA,
+          id_verificador: idVerificador,
+          sello_qr: selloQR
+        };
+        memoryStorage.certificados.push(autoCert);
+        persistAfterMutation();
+        createNotification(req.user.id, 'alerta', 'Certificacion Automatica (LagoChain)',
+          `Has aprobado todas las evaluaciones. Tu certificado con aval Global Safety Solutions esta pendiente de aprobacion administrativa.\nFirma ML-DSA: ${firmaMLDSA.substring(0, 30)}...\nVerifica en: ${selloQR}`);
+      }
 
     const completadas = memoryStorage.progresos.filter(p => p.user_id === req.user.id && p.completado).length;
     res.json({
@@ -1835,6 +1851,14 @@ app.post('/api/tutors/retroalimentacion', verifyToken, verifyRole(1, 2), (req, r
   res.json({ message: 'Retroalimentación registrada exitosamente' });
 });
 
+app.get('/api/tutors/retroalimentacion/:estudianteId', verifyToken, verifyRole(1, 2), (req, res) => {
+  const eid = parseInt(req.params.estudianteId);
+  const items = memoryStorage.retroalimentacion
+    .filter(r => r.estudiante_id === eid)
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  res.json(items);
+});
+
 // ===================== NOTIFICATIONS =====================
 if (!memoryStorage.notifications) memoryStorage.notifications = [];
 let nextNotifId = (memoryStorage.notifications.length > 0 ? Math.max(...memoryStorage.notifications.map(n => n.id)) : 0) + 1;
@@ -2217,6 +2241,17 @@ app.post('/api/ai/generate-report', (req, res) => reportHandler(req, res));
 
 // ===================== LAGOCHAIN — CERTIFICACIÓN CRIPTOGRÁFICA ML-DSA =====================
 const verifySimHandler = require('./lagochain/verify-sim');
+
+// Genera una firma ML-DSA (FIPS 204 simulada) para un certificado
+function generarFirmaMLDSA(hash) {
+  const prefix = require('crypto').randomBytes(8).toString('hex');
+  const suffix = require('crypto').randomBytes(8).toString('hex');
+  return `MLDSA_${prefix}_${hash.substring(0, 16)}_${suffix}`;
+}
+
+function generarSelloQR(idVerificador) {
+  return `https://academia-pdvsa.vercel.app/verificar-certificado?id=${idVerificador}`;
+}
 
 app.post('/api/lagochain/verify-sim', (req, res) => verifySimHandler(req, res));
 

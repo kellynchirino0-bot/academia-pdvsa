@@ -50,7 +50,7 @@ const TutorDashboard = () => {
     try {
       await axios.post(`${API_URL}/tutors/retroalimentacion`, {
         estudiante_id: estudianteSeleccionado.id,
-        comentario: retroalimentacion,
+        mensaje: retroalimentacion,
         tipo: tipoFeedback
       });
       alert('Retroalimentación enviada exitosamente');
@@ -373,7 +373,7 @@ const TutorDashboard = () => {
                             {new Date(retro.created_at).toLocaleDateString('es-VE')}
                           </span>
                         </div>
-                        <p style={{ margin: 0, fontSize: '0.9rem' }}>{retro.comentario}</p>
+                        <p style={{ margin: 0, fontSize: '0.9rem' }}>{retro.mensaje}</p>
                       </div>
                     ))}
                   </div>
