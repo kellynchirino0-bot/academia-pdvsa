@@ -1,4 +1,5 @@
-const { storage, getNextId, persistAfterMutation, createNotification } = require('../storage/memory-store');
+const { storage, getNextId, persistAfterMutation } = require('../storage/memory-store');
+const { createNotification } = require('../utils/notifications');
 const { verifyToken, verifyRole } = require('../middleware/auth');
 
 function setup(app) {
@@ -6,8 +7,10 @@ function setup(app) {
     try {
       const { metodo, referencia, monto, plan_solicitado, comprobante_url } = req.body;
       if (!metodo || !referencia) return res.status(400).json({ error: 'Método y referencia requeridos' });
+      const usuario = storage.usuarios.find(u => u.id === req.user.id);
+      const usuarioNombre = usuario?.nombre_completo || 'Usuario';
       const pago = {
-        id: getNextId(storage.pagos), usuario_id: req.user.id, usuario_nombre: req.user.nombre_completo,
+        id: getNextId(storage.pagos), usuario_id: req.user.id, usuario_nombre: usuarioNombre,
         metodo, referencia, monto: monto || (plan_solicitado === 'b2b_enterprise' ? 2500 : 450),
         moneda: metodo === 'binance' ? 'USDT' : 'USD',
         plan_solicitado: plan_solicitado || 'vip_diplomado',
@@ -19,7 +22,7 @@ function setup(app) {
       const admins = storage.usuarios.filter(u => u.rol_id === 1);
       const planNombre = plan_solicitado?.replace(/_/g, ' ') || 'VIP';
       admins.forEach(a => createNotification(a.id, 'pago', 'Nuevo Pago Pendiente',
-        `${req.user.nombre_completo} reportó pago para plan ${planNombre} (${metodo}). Referencia: ${referencia}.`));
+        `${usuarioNombre} reportó pago para plan ${planNombre} (${metodo}). Referencia: ${referencia}.`));
       res.status(201).json({ exito: true, pago, mensaje: 'Pago reportado. Pendiente de verificación.' });
     } catch (err) {
       res.status(500).json({ error: err.message });

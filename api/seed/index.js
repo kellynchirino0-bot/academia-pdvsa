@@ -143,14 +143,16 @@ function initializeSeed() {
   ];
   seedCertificates.forEach(cert => { storage.certificados.push(cert); });
 
-  storage.badges = [
-    { id: 'primer_modulo', nombre: 'Primer Paso', descripcion: 'Completar primer modulo', icono: '🥇', color: '#d4a843', condicion: 'primer_modulo' },
-    { id: 'puntaje_perfecto', nombre: 'Puntaje Perfecto', descripcion: '100% en alguna evaluacion', icono: '⚡', color: '#3b82f6', condicion: 'puntaje_perfecto' },
-    { id: 'especialista_ia', nombre: 'Especialista IA', descripcion: 'Completar los 4 modulos', icono: '🎓', color: '#10b981', condicion: 'especialista_ia' },
-    { id: 'rapido', nombre: 'Velocista', descripcion: 'Completar modulo en menos de 1 dia', icono: '🚀', color: '#ef4444', condicion: 'rapido' },
-    { id: 'constante', nombre: 'Constante', descripcion: '5 o mas lecciones completadas', icono: '🔥', color: '#f59e0b', condicion: 'constante' },
-    { id: 'certificado', nombre: 'Certificado', descripcion: 'Obtener certificado oficial', icono: '🏅', color: '#8b5cf6', condicion: 'certificado' }
-  ];
+  if (storage.badges.length === 0) {
+    storage.badges = [
+      { id: 'primer_modulo', nombre: 'Primer Paso', descripcion: 'Completar primer modulo', icono: '🥇', color: '#d4a843', condicion: 'primer_modulo' },
+      { id: 'puntaje_perfecto', nombre: 'Puntaje Perfecto', descripcion: '100% en alguna evaluacion', icono: '⚡', color: '#3b82f6', condicion: 'puntaje_perfecto' },
+      { id: 'especialista_ia', nombre: 'Especialista IA', descripcion: 'Completar los 4 modulos', icono: '🎓', color: '#10b981', condicion: 'especialista_ia' },
+      { id: 'rapido', nombre: 'Velocista', descripcion: 'Completar modulo en menos de 1 dia', icono: '🚀', color: '#ef4444', condicion: 'rapido' },
+      { id: 'constante', nombre: 'Constante', descripcion: '5 o mas lecciones completadas', icono: '🔥', color: '#f59e0b', condicion: 'constante' },
+      { id: 'certificado', nombre: 'Certificado', descripcion: 'Obtener certificado oficial', icono: '🏅', color: '#8b5cf6', condicion: 'certificado' }
+    ];
+  }
 
   console.log(`✅ Data initialized: ${storage.usuarios.length} users, ${storage.modulos.length} modules, ${storage.lecciones.length} lessons`);
 }

@@ -12,7 +12,10 @@
     "build": "cd frontend && npm ci && npm run build",
     "vercel-build": "cd frontend && npm ci && CI=true npm run build",
     "seed": "node api/seed-content.js",
-    "start": "node api/index.js"
+    "start": "node api/index.js",
+    "test:api": "set JWT_SECRET=test_jwt_secret_2026&& npx jest --forceExit --detectOpenHandles",
+    "monitor": "node scripts/monitor.js",
+    "monitor:dev": "set MONITOR_URL=http://localhost:3001&& node scripts/monitor.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -23,9 +26,16 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "esbuild": "^0.25.0"
+    "esbuild": "^0.25.0",
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2"
   },
-  "keywords": ["pdvsa", "inteligencia-artificial", "oil-gas", "educacion"],
+  "keywords": [
+    "pdvsa",
+    "inteligencia-artificial",
+    "oil-gas",
+    "educacion"
+  ],
   "author": "Nasser Group",
   "license": "UNLICENSED"
 }
