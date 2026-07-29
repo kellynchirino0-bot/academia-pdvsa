@@ -1,13 +1,55 @@
-.vercel
-.env*.local
-.env.production
-.env.preview.local
-.vercelignore
-
+# Dependencies
 node_modules/
 frontend/node_modules/
+backend/node_modules/
+
+# Build output
 frontend/build/
 build/
 .cache/
 frontend/src/.cache/
+
+# Vercel
+.vercel
+.vercelignore
+
+# Environment files (CONTAIN SECRETS - DO NOT COMMIT)
+.env
+.env.*
+!.env.example
+.env*.local
+.env.production
+.env.preview.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Secrets
+**/*.pem
+**/*.key
+**/*.cert
+**/credentials.json
+**/service-account.json
+
+# Runtime
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temp persistence (local data file)
+.academia_data.json
+.vercel

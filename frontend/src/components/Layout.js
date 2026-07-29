@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import TrialCountdownBanner from './TrialCountdownBanner';
@@ -31,12 +31,16 @@ import {
   Cpu,
   Flame,
   CreditCard,
-  TrendingUp
+  TrendingUp,
+  Menu,
+  X
 } from 'lucide-react';
 
 const Layout = ({ children }) => {
   const { user, logout, trial } = useAuth();
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const closeSidebar = () => setSidebarOpen(false);
 
   const handleLogout = () => {
     logout();
@@ -93,7 +97,11 @@ const Layout = ({ children }) => {
 
   return (
     <div className="app-layout">
-      <aside className="sidebar">
+      {sidebarOpen && <div className="sidebar-overlay" onClick={closeSidebar} />}
+      <button className="mobile-menu-btn" onClick={() => setSidebarOpen(!sidebarOpen)} aria-label="Menú">
+        {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
             <GraduationCap size={28} color="#d4a843" />
